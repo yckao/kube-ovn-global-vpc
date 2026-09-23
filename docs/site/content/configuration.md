@@ -2,6 +2,14 @@
 
 Tenant intent stays small because administrators configure locations, network classes, pools and identities. Example values are placeholders; they are not reservations in your environment.
 
+Use the [Helm quick start](../../managed-quickstart.md) with
+[authority values](../../../config/examples/helm/authority.yaml) and
+[site values](../../../config/examples/helm/site-a.yaml). The authority chart's
+`platform` object renders `platform.json`; the site chart's `local` object renders
+`site.json`. Published charts supply image digests. Helm supplies the release
+namespace and, when connected, resolves the Infra cluster UID. The fields below
+describe the resulting controller configuration.
+
 ## Management configuration: platform.json
 
 | Field | Purpose |
@@ -37,7 +45,11 @@ The supplied classes are `default` (`wireguard-bgp`), `trusted-geneve` (`geneve-
 
 See [site-a.json](../../../config/examples/managed/site-a.json) and [site-b.json](../../../config/examples/managed/site-b.json). Keep control/health pools disjoint across locations and exclude infrastructure ranges from tenant pools. Size transit blocks for the selected member count.
 
-## Deployment and RBAC
+## Deployment and RBAC references
+
+The Helm charts render deployment and RBAC resources. These older standalone
+manifests remain useful implementation references; do not apply them alongside
+a Helm release:
 
 - [Authority manifest](../../../config/managed/authority.yaml): controller deployment and management permissions.
 - [Site manifest](../../../config/managed/site.yaml): local operator and privileged gateway namespace boundary.
@@ -50,4 +62,4 @@ The controller Pods run non-root. Generated gateway Pods need privileged hostPID
 
 ## Configure once, retain runtime state
 
-Administrator configuration is desired policy. Runtime allocation registries, immutable anchors, generated keys and accepted snapshots are controller-owned state. Do not place generated identity state into a GitOps loop that repeatedly resets it to a template.
+Administrator configuration is desired policy. Runtime allocation registries, immutable anchors, generated keys and accepted snapshots are controller-owned state. Do not reset generated identity state to an installation template.

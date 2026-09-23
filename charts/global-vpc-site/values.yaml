@@ -1,0 +1,46 @@
+image:
+  repository: ""
+  digest: ""
+cliImage:
+  repository: ""
+  digest: ""
+gatewayImage:
+  repository: ""
+  digest: ""
+replicaCount: 2
+imagePullSecrets: []
+nodeSelector:
+  kubernetes.io/os: linux
+  kubernetes.io/arch: amd64
+authorityAccess:
+  # Preferred: a separately provisioned Secret with key kubeconfig. Provision and renew
+  # scoped credentials using your identity system; never use an administrator token.
+  existingSecret: ""
+  # Alternative: private values file. Helm stores this Secret in release history.
+  kubeconfig: ""
+local:
+  locationRef: ""
+  clusterUID: "" # Connected Helm resolves kube-system UID; set explicitly offline.
+  authorityNamespace: ""
+  gatewayNodeSelector:
+    kubernetes.io/os: linux
+    kubernetes.io/arch: amd64
+    platform.globalvpc.io/gateway: "true"
+  endpointAnnotation: ""
+  transitPool: ""
+  transitPrefixLength: 27
+  bfdSourcePool: ""
+  controlPool: ""
+  portStart: 20000
+  portEnd: 29999
+  gatewayReplicas: 2
+  runtimeDir: /opt/global-vpc/gateway
+  mtu: 1380
+lifecycle:
+  preDeleteCheck: true
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    memory: 512Mi

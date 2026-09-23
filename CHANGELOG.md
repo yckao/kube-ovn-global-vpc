@@ -26,8 +26,13 @@ inferred from this file.
 - Allocation retention, guarded deletion and controller-incarnation fencing.
 - Installation examples, architecture diagrams, operations documentation and a
   static documentation website suitable for GitHub Pages.
-- Credential-free unit/API test automation, release packaging with checksums
-  and source provenance, and a manual artifact preparation workflow.
+- Helm charts as the primary distribution for authority, site and native extension,
+  with guarded cleanup, configuration checks and release rollback hooks.
+- Standalone `vpcctl` binaries wrapping Helm lifecycle and public VPC/Subnet
+  operations, including scoped access issuance and project drainage.
+- CI preparation of prebuilt controller, gateway, native and hook images,
+  four CLI platforms, chart packages, checksums, source and image evidence.
+- Credential-free unit/API test automation and repeatable release packaging.
 
 ### Known limitations
 
@@ -42,5 +47,7 @@ inferred from this file.
   recovery require an explicit administrative procedure.
 - Compute-platform attachment automation, a tenant UI, renewable platform
   identity integration and seamless transport migration are not included.
-- Container images and a native Kube-OVN controller image must be built and
-  verified by the operator. This repository does not imply a public registry.
+- Prebuilt publication requires a successful release workflow with reviewed base
+  image digests. This prepared version does not imply that registry assets exist.
+  Dataplane and hook images currently target Linux/amd64; runtime packet/BFD
+  qualification remains separate from CI build and API checks.

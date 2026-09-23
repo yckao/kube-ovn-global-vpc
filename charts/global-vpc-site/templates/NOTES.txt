@@ -1,0 +1,18 @@
+The local operator is installed in {{ .Release.Namespace }}.
+
+Generated gateways require the release namespace to permit privileged Pods.
+The chart does not modify Pod Security labels or the native Kube-OVN installation.
+Confirm the pinned native extension, reserved pools and eligible nodes first.
+
+Authority access comes from Secret {{ include "global-vpc-site.secret" . }}.
+Renew expiring scoped credentials and restart the site Deployment after rotation.
+Inline kubeconfig values remain in Helm release history; existingSecret avoids
+storing credentials in Helm values/history.
+
+Before uninstall, drain public resources while authority and site operators still
+run. The pre-delete hook blocks incomplete local bindings or generated gateway
+Pods. Acknowledged Deleted snapshots, CRDs, namespace and allocation receipts are
+retained.
+
+`helm test {{ .Release.Name }} -n {{ .Release.Namespace }}` performs read-only API
+and controller checks; it does not establish packet reachability.

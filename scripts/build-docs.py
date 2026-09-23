@@ -19,6 +19,7 @@ CONTENT = ROOT / "docs/site/content"
 PAGES = [
     ("Start here", "Overview", "index", CONTENT / "index.md"),
     ("Start here", "Installation", "installation", ROOT / "docs/managed-quickstart.md"),
+    ("Start here", "vpcctl CLI", "vpcctl", ROOT / "docs/vpcctl.md"),
     ("Start here", "Kube-OVN patch installation", "native-installation", ROOT / "docs/kube-ovn-extension-install.md"),
     ("Start here", "Configuration", "configuration", CONTENT / "configuration.md"),
     ("Design", "Architecture", "architecture", CONTENT / "architecture.md"),
@@ -38,6 +39,8 @@ PAGES = [
     ("Project", "Security", "security", ROOT / "SECURITY.md"),
 ]
 DOWNLOADS = [
+    "config/examples/helm/authority.yaml", "config/examples/helm/native.yaml",
+    "config/examples/helm/site-a.yaml", "config/examples/helm/site-b.yaml",
     "config/examples/managed/network.yaml", "config/examples/managed/platform.json",
     "config/examples/managed/site-a.json", "config/examples/managed/site-b.json",
     "config/examples/managed/smoke-pod.yaml", "config/managed/authority.yaml",

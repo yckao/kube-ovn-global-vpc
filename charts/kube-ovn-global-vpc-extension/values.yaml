@@ -1,0 +1,32 @@
+{
+  "nameOverride": "",
+  "fullnameOverride": "",
+  "cliImage": {
+    "repository": "ghcr.io/yckao/kube-ovn-global-vpc-vpcctl",
+    "digest": "",
+    "pullPolicy": "IfNotPresent"
+  },
+  "imagePullSecrets": [],
+  "nodeSelector": {"kubernetes.io/os": "linux", "kubernetes.io/arch": "amd64"},
+  "native": {
+    "target": "v1.16.3",
+    "namespace": "kube-system",
+    "deployment": "kube-ovn-controller",
+    "container": "kube-ovn-controller"
+  },
+  "ovn": {
+    "namespace": "kube-system",
+    "deployment": "ovn-central",
+    "container": "ovn-central",
+    "database": "unix:/run/ovn/ovnnb_db.sock"
+  },
+  "bundle": null,
+  "hook": {
+    "timeout": "4m",
+    "activeDeadlineSeconds": 270,
+    "resources": {
+      "requests": {"cpu": "25m", "memory": "64Mi"},
+      "limits": {"cpu": "500m", "memory": "256Mi"}
+    }
+  }
+}

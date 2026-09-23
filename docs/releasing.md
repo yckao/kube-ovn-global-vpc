@@ -1,153 +1,212 @@
 # Release and publication
 
-The prepared version is **v0.1.0**, an experimental release. The `VERSION` file
-contains `0.1.0`; use the `v` prefix for Git tags. Public APIs are currently
-`platform.globalvpc.io/v1alpha2`. The project version and Kubernetes API version
-are separate contracts.
+Helm charts are the primary distribution. A published release contains prebuilt
+images and downloadable `vpcctl` binaries; `vpcctl` wraps the Helm lifecycle.
+Administrators do not need Go, Docker or BuildKit on their machines. Those tools
+belong to the project's release build environment.
 
-The initial public distribution is **source-only**. Binary and image distribution
-remain gated on their complete transitive notices, SBOM and provenance review.
-The manual workflow can prepare binary candidates for maintainer review; an
-Actions artifact is not a published supported release.
+The release workflow is implemented, but an actual prebuilt release from this
+workflow has not yet been produced and verified for this change. Repository
+paths, example versions and workflow definitions are not evidence that registry
+images or GitHub release assets are already available.
 
-## What is automated
+The prepared version is **v0.1.0**, an experimental release. `VERSION` contains
+`0.1.0`; Git tags and workflow version inputs use `v0.1.0`. Public APIs remain
+`platform.globalvpc.io/v1alpha2`. Project versions, chart versions and Kubernetes
+API versions are separate contracts.
 
-- Pull requests and pushes to `main`: Go formatting, vet, unit tests, race tests,
-  Python tests, builds and Kubernetes API-server integration tests.
-- Pull requests: build and validate the documentation website without deploying.
-- Pushes to `main`: publish the generated website when GitHub Pages has been
-  configured to use GitHub Actions.
-- Manual **Prepare release artifacts** workflow: validate and build a clean
-  checkout, then upload downloadable build artifacts to the workflow run. It
-  does not create a tag, create a GitHub Release, upload images or deploy software.
+## Distribution contract
 
-GitHub Actions dependencies use reviewed immutable commit IDs. The pinned action
-tags were checked against the official [GitHub Actions organization](https://github.com/actions).
-Dependabot proposes updates; review each update before merging. CI downloads Go
-modules and checksum-verified envtest assets from their upstream providers.
+A published release provides these three charts as GitHub release `.tgz` assets
+and Helm OCI packages:
 
-The API integration tests run a local API server and etcd without cluster
-credentials. They are not packet-forwarding, native Kube-OVN or hardware tests.
-The separately source-locked Kube-OVN extension requires its own source-matched
-build and integration review before deployment; see
-[native integration](../integration/kube-ovn/README.md).
+| Chart | Responsibility |
+| --- | --- |
+| `global-vpc` | Management authority, public APIs and project access |
+| `global-vpc-site` | One site's operator, gateway configuration and authority access |
+| `kube-ovn-global-vpc-extension` | Native extension installation and lifecycle hooks for an existing supported Kube-OVN baseline |
 
-## Build the release locally
+The OCI path is
+`oci://ghcr.io/<owner>/<repository>/charts/<chart>`. Chart versions use the numeric
+project version, such as `0.1.0`; image and Git release tags use `v0.1.0`. These are
+naming rules, not a claim that any particular version has been published.
 
-Use Go 1.26.5, Python 3.13 or newer, Git and a clean committed checkout. The
-packager refuses modified or untracked source files, invalid versions and
-symbolic links in its installation input. Build output directories are ignored
-by Git. No Kubernetes credentials are needed.
+Release chart defaults contain the actual immutable controller, gateway and
+hook-helper image references. The native chart also embeds both qualified native
+bundles as `files/native-v1.16.3.json` and `files/native-v1.16.4.json`; `native.target`
+selects the appropriate baseline. Users provide site configuration and access
+information, not local build outputs. Source charts intentionally have no
+invented image digests and must receive release defaults or explicit test inputs.
+
+`release.json` identifies the project source commit, controller and gateway
+images, CLI hook image, both native bundles and chart asset URLs. Every image
+reference is an actual `NAME@sha256:...` value returned by the build. The release
+assembler rejects missing targets, inconsistent native qualification, mutable
+image tags and missing source/chart/CLI artifacts. `SHA256SUMS` covers the release
+descriptor and all adjacent downloadable assets.
+
+## Supported build matrix
+
+| Artifact | Build target | Toolchain |
+| --- | --- | --- |
+| `vpcctl` binaries | Linux and macOS, each on amd64 and arm64 | Go 1.26.5 |
+| Platform controller binaries | Linux amd64 and arm64 | Go 1.26.5 |
+| Controller, gateway and CLI hook images | Linux/amd64 | Prebuilt project binaries; digest-pinned runtime bases |
+| Native Kube-OVN v1.16.3 image | Linux/amd64 | Go 1.26.6; source `98af25ffae49193a8dc16bbc39bd8ca4110ec367` |
+| Native Kube-OVN v1.16.4 image | Linux/amd64 | Go 1.27.1; source `a9296ef2a37c6519bc0ecb798082ce139c72f8eb` |
+
+CI uses Python 3.13 and Helm 3.17.3. Actions use immutable commit IDs. The Helm
+archive is checked against the version's upstream SHA-256 file. Buildx runs only
+on the Linux CI runner; its actual version and image build inputs are preserved
+with release evidence. This is not a claim that every transitive OS package or
+build-tool image is independently pinned or that image builds are reproducible.
+Cross-compiling an arm64 binary does not qualify arm64 container deployment.
+
+## Candidate workflow
+
+Run **Build prebuilt release** from the intended reviewed ref with:
+
+| Input | Candidate value |
+| --- | --- |
+| `version` | `v` followed by the exact contents of `VERSION` |
+| `publish` | `false` (default) |
+| Four base-image inputs | Unused; may be left empty |
+
+The workflow runs formatting/vet, Go/Python tests, race tests, binary builds,
+Helm chart tests, documentation validation and isolated Kubernetes API
+integration tests. It then uploads the candidate artifacts to the Actions run.
+Candidate artifacts are retained for 14 days by the workflow.
+
+Candidates include the CLI binaries, controller binaries, source, vendored
+project dependencies, templates, chart packages, provenance and checksums.
+`CANDIDATE-NOTES.md` states that chart defaults still require immutable image
+values. This mode does not build or push OCI images, produce an installable
+`release.json`, create a Git tag or create a GitHub release. An uploaded candidate
+is not an operationally qualified network release.
+
+## Publish a prebuilt experimental release
+
+The same workflow publishes when `publish=true`. Supply all of these inputs:
+
+| Input | Required value |
+| --- | --- |
+| `version` | `vMAJOR.MINOR.PATCH`, exactly matching `VERSION`; the Git tag must not already exist |
+| `publish` | `true` |
+| `controller_base` | Reviewed distroless nonroot base as `NAME@sha256:<64 lowercase hex digits>`; also used by the CLI hook image |
+| `gateway_base` | Reviewed Alpine 3.21 base in the same immutable format |
+| `native_base_v1163` | Verified original Kube-OVN v1.16.3 Linux/amd64 distribution image in the same immutable format |
+| `native_base_v1164` | Verified original Kube-OVN v1.16.4 Linux/amd64 distribution image in the same immutable format |
+
+The maintainer must verify that native base images match their stated baselines.
+The workflow validates digest syntax; a correctly formatted digest alone does
+not establish source compatibility. No example or guessed digest is supplied.
+The repository must permit its workflow token to publish GHCR packages and
+create GitHub releases. Registry visibility and release access must match the
+intended consumers.
+
+After the candidate checks pass, publication proceeds as follows:
+
+1. Build and push the controller, gateway and CLI hook images to GHCR with
+   BuildKit SBOM and provenance attestations.
+2. Build each native controller from its exact source lock and patch, run its
+   native unit tests, push the replacement image and verify the binary checksum
+   and file capabilities inside that image.
+3. Preserve patched native production source, vendored Go dependencies, original
+   licenses, source locks, patch files and qualification reports.
+4. Retrieve OCI SBOM/provenance evidence from all five pushed image references.
+   Run the controller and hook-helper binaries with networking disabled to
+   check the exact version/commit; check required gateway executables. These
+   commands do not start the platform or configure a cluster.
+5. Package all three charts with the returned immutable image digests and both
+   native bundles. Assemble `release.json` and final checksums, then push the
+   charts to GHCR Helm OCI.
+6. Upload reviewable Actions artifacts and create a GitHub **prerelease** with
+   the complete asset set at the exact workflow commit.
+
+This workflow performs external writes when `publish=true`. It is not a
+transaction across registries and GitHub: a failure after an image push may
+leave image artifacts without a completed GitHub release. Review the failed run
+and its available evidence; do not advertise an incomplete upload as an
+installable release. The workflow refuses to overwrite an existing Git tag and
+does not delete partial registry uploads automatically.
+
+The workflow does not deploy into an operator's Kubernetes cluster. It records
+real OVN/northd and packet-forwarding qualification as **not run**; native unit
+checks, API tests and executable smoke tests do not establish BFD failover,
+cross-site traffic, hardware behavior or an operational support SLA.
+
+## Release assets and verification
+
+For version `v0.1.0`, the completed workflow produces:
+
+| Asset | Contents |
+| --- | --- |
+| `vpcctl_0.1.0_{linux,darwin}_{amd64,arm64}.tar.gz` | Four CLI archives, each including project license/notices |
+| `platform-vpc-controller_0.1.0_linux_{amd64,arm64}.tar.gz` | Controller binaries and project license/notices |
+| `{global-vpc,global-vpc-site,kube-ovn-global-vpc-extension}-0.1.0.tgz` | Primary Helm packages with prebuilt-image defaults |
+| `release.json` | Immutable images, inline native bundles, chart URLs and source identity |
+| `kube-ovn-global-vpc_0.1.0_source.tar.gz` | Full tracked project source from the release commit |
+| `project-vendored-source.tar.gz` | Project source plus vendored Go dependencies and included license files |
+| `native-v1.16.3-source.tar.gz`, `native-v1.16.4-source.tar.gz` | Exact patched production source, vendored dependencies, patch, lock, modification notice and qualification |
+| `managed-installation_0.1.0.tar.gz` | Reference CRDs, templates, examples and native integration inputs; Helm charts are the primary installer |
+| `image-evidence.tar.gz` | Image manifests, retrieved SBOM/provenance, build inputs, tool versions, runtime checks and native qualification |
+| `provenance.json` | Project packaging metadata: source commit, toolchain, build options and hashes of its initial packaged inputs/outputs |
+| `SHA256SUMS` | Final checksums of all adjacent release assets |
+
+Download assets from the intended GitHub release and verify before extracting:
+
+```sh
+# After downloading the full release asset set into one directory:
+sha256sum -c SHA256SUMS
+
+# On macOS, the corresponding command is:
+shasum -a 256 -c SHA256SUMS
+```
+
+The binary `--version` commands require no Kubernetes credentials and include
+the packaged source commit. Checksums establish integrity relative to the
+checksum file; they do not replace publisher authentication. Packaging
+provenance is unsigned metadata. OCI attestations are retrieved from the build,
+but this workflow does not add cryptographic signatures, assert a SLSA level or
+perform a vulnerability scan. Review the
+[third-party notices](../THIRD_PARTY_NOTICES.md) for the exact source/license
+material supplied and the responsibilities it does not discharge.
+
+## Maintainer-only local packaging
+
+Local development can use Go 1.26.5, Python, Git and Helm. End-user installation
+uses the prebuilt release instead. `scripts/package-release.py` requires a clean
+committed checkout and refuses modified/untracked source, invalid versions,
+symlinked installation inputs or an existing output directory.
 
 ```sh
 make check test test-race build
-# With downloaded envtest assets:
 KUBEBUILDER_ASSETS=/path/to/envtest make test-integration
-make docs
+
+# Keep generated documentation outside the Go source tree.
+python3 scripts/build-docs.py --output /tmp/global-vpc-docs --check
 make release-artifacts
 ```
 
-Output appears in `dist/v0.1.0/`:
+The local packager produces the binary/source/reference-input subset under
+`dist/v0.1.0/`. Chart default injection, OCI publication, vendored source material
+and final descriptor assembly are additional workflow steps. Running
+`make release-artifacts` alone neither publishes images nor creates a complete
+installable release.
 
-| File | Purpose |
-| --- | --- |
-| `kube-ovn-global-vpc_0.1.0_source.tar.gz` | Complete reviewed source commit, including documentation and native integration inputs |
-| `platform-vpc-controller_0.1.0_linux_amd64.tar.gz` | Linux amd64 controller binary |
-| `platform-vpc-controller_0.1.0_linux_arm64.tar.gz` | Linux arm64 controller binary; cross-compilation alone is not runtime qualification |
-| `managed-installation_0.1.0.tar.gz` | Managed CRDs, RBAC/deployment templates, example configuration, gateway Python runtime and native extension inputs |
-| `provenance.json` | Source commit, version, build toolchain, input hashes and output hashes |
-| `SHA256SUMS` | SHA-256 checksums for the packages and provenance file |
+Build flags disable ambient Go workspaces/overrides, use `CGO_ENABLED=0`,
+`-trimpath`, `-buildvcs=false` and the local toolchain, and record the source
+commit separately. Package archive timestamps and ownership are normalized.
+Private installation configuration and credentials are not release inputs.
 
-The installation package is a reviewed input bundle, not a one-command
-installation or a complete source distribution. The clean source checkout is
-the source of truth; the source archive is generated with `git archive` from
-that exact commit, without local branches or Git history. Image digest placeholders, site identities, address-pool
-reservations and platform access identities still require administrator setup.
-Private configuration, runtime credentials, validation captures and historical
-environment material are excluded by an explicit packaging allowlist.
+## Documentation publication
 
-The packager uses `CGO_ENABLED=0`, `-trimpath` and `-buildvcs=false` for the
-controller binaries, disables ambient workspaces/Go build overrides, requires
-the local Go toolchain and records the actual source commit separately. Tar/gzip
-timestamps and ownership are normalized. This supports repeatable packaging
-with the same toolchain; it is not a claim of audited reproducible container
-images. `provenance.json` is unsigned build metadata, not a signed supply-chain
-attestation. Verify artifact checksums after downloading:
+The separate **Documentation** workflow validates pull requests and deploys
+`main` to GitHub Pages when Pages is configured to use GitHub Actions. A manual
+run can also deploy `main`. Website publication does not create a software
+release, push OCI packages or change a cluster.
 
-```sh
-sha256sum -c SHA256SUMS
-./platform-vpc-controller --version
-```
-
-The controller's `--version` command runs without Kubernetes access. Packaged
-binaries print the source commit and its commit timestamp, not an invented build
-time. Direct developer builds report unknown source metadata unless supplied by
-the build process.
-
-## Container and native-extension artifacts
-
-Build the controller and gateway images using the commands in the
-[quick start](managed-quickstart.md). Select a registry owned by the project or
-your organization, publish there deliberately, and record immutable image
-digests. Do not replace example digests with a guessed registry path.
-
-Gateway images contain independently licensed system components, including FRR.
-Review the distribution obligations described in the repository's third-party
-notices before publishing images. The controller container and the native
-Kube-OVN extension have different build inputs and compatibility boundaries.
-Do not label a controller-only build as a complete supported network stack.
-
-Before distributing container images, pin and record their base image digests,
-produce an SBOM, scan the final images, review applicable redistribution/source
-requirements and sign artifacts using the project's chosen identity. These
-steps remain release-owner responsibilities; the initial workflows do not
-pretend to perform them.
-
-## Enable GitHub Pages
-
-1. Create or select the public GitHub repository and push the reviewed `main`
-   branch. Review the complete public tree and its ancestry for confidential
-   material before publication.
-2. In **Settings → Pages → Build and deployment**, choose **GitHub Actions**.
-3. Enable Actions and allow the `github-pages` environment to deploy from `main`.
-   Add environment approval rules if the maintainers require them.
-4. Run **Documentation** manually, or push a documentation change to `main`.
-5. Read the resulting URL from the workflow deployment. The site uses relative
-   links and works for a repository Pages site without a hard-coded owner or
-   repository name.
-
-No DNS or custom domain is assumed. The workflow needs `pages: write` and
-`id-token: write` only in its deployment job; pull requests have no deployment
-permissions. Fork pull requests build documentation without deployment.
-
-## Publish v0.1.0 deliberately
-
-Before creating the release, confirm:
-
-- The Apache-2.0 license and third-party notices match the submitted work and
-  any distributed dependencies.
-- Contributor guidance, a security-reporting route and a maintainer/review
-  policy are public and actionable.
-- The public repository and its reachable history contain no credentials,
-  environment identities, private endpoints or confidential validation data.
-- CI and documentation checks pass on the exact release commit. Review the
-  limitations in the [changelog](../CHANGELOG.md) and compatibility guidance.
-- The registry/image policy, vulnerability handling and artifact-signing/SBOM
-  approach are agreed. Do not advertise images that have not been published.
-- Repository ownership, branch protection, required checks and Pages settings
-  are configured by a repository administrator.
-- Upgrade, downgrade, rollback, credential renewal and allocator recovery
-  procedures are understood. An experimental release does not establish a
-  stable upgrade contract or an operational support SLA.
-
-Then run **Prepare release artifacts** at the intended commit, review its
-checksums and provenance, create a signed `v0.1.0` tag if a signing identity is
-available, and create a **GitHub prerelease** with the changelog limitations and
-reviewed source archive. Publish binary candidates only after their separate
-distribution gates have been completed. Mark it as experimental. Publishing the tag or release is
-a separate maintainer action and is never performed merely by building docs.
-
-Future releases update `VERSION`, `CHANGELOG.md`, compatibility notes and any
-migration instructions together. Patch releases should preserve the documented
-API/ownership contract. Minor `0.x` releases may introduce explicitly documented
-breaking changes.
+Future releases update `VERSION`, `CHANGELOG.md`, chart compatibility guidance
+and migration instructions together. Experimental `0.x` releases may introduce
+explicitly documented breaking changes; publish the native-baseline and
+rollback boundaries with each release.

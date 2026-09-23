@@ -1,0 +1,22 @@
+# Synthetic evaluation pools; provide authorityAccess.kubeconfig with --set-file.
+{
+  "local": {
+    "locationRef": "dc-a",
+    "clusterUID": "",
+    "authorityNamespace": "global-vpc-dc-a",
+    "gatewayNodeSelector": {
+      "platform.globalvpc.io/gateway": "true",
+      "kubernetes.io/os": "linux",
+      "kubernetes.io/arch": "amd64"
+    },
+    "transitPool": "172.30.0.0/20",
+    "transitPrefixLength": 27,
+    "bfdSourcePool": "172.30.16.0/24",
+    "controlPool": "172.30.32.0/20",
+    "portStart": 20000,
+    "portEnd": 29999,
+    "gatewayReplicas": 2,
+    "runtimeDir": "/opt/global-vpc/gateway",
+    "mtu": 1380
+  }
+}

@@ -44,19 +44,29 @@ not disconnected multi-writer global control.
 
 ## Start with the managed API
 
-After administrator installation, apply the complete
-[network example](config/examples/managed/network.yaml) to the management API:
+Install the project's Helm charts: `global-vpc` for the management authority,
+`global-vpc-site` for each Infra, and `kube-ovn-global-vpc-extension` for the
+matched native integration. [vpcctl](docs/vpcctl.md) wraps the same Helm
+install/upgrade/history/rollback/uninstall lifecycle and provides VPC/Subnet
+operations without a UI. Release CI builds the CLI binaries and immutable images;
+users do not need Go, Docker or BuildKit.
+
+Follow the [managed quick start](docs/managed-quickstart.md) for preparation,
+installation, tenant operations, verification, upgrades, rollback and removal.
+The prebuilt release workflow is implemented; availability depends on publishing
+a release with its image and chart assets. Source chart defaults intentionally
+lack published image digests. The [native reference](docs/kube-ovn-extension-install.md)
+retains the underlying patch/build steps for maintainers.
+
+After administrator installation:
 
 ```sh
-kubectl --context management apply -f config/examples/managed/network.yaml
-kubectl --context management -n project-demo get vpcs.platform.globalvpc.io,subnets.platform.globalvpc.io
+vpcctl --context management -n project-demo vpc create production
+vpcctl --context management -n project-demo subnet create app-a \
+  --vpc production --location dc-a --cidr 10.60.1.0/24
+vpcctl --context management -n project-demo vpc list
 ```
 
-Start with the [native Kube-OVN extension installation](docs/kube-ovn-extension-install.md)
-on each Infra, then follow the [managed quick start](docs/managed-quickstart.md)
-for platform/gateway image builds, RBAC, location registration, workload attachment
-and packet checks. The native guide includes source matching, patching, tests,
-image packaging, additive CRD updates, rollout and rollback.
 All supplied addresses, names and topology examples are synthetic. Replace them
 with values reserved and authorized for your deployment.
 

@@ -1,0 +1,3 @@
+# Must match the installed native Kube-OVN distribution and source baseline.
+native:
+  target: v1.16.3

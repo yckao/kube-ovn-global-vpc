@@ -1,0 +1,67 @@
+{{- $root := . -}}
+{{- $fullname := include "global-vpc.fullname" . -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ $fullname }}-binding-reporter
+rules:
+  - apiGroups: [platform.globalvpc.io]
+    resources: [networkbindings]
+    verbs: [get, list, watch]
+  - apiGroups: [platform.globalvpc.io]
+    resources: [networkbindings/status]
+    verbs: [get, update, patch]
+{{- range $location := .Values.platform.locations }}
+{{- if $root.Values.locationAccess.createNamespaces }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ $location.bindingNamespace }}
+  annotations:
+    helm.sh/resource-policy: keep
+{{- end }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $root.Values.locationAccess.serviceAccountName }}
+  namespace: {{ $location.bindingNamespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $fullname }}-binding-reporter
+  namespace: {{ $location.bindingNamespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ $fullname }}-binding-reporter
+subjects:
+  - kind: ServiceAccount
+    name: {{ $root.Values.locationAccess.serviceAccountName }}
+    namespace: {{ $location.bindingNamespace }}
+{{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ $fullname }}-project-editor
+rules:
+  - apiGroups: [platform.globalvpc.io]
+    resources: [vpcs, subnets]
+    verbs: [get, list, watch, create, update, patch, delete]
+{{- range $project := .Values.projects }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $fullname }}-project-editor
+  namespace: {{ required "projects[].namespace is required" $project.namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ $fullname }}-project-editor
+subjects:
+  {{- required "projects[].subjects requires explicit Kubernetes identities" $project.subjects | toYaml | nindent 2 }}
+{{- end }}

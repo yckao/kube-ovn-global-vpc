@@ -1,0 +1,239 @@
+{{- $name := include "global-vpc-site.fullname" . -}}
+{{- $hooks := ternary "pre-upgrade,pre-rollback,pre-delete,test" "pre-upgrade,pre-rollback,test" .Values.lifecycle.preDeleteCheck -}}
+{{- $annotations := dict "helm.sh/hook" $hooks "helm.sh/hook-weight" "-10" "helm.sh/hook-delete-policy" "before-hook-creation,hook-succeeded" -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $name }}-lifecycle
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- $annotations | toYaml | nindent 4 }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $name }}-lifecycle
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- $annotations | toYaml | nindent 4 }}
+rules:
+  - apiGroups: ['']
+    resources: [configmaps]
+    verbs: [get]
+  - apiGroups: [apps]
+    resources: [deployments, replicasets]
+    verbs: [get, list]
+  - apiGroups: ['']
+    resources: [pods]
+    verbs: [get, list]
+  - apiGroups: [platform.globalvpc.io]
+    resources: [networkbindings]
+    verbs: [get, list]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $name }}-lifecycle
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- $annotations | toYaml | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ $name }}-lifecycle
+subjects:
+  - kind: ServiceAccount
+    name: {{ $name }}-lifecycle
+    namespace: {{ .Release.Namespace }}
+{{- if .Values.lifecycle.preDeleteCheck }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $name }}-check-empty
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    helm.sh/hook: pre-delete
+    helm.sh/hook-weight: "0"
+    helm.sh/hook-output-log-policy: hook-succeeded,hook-failed
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 120
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ $name }}-lifecycle
+    spec:
+      serviceAccountName: {{ $name }}-lifecycle
+      restartPolicy: Never
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: check
+          image: {{ include "global-vpc-site.image" .Values.cliImage | quote }}
+          args:
+            - internal
+            - platform-hook
+            - --action=check-empty
+            - --role=site
+            - --namespace={{ .Release.Namespace }}
+            - --deployment={{ $name }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
+{{- end }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $name }}-verify
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    helm.sh/hook: test
+    helm.sh/hook-weight: "0"
+    helm.sh/hook-output-log-policy: hook-succeeded,hook-failed
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 120
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ $name }}-lifecycle
+    spec:
+      serviceAccountName: {{ $name }}-lifecycle
+      restartPolicy: Never
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: check
+          image: {{ include "global-vpc-site.image" .Values.cliImage | quote }}
+          args:
+            - internal
+            - platform-hook
+            - --action=verify
+            - --role=site
+            - --namespace={{ .Release.Namespace }}
+            - --deployment={{ $name }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $name }}-lifecycle-config
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    helm.sh/hook: pre-upgrade,pre-rollback
+    helm.sh/hook-weight: "-20"
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+data:
+  config.json: {{ include "global-vpc-site.local" . | quote }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $name }}-check-config
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    helm.sh/hook: pre-upgrade,pre-rollback
+    helm.sh/hook-weight: "0"
+    helm.sh/hook-output-log-policy: hook-succeeded,hook-failed
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 120
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ $name }}-lifecycle
+    spec:
+      serviceAccountName: {{ $name }}-lifecycle
+      restartPolicy: Never
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: check
+          image: {{ include "global-vpc-site.image" .Values.cliImage | quote }}
+          args:
+            - internal
+            - platform-hook
+            - --action=check-config
+            - --role=site
+            - --namespace={{ .Release.Namespace }}
+            - --deployment={{ $name }}
+            - --config-map={{ $name }}-config
+            - --desired-config=/desired/config.json
+          volumeMounts:
+            - name: desired
+              mountPath: /desired
+              readOnly: true
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
+      volumes:
+        - name: desired
+          configMap:
+            name: {{ $name }}-lifecycle-config

@@ -29,6 +29,18 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: '3.13'
+      - name: Install pinned Helm for chart validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/helm"
+          curl --fail --silent --show-error --location \
+            https://get.helm.sh/helm-v3.17.3-linux-amd64.tar.gz -o "$RUNNER_TEMP/helm/helm.tar.gz"
+          curl --fail --silent --show-error --location \
+            https://get.helm.sh/helm-v3.17.3-linux-amd64.tar.gz.sha256sum -o "$RUNNER_TEMP/helm/checksum"
+          (cd "$RUNNER_TEMP/helm" && sed 's/helm-v3.17.3-linux-amd64.tar.gz/helm.tar.gz/' checksum | sha256sum -c -)
+          tar -xzf "$RUNNER_TEMP/helm/helm.tar.gz" -C "$RUNNER_TEMP/helm"
+          echo "$RUNNER_TEMP/helm/linux-amd64" >> "$GITHUB_PATH"
       - name: Verify formatting
         shell: bash
         run: |
@@ -46,6 +58,8 @@ jobs:
         run: |
           ./bin/platform-vpc-controller --version
           ./bin/platform-vpc-controller --version | python3 -c 'import pathlib, sys; expected = "platform-vpc-controller v" + pathlib.Path("VERSION").read_text().strip() + " "; assert sys.stdin.read().startswith(expected)'
+          ./bin/vpcctl --version
+          ./bin/vpcctl --kubeconfig /nonexistent -n example subnet create apps --vpc production --location dc-a --cidr 10.60.1.0/24 --dry-run
 
   api-integration:
     name: Kubernetes API integration

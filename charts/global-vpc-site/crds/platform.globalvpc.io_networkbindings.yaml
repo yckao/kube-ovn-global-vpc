@@ -1,0 +1,557 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: networkbindings.platform.globalvpc.io
+spec:
+  group: platform.globalvpc.io
+  names:
+    kind: NetworkBinding
+    listKind: NetworkBindingList
+    plural: networkbindings
+    shortNames:
+    - nbinding
+    singular: networkbinding
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.locationRef
+      name: Location
+      type: string
+    - jsonPath: .spec.vpcRef.name
+      name: VPC
+      type: string
+    - jsonPath: .spec.transportProfile
+      name: Profile
+      type: string
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    name: v1alpha2
+    schema:
+      openAPIV3Schema:
+        description: Internal authoritative location snapshot. Administrators isolate
+          bindings by namespace; only authority writes spec and the local materializer
+          reports status. Discovery reports are not authorization. Missing objects
+          or failed reads never imply deletion.
+        properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              authorizedLocations:
+                description: Authority-approved locations; endpoint discovery does
+                  not grant membership.
+                items:
+                  maxLength: 253
+                  minLength: 1
+                  pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                  type: string
+                maxItems: 4096
+                type: array
+                x-kubernetes-list-type: set
+              deleting:
+                description: Explicit durable drain tombstone. Absence is never a
+                  deletion instruction.
+                type: boolean
+                x-kubernetes-validations:
+                - message: An accepted deletion tombstone cannot be cleared.
+                  rule: '!oldSelf || self'
+              linkAllocations:
+                items:
+                  properties:
+                    controlVNI:
+                      format: int64
+                      maximum: 16777215
+                      minimum: 1
+                      type: integer
+                    peerA:
+                      maxLength: 317
+                      minLength: 3
+                      pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?/[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                      type: string
+                    peerB:
+                      maxLength: 317
+                      minLength: 3
+                      pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?/[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                      type: string
+                  required:
+                  - peerA
+                  - peerB
+                  - controlVNI
+                  type: object
+                  x-kubernetes-validations:
+                  - message: The peer identity pair must be distinct and lexicographically
+                      ordered.
+                    rule: self.peerA < self.peerB
+                maxItems: 4096
+                type: array
+                x-kubernetes-list-map-keys:
+                - peerA
+                - peerB
+                x-kubernetes-list-type: map
+              localASN:
+                format: int64
+                maximum: 4294967294
+                minimum: 1
+                type: integer
+                x-kubernetes-validations:
+                - message: The allocated local ASN is immutable.
+                  rule: self == oldSelf
+              locationRef:
+                maxLength: 253
+                minLength: 1
+                pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                type: string
+                x-kubernetes-validations:
+                - message: The location identity is immutable.
+                  rule: self == oldSelf
+              nativeVpcName:
+                maxLength: 253
+                minLength: 1
+                pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                type: string
+                x-kubernetes-validations:
+                - message: The managed native Vpc identity is immutable.
+                  rule: self == oldSelf
+              networkClassRef:
+                maxLength: 253
+                minLength: 1
+                pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                type: string
+                x-kubernetes-validations:
+                - message: The network class is immutable.
+                  rule: self == oldSelf
+              networkID:
+                format: int64
+                maximum: 16777215
+                minimum: 1
+                type: integer
+                x-kubernetes-validations:
+                - message: The allocated network identity is immutable.
+                  rule: self == oldSelf
+              peers:
+                items:
+                  properties:
+                    endpoint:
+                      properties:
+                        endpointIP:
+                          maxLength: 15
+                          minLength: 7
+                          type: string
+                          x-kubernetes-validations:
+                          - message: Use a canonical IPv4 address.
+                            rule: isIP(self) && ip(self).family() == 4 && string(ip(self))
+                              == self
+                        healthIP:
+                          maxLength: 15
+                          minLength: 7
+                          type: string
+                          x-kubernetes-validations:
+                          - message: Use a canonical IPv4 address.
+                            rule: isIP(self) && ip(self).family() == 4 && string(ip(self))
+                              == self
+                        id:
+                          maxLength: 63
+                          minLength: 1
+                          pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                          type: string
+                        links:
+                          items:
+                            properties:
+                              controlVNI:
+                                format: int64
+                                maximum: 16777215
+                                minimum: 1
+                                type: integer
+                              listenPort:
+                                format: int32
+                                maximum: 65535
+                                minimum: 1024
+                                type: integer
+                              peerID:
+                                maxLength: 317
+                                minLength: 3
+                                pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?/[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                type: string
+                              tunnelIP:
+                                maxLength: 15
+                                minLength: 7
+                                pattern: ^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$
+                                type: string
+                            required:
+                            - peerID
+                            - listenPort
+                            - tunnelIP
+                            type: object
+                          maxItems: 4096
+                          type: array
+                          x-kubernetes-list-map-keys:
+                          - peerID
+                          x-kubernetes-list-type: map
+                        localASN:
+                          format: int64
+                          maximum: 4294967294
+                          minimum: 1
+                          type: integer
+                        nodeName:
+                          maxLength: 253
+                          minLength: 1
+                          pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                          type: string
+                        nodeUID:
+                          maxLength: 253
+                          minLength: 1
+                          type: string
+                        publicKey:
+                          maxLength: 44
+                          pattern: ^[A-Za-z0-9+/]{43}=$
+                          type: string
+                        ready:
+                          type: boolean
+                        transitIP:
+                          maxLength: 15
+                          minLength: 7
+                          type: string
+                          x-kubernetes-validations:
+                          - message: Use a canonical IPv4 address.
+                            rule: isIP(self) && ip(self).family() == 4 && string(ip(self))
+                              == self
+                      required:
+                      - id
+                      - nodeName
+                      - nodeUID
+                      - ready
+                      type: object
+                    locationRef:
+                      maxLength: 253
+                      minLength: 1
+                      pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                      type: string
+                  required:
+                  - locationRef
+                  - endpoint
+                  type: object
+                maxItems: 4096
+                type: array
+                x-kubernetes-list-type: atomic
+              remoteSubnets:
+                items:
+                  properties:
+                    cidr:
+                      maxLength: 18
+                      minLength: 9
+                      type: string
+                      x-kubernetes-validations:
+                      - message: Use a canonical IPv4 network prefix from /8 through
+                          /30.
+                        rule: isCIDR(self) && cidr(self).ip().family() == 4 && cidr(self).prefixLength()
+                          >= 8 && cidr(self).prefixLength() <= 30 && cidr(self) ==
+                          cidr(self).masked()
+                    locationRef:
+                      maxLength: 253
+                      minLength: 1
+                      pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                      type: string
+                  required:
+                  - locationRef
+                  - cidr
+                  type: object
+                maxItems: 4096
+                type: array
+                x-kubernetes-list-map-keys:
+                - locationRef
+                - cidr
+                x-kubernetes-list-type: map
+              revision:
+                description: Digest of the complete desired snapshot, acknowledged
+                  as appliedRevision.
+                maxLength: 128
+                minLength: 1
+                type: string
+              subnets:
+                items:
+                  properties:
+                    cidr:
+                      maxLength: 18
+                      minLength: 9
+                      type: string
+                      x-kubernetes-validations:
+                      - message: Use a canonical IPv4 network prefix from /8 through
+                          /30.
+                        rule: isCIDR(self) && cidr(self).ip().family() == 4 && cidr(self).prefixLength()
+                          >= 8 && cidr(self).prefixLength() <= 30 && cidr(self) ==
+                          cidr(self).masked()
+                    deleting:
+                      type: boolean
+                    gateway:
+                      maxLength: 15
+                      minLength: 7
+                      type: string
+                      x-kubernetes-validations:
+                      - message: Use a canonical IPv4 address.
+                        rule: isIP(self) && ip(self).family() == 4 && string(ip(self))
+                          == self
+                    name:
+                      maxLength: 253
+                      minLength: 1
+                      pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                      type: string
+                    nativeSubnetName:
+                      maxLength: 253
+                      minLength: 1
+                      pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                      type: string
+                    uid:
+                      maxLength: 253
+                      minLength: 1
+                      type: string
+                  required:
+                  - name
+                  - uid
+                  - cidr
+                  - gateway
+                  - nativeSubnetName
+                  type: object
+                maxItems: 4096
+                type: array
+                x-kubernetes-list-map-keys:
+                - uid
+                x-kubernetes-list-type: map
+              transportProfile:
+                enum:
+                - wireguard-bgp
+                - geneve-bgp
+                - vxlan-evpn
+                type: string
+                x-kubernetes-validations:
+                - message: The transport profile is immutable until migration is implemented.
+                  rule: self == oldSelf
+              vpcRef:
+                properties:
+                  name:
+                    maxLength: 253
+                    minLength: 1
+                    pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                    type: string
+                  namespace:
+                    maxLength: 63
+                    minLength: 1
+                    pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                    type: string
+                  uid:
+                    maxLength: 253
+                    minLength: 1
+                    type: string
+                required:
+                - namespace
+                - name
+                - uid
+                type: object
+                x-kubernetes-validations:
+                - message: The source project VPC identity is immutable.
+                  rule: self == oldSelf
+            required:
+            - vpcRef
+            - locationRef
+            - networkClassRef
+            - nativeVpcName
+            - transportProfile
+            - revision
+            - networkID
+            - localASN
+            type: object
+            x-kubernetes-validations:
+            - message: An accepted deletion tombstone cannot be removed or cleared.
+              rule: '!has(oldSelf.deleting) || !oldSelf.deleting || (has(self.deleting)
+                && self.deleting)'
+          status:
+            properties:
+              appliedRevision:
+                maxLength: 128
+                type: string
+              conditions:
+                items:
+                  properties:
+                    lastTransitionTime:
+                      format: date-time
+                      type: string
+                    message:
+                      maxLength: 32768
+                      type: string
+                    observedGeneration:
+                      format: int64
+                      minimum: 0
+                      type: integer
+                    reason:
+                      maxLength: 1024
+                      minLength: 1
+                      type: string
+                    status:
+                      enum:
+                      - "True"
+                      - "False"
+                      - Unknown
+                      type: string
+                    type:
+                      maxLength: 316
+                      minLength: 1
+                      type: string
+                  required:
+                  - type
+                  - status
+                  - reason
+                  - message
+                  - lastTransitionTime
+                  type: object
+                maxItems: 32
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              gateways:
+                items:
+                  properties:
+                    endpointIP:
+                      maxLength: 15
+                      minLength: 7
+                      type: string
+                      x-kubernetes-validations:
+                      - message: Use a canonical IPv4 address.
+                        rule: isIP(self) && ip(self).family() == 4 && string(ip(self))
+                          == self
+                    healthIP:
+                      maxLength: 15
+                      minLength: 7
+                      type: string
+                      x-kubernetes-validations:
+                      - message: Use a canonical IPv4 address.
+                        rule: isIP(self) && ip(self).family() == 4 && string(ip(self))
+                          == self
+                    id:
+                      maxLength: 63
+                      minLength: 1
+                      pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                      type: string
+                    links:
+                      items:
+                        properties:
+                          controlVNI:
+                            format: int64
+                            maximum: 16777215
+                            minimum: 1
+                            type: integer
+                          listenPort:
+                            format: int32
+                            maximum: 65535
+                            minimum: 1024
+                            type: integer
+                          peerID:
+                            maxLength: 317
+                            minLength: 3
+                            pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?/[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                            type: string
+                          tunnelIP:
+                            maxLength: 15
+                            minLength: 7
+                            pattern: ^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$
+                            type: string
+                        required:
+                        - peerID
+                        - listenPort
+                        - tunnelIP
+                        type: object
+                      maxItems: 4096
+                      type: array
+                      x-kubernetes-list-map-keys:
+                      - peerID
+                      x-kubernetes-list-type: map
+                    localASN:
+                      format: int64
+                      maximum: 4294967294
+                      minimum: 1
+                      type: integer
+                    nodeName:
+                      maxLength: 253
+                      minLength: 1
+                      pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                      type: string
+                    nodeUID:
+                      maxLength: 253
+                      minLength: 1
+                      type: string
+                    publicKey:
+                      maxLength: 44
+                      pattern: ^[A-Za-z0-9+/]{43}=$
+                      type: string
+                    ready:
+                      type: boolean
+                    transitIP:
+                      maxLength: 15
+                      minLength: 7
+                      type: string
+                      x-kubernetes-validations:
+                      - message: Use a canonical IPv4 address.
+                        rule: isIP(self) && ip(self).family() == 4 && string(ip(self))
+                          == self
+                  required:
+                  - id
+                  - nodeName
+                  - nodeUID
+                  - ready
+                  type: object
+                maxItems: 4096
+                type: array
+                x-kubernetes-list-map-keys:
+                - id
+                x-kubernetes-list-type: map
+              observedGeneration:
+                format: int64
+                minimum: 0
+                type: integer
+              phase:
+                maxLength: 128
+                type: string
+              resources:
+                items:
+                  properties:
+                    apiVersion:
+                      maxLength: 253
+                      type: string
+                    kind:
+                      maxLength: 253
+                      minLength: 1
+                      type: string
+                    name:
+                      maxLength: 253
+                      minLength: 1
+                      pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                      type: string
+                    namespace:
+                      maxLength: 63
+                      minLength: 1
+                      pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                      type: string
+                    uid:
+                      maxLength: 253
+                      minLength: 1
+                      type: string
+                  required:
+                  - kind
+                  - name
+                  - uid
+                  type: object
+                maxItems: 4096
+                type: array
+                x-kubernetes-list-type: atomic
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

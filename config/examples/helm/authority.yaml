@@ -1,0 +1,57 @@
+# Synthetic evaluation values: reserve these pools and replace the example group.
+{
+  "platform": {
+    "registryNamespace": "global-vpc-system",
+    "networkClasses": {
+      "default": {
+        "transportProfile": "wireguard-bgp"
+      },
+      "trusted-geneve": {
+        "transportProfile": "geneve-bgp"
+      },
+      "trusted-evpn": {
+        "transportProfile": "vxlan-evpn"
+      }
+    },
+    "locations": [
+      {
+        "name": "dc-a",
+        "region": "region-1",
+        "site": "site-a",
+        "dc": "dc-a",
+        "bindingNamespace": "global-vpc-dc-a",
+        "allowedProjects": [
+          "project-demo"
+        ],
+        "cidrPools": [
+          "10.60.0.0/16"
+        ]
+      },
+      {
+        "name": "dc-b",
+        "region": "region-1",
+        "site": "site-b",
+        "dc": "dc-b",
+        "bindingNamespace": "global-vpc-dc-b",
+        "allowedProjects": [
+          "project-demo"
+        ],
+        "cidrPools": [
+          "10.61.0.0/16"
+        ]
+      }
+    ]
+  },
+  "projects": [
+    {
+      "namespace": "project-demo",
+      "subjects": [
+        {
+          "kind": "Group",
+          "name": "network-users",
+          "apiGroup": "rbac.authorization.k8s.io"
+        }
+      ]
+    }
+  ]
+}
