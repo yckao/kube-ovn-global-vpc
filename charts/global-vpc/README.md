@@ -15,7 +15,7 @@ digest. A chart from a source checkout requires `image` and `cliImage` repositor
 and digest values. Operators do not compile binaries or build images.
 
 ```sh
-helm upgrade --install global-vpc ./global-vpc-0.1.0.tgz \
+helm upgrade --install global-vpc ./global-vpc-0.1.1.tgz \
   --kube-context management --namespace global-vpc-system --create-namespace \
   --values authority-values.yaml --wait --timeout 5m
 

@@ -286,7 +286,14 @@ func TestNativeBuildProducesImmutableBundleAndPreservesEvidence(t *testing.T) {
 			if len(schema) != 2 || schema["spec"].(map[string]any)["type"] != "array" {
 				t.Fatalf("unexpected schema: %v", schema)
 			}
+			prefetched := false
 			for _, step := range fake.steps {
+				if step.Program == c.Go && reflect.DeepEqual(step.Args, []string{"mod", "download", "github.com/ovn-kubernetes/libovsdb"}) {
+					prefetched = step.Dir == filepath.Join(c.Output, "upstream")
+				}
+				if step.Program == "python3" && (strings.HasSuffix(step.Args[0], "build.py") || strings.HasSuffix(step.Args[0], "test-portable.py")) && !prefetched {
+					t.Fatal("native builder started before its locked libovsdb dependency was extracted")
+				}
 				if step.Program == "python3" && strings.HasSuffix(step.Args[0], "apply.py") && step.Args[1] == source {
 					t.Fatal("mutated user-supplied source")
 				}
@@ -294,6 +301,15 @@ func TestNativeBuildProducesImmutableBundleAndPreservesEvidence(t *testing.T) {
 			dockerfile, err := os.ReadFile(filepath.Join(c.Output, "image", "Dockerfile"))
 			if err != nil || !strings.Contains(string(dockerfile), "setcap cap_net_bind_service,cap_net_raw=eip") {
 				t.Fatalf("capabilities not restored: %s %v", dockerfile, err)
+			}
+			for _, label := range []string{
+				`org.opencontainers.image.source="https://github.com/yckao/kube-ovn-global-vpc"`,
+				`io.globalvpc.native.upstream.revision="` + c.commit + `"`,
+				`io.globalvpc.native.patch.sha256="` + c.patchSHA + `"`,
+			} {
+				if !strings.Contains(string(dockerfile), label) {
+					t.Fatal("patched image is missing project/upstream modification identity")
+				}
 			}
 		})
 	}
@@ -307,6 +323,8 @@ func TestNativeBuildFailuresDoNotEmitInstallBundle(t *testing.T) {
 		{name: "wrong-go", target: "v1.16.3", badGo: true, want: "requires go1.26.6"},
 		{name: "dirty-source", target: "v1.16.3", dirty: true, want: "not clean"},
 		{name: "wrong-head", target: "v1.16.3", badHead: true, want: "pinned commit"},
+		{name: "cold-cache-fetch", target: "v1.16.3", fail: "mod download", want: "fetch pinned native test dependency"},
+		{name: "cold-cache-fetch-native", target: "v1.16.4", fail: "mod download", want: "fetch pinned native test dependency"},
 		{name: "compat-tests", target: "v1.16.3", fail: "ovs.test", want: "tests failed"},
 		{name: "native-tests", target: "v1.16.4", fail: "test-portable.py", want: "tests failed"},
 		{name: "capabilities", target: "v1.16.3", badCaps: true, want: "getcap verification failed"},

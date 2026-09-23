@@ -20,7 +20,6 @@ PAGES = [
     ("Start here", "Overview", "index", CONTENT / "index.md"),
     ("Start here", "Installation", "installation", ROOT / "docs/managed-quickstart.md"),
     ("Start here", "vpcctl CLI", "vpcctl", ROOT / "docs/vpcctl.md"),
-    ("Start here", "Kube-OVN patch installation", "native-installation", ROOT / "docs/kube-ovn-extension-install.md"),
     ("Start here", "Configuration", "configuration", CONTENT / "configuration.md"),
     ("Design", "Architecture", "architecture", CONTENT / "architecture.md"),
     ("Design", "Kube-OVN integration", "integration", CONTENT / "integration.md"),
@@ -32,6 +31,7 @@ PAGES = [
     ("Learn", "圖解 · Engineering briefing", "diagrams", CONTENT / "diagrams.md"),
     ("Learn", "Native extension contract", "native-extension", ROOT / "integration/kube-ovn/README.md"),
     ("Learn", "v1.16.3 adapter", "native-compat", ROOT / "integration/kube-ovn/compat-v1.16.3/README.md"),
+    ("Maintainers", "Kube-OVN patch & recovery", "native-installation", ROOT / "docs/kube-ovn-extension-install.md"),
     ("Project", "Release readiness", "release-readiness", CONTENT / "release-readiness.md"),
     ("Project", "Release guide", "releasing", ROOT / "docs/releasing.md"),
     ("Project", "Changelog", "changelog", ROOT / "CHANGELOG.md"),
@@ -39,7 +39,7 @@ PAGES = [
     ("Project", "Security", "security", ROOT / "SECURITY.md"),
 ]
 DOWNLOADS = [
-    "config/examples/helm/authority.yaml", "config/examples/helm/native.yaml",
+    "config/examples/helm/authority-dc-a.yaml", "config/examples/helm/authority.yaml", "config/examples/helm/native.yaml",
     "config/examples/helm/site-a.yaml", "config/examples/helm/site-b.yaml",
     "config/examples/managed/network.yaml", "config/examples/managed/platform.json",
     "config/examples/managed/site-a.json", "config/examples/managed/site-b.json",

@@ -5,7 +5,7 @@ experimental `0.x` series, APIs and installation contracts can change between
 minor releases. Read migration notes before upgrading; a version number is not
 a production support commitment.
 
-## 0.1.0 — Initial experimental release
+## 0.1.1 — Prebuilt Helm distribution
 
 This is the prepared release version. A Git tag, GitHub Release and published
 container images are separate publication steps; their existence must not be
@@ -26,6 +26,8 @@ inferred from this file.
 - Allocation retention, guarded deletion and controller-incarnation fencing.
 - Installation examples, architecture diagrams, operations documentation and a
   static documentation website suitable for GitHub Pages.
+- Progressive installation: bring up DC-A and verify a local VPC before adding
+  DC-B. Authority upgrade guards permit strictly additive location registration.
 - Helm charts as the primary distribution for authority, site and native extension,
   with guarded cleanup, configuration checks and release rollback hooks.
 - Standalone `vpcctl` binaries wrapping Helm lifecycle and public VPC/Subnet
@@ -51,3 +53,9 @@ inferred from this file.
   image digests. This prepared version does not imply that registry assets exist.
   Dataplane and hook images currently target Linux/amd64; runtime packet/BFD
   qualification remains separate from CI build and API checks.
+
+## 0.1.0 — Source preview
+
+The original GitHub prerelease published source and reference materials. It did
+not publish the OCI images or Helm packages required by the new installation
+path. Use the prebuilt distribution introduced with 0.1.1 for that path.

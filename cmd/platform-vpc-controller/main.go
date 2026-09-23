@@ -31,7 +31,7 @@ import (
 // Release packaging overrides these values with source-controlled metadata.
 // A direct developer build does not claim a known clean source commit.
 var (
-	version    = "v0.1.0"
+	version    = "v0.1.1"
 	commit     = "unknown"
 	sourceDate = "unknown"
 )

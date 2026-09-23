@@ -9,12 +9,13 @@ Project release CI builds the controller, gateway, native extension and hook
 images, plus standalone CLI binaries. An administrator needs Helm 3.14+ or Helm 4,
 a downloaded `vpcctl` binary, and Kubernetes access. Tenants need only `vpcctl`
 and their project access. Go, Docker, BuildKit, Python and jq are not client
-requirements. See the [quick start](managed-quickstart.md) for a complete example.
+requirements. The [quick start](managed-quickstart.md) first installs and tests
+DC-A, then adds DC-B to the same VPC without replacing the first location.
 
-**Availability:** the repository contains this release workflow; this change does
-not itself publish a release or qualify a live deployment. Use commands below
-with a version whose GitHub Release includes the prebuilt images and packaged
-charts. A source checkout's chart defaults intentionally lack release digests.
+The examples target the v0.1.1 prebuilt distribution. Use them after its GitHub
+Release includes the CLI archives, images and packaged charts. Artifact
+publication is separate from live deployment and packet qualification. A source
+checkout's chart defaults intentionally lack release digests.
 
 ## Install the CLI
 
@@ -22,7 +23,7 @@ Choose a published version and the archive matching your computer: `linux` or
 `darwin`, and `amd64` or `arm64`. For example, on an Apple Silicon Mac:
 
 ```sh
-VERSION=0.1.0  # Select an actually published prebuilt release.
+VERSION=0.1.1
 ASSET="vpcctl_${VERSION}_darwin_arm64.tar.gz"
 BASE="https://github.com/yckao/kube-ovn-global-vpc/releases/download/v${VERSION}"
 curl -fLO "$BASE/$ASSET"
@@ -91,7 +92,7 @@ helm upgrade --install global-vpc \
 To upgrade and return to an earlier release revision:
 
 ```sh
-NEXT_VERSION=0.1.1  # Example only: select a published compatible release.
+NEXT_VERSION=0.1.2  # Example only: select a published compatible release.
 vpcctl --context management upgrade global-vpc --component authority \
   --version "$NEXT_VERSION" -f authority-values.yaml
 vpcctl --context management history global-vpc
@@ -106,7 +107,24 @@ remain explicit. Rollback restores the selected revision's values, manifests and
 hooks; it does not undo tenant changes, migrate allocation receipts or downgrade
 CRDs. Helm retains CRDs from `crds/`; schema migrations require release-specific
 instructions. Hooks reject incompatible configuration changes while managed
-resources exist. Never use uninstall as a substitute for an upgrade.
+resources exist. The authority can append new locations while keeping every
+existing location, network class and registry setting unchanged. Never use
+uninstall as a substitute for an upgrade.
+
+For example, after the [DC-A-only installation](managed-quickstart.md#install-the-authority-and-dc-a),
+append DC-B using the expanded example values at the same chart version:
+
+```sh
+# Preserve the actual DC-A settings and project grants in the expanded file.
+vpcctl --context management upgrade global-vpc --component authority \
+  --version "$VERSION" -f config/examples/helm/authority.yaml
+```
+
+Install DC-B's native and site charts before a tenant creates `app-b`. Registration
+alone does not add DC-B to an existing VPC. The [expansion steps](managed-quickstart.md#register-dc-b-without-changing-dc-a)
+include access issuance and both-direction packet checks. An authority rollback
+to the DC-A-only values is blocked while managed resources remain; choose a
+successful revision that retains all registered locations.
 
 Use the same commands with the site or native component and the corresponding
 Infra context. Native upgrades and rollbacks support the **same upstream source
@@ -117,7 +135,7 @@ Native chart hooks add the two extension schema properties, update only the
 native controller image, and verify rollout/ACK state. A private Kubernetes
 Secret records the original state before mutation. Failed hooks retain it for
 retry; keep that Secret and namespace. No local plan file is needed. One
-extension release may target a given native controller. The extension does not
+extension release may exist in an Infra cluster. The extension does not
 install or remove upstream Kube-OVN itself.
 
 ## Scoped location access
@@ -153,12 +171,21 @@ interface.
 vpcctl --context management -n project-demo vpc create production
 vpcctl --context management -n project-demo subnet create app-a \
   --vpc production --location dc-a --cidr 10.60.1.0/24
-vpcctl --context management -n project-demo subnet create app-b \
-  --vpc production --location dc-b --cidr 10.61.1.0/24
+vpcctl --context management -n project-demo --timeout 5m subnet wait app-a
 vpcctl --context management -n project-demo vpc list
 vpcctl --context management -n project-demo subnet list --vpc production
 vpcctl --context management -n project-demo -o yaml subnet get app-a
 vpcctl --context management -n project-demo --timeout 5m vpc wait production
+vpcctl --context management -n project-demo doctor
+```
+
+After the administrator has registered and installed DC-B, extend that same VPC:
+
+```sh
+vpcctl --context management -n project-demo subnet create app-b \
+  --vpc production --location dc-b --cidr 10.61.1.0/24
+vpcctl --context management -n project-demo --timeout 5m subnet wait app-b
+vpcctl --context management -n project-demo subnet list --vpc production
 vpcctl --context management -n project-demo doctor
 ```
 

@@ -1,6 +1,6 @@
 # Global VPC Controller
 
-**Version 0.1.0 · Experimental · Apache-2.0**
+**Version 0.1.1 · Experimental · Apache-2.0**
 
 Declarative multi-site tenant networking built around Kube-OVN. Users create a
 project-scoped `VPC` and a `Subnet` in each location; the platform creates native
@@ -70,7 +70,7 @@ vpcctl --context management -n project-demo vpc list
 All supplied addresses, names and topology examples are synthetic. Replace them
 with values reserved and authorized for your deployment.
 
-## Boundaries of 0.1.0
+## Boundaries of 0.1.1
 
 Cross-location operation requires the source-matched Kube-OVN
 [destination-routes.v1 extension](integration/kube-ovn/README.md), including both

@@ -1,0 +1,34 @@
+{
+  "release": "v0.1.1",
+  "reviewedAt": "2026-09-23",
+  "images": {
+    "controller": {
+      "sourceTag": "gcr.io/distroless/static-debian12:nonroot",
+      "image": "gcr.io/distroless/static-debian12@sha256:52dcfbabb7457ea47c82f6e13af8c8a4a1d9f7b0145142b3ecab20f2b888411d",
+      "platform": "linux/amd64"
+    },
+    "gateway": {
+      "sourceTag": "docker.io/library/alpine:3.21",
+      "image": "docker.io/library/alpine@sha256:3c81aa9a3d770b316568f4499e30461a5cd3fbd7180bd89e28e34894c7845832",
+      "version": "3.21.8",
+      "platform": "linux/amd64"
+    },
+    "native_v1163": {
+      "sourceTag": "docker.io/kubeovn/kube-ovn:v1.16.3",
+      "image": "docker.io/kubeovn/kube-ovn@sha256:ae1668503a224c250af412076050708d5f67d8c8f86b74465d70ea270fa638a0",
+      "imageSourceCommit": "98af25ffae49193a8dc16bbc39bd8ca4110ec367",
+      "patchedSourceCommit": "98af25ffae49193a8dc16bbc39bd8ca4110ec367",
+      "review": "Image source label exactly matches the source lock.",
+      "platform": "linux/amd64"
+    },
+    "native_v1164": {
+      "sourceTag": "docker.io/kubeovn/kube-ovn:v1.16.4",
+      "image": "docker.io/kubeovn/kube-ovn@sha256:cd6879a4e6e5797e86fa5ca8bb1b07c12306aa3b5291bd6dcd0791757b81de83",
+      "imageSourceCommit": "a6cdc426ce6ec08b16589201705e90eaf94ed0e9",
+      "patchedSourceCommit": "a9296ef2a37c6519bc0ecb798082ce139c72f8eb",
+      "review": "The source lock is the next release commit. Its only changes are version strings in the two Chart.yaml/values.yaml pairs and dist/images/install.sh; controller code, dependencies and runtime scripts are unchanged.",
+      "comparison": "https://github.com/kubeovn/kube-ovn/compare/a6cdc426ce6ec08b16589201705e90eaf94ed0e9...a9296ef2a37c6519bc0ecb798082ce139c72f8eb",
+      "platform": "linux/amd64"
+    }
+  }
+}

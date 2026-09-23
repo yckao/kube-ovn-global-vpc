@@ -124,6 +124,12 @@ func (a *App) runNativeBuildOnPlatform(ctx context.Context, args []string, _ Opt
 			return err
 		}
 	}
+	// Both source-locked Python builders copy the libovsdb replacement from
+	// its extracted module directory. A cold `go list -m -json` has no Dir until
+	// the exact locked module has been downloaded, so populate it explicitly.
+	if _, err := b.run(ctx, c.Go, []string{"mod", "download", "github.com/ovn-kubernetes/libovsdb"}, source); err != nil {
+		return fmt.Errorf("fetch pinned native test dependency before build: %w", err)
+	}
 	build := filepath.Join(c.Output, "build")
 	binary := filepath.Join(build, "kube-ovn-controller")
 	patched := source
@@ -201,7 +207,15 @@ func (a *App) runNativeBuildOnPlatform(ctx context.Context, args []string, _ Opt
 	if err := nativeBuildCopy(binary, filepath.Join(imageDir, "kube-ovn-controller")); err != nil {
 		return err
 	}
-	const dockerfile = "ARG NATIVE_BASE\nFROM ${NATIVE_BASE}\nCOPY --chown=0:0 --chmod=0755 kube-ovn-controller /kube-ovn/kube-ovn-controller\nRUN setcap cap_net_bind_service,cap_net_raw=eip /kube-ovn/kube-ovn-controller && getcap /kube-ovn/kube-ovn-controller\n"
+	dockerfile := fmt.Sprintf("ARG NATIVE_BASE\nFROM ${NATIVE_BASE}\n"+
+		"LABEL org.opencontainers.image.source=\"https://github.com/yckao/kube-ovn-global-vpc\" \\\n"+
+		"      org.opencontainers.image.version=%q \\\n"+
+		"      org.opencontainers.image.revision=%q \\\n"+
+		"      io.globalvpc.native.upstream.revision=%q \\\n"+
+		"      io.globalvpc.native.patch.sha256=%q\n"+
+		"COPY --chown=0:0 --chmod=0755 kube-ovn-controller /kube-ovn/kube-ovn-controller\n"+
+		"RUN setcap cap_net_bind_service,cap_net_raw=eip /kube-ovn/kube-ovn-controller && getcap /kube-ovn/kube-ovn-controller\n",
+		c.Target+"-globalvpc.v1", c.commit+"+globalvpc-"+c.patchSHA[:12], c.commit, c.patchSHA)
 	if err := os.WriteFile(filepath.Join(imageDir, "Dockerfile"), []byte(dockerfile), 0600); err != nil {
 		return err
 	}
@@ -375,7 +389,8 @@ func (c nativeBuildConfig) plan() map[string]any {
 		nativeBuildStep{Program: "git", Args: []string{"-C", source, "checkout", "--detach", c.commit}},
 		nativeBuildStep{Program: "git", Args: []string{"-C", source, "rev-parse", "HEAD"}},
 		nativeBuildStep{Program: "git", Args: []string{"-C", source, "status", "--porcelain", "--untracked-files=all"}},
-		nativeBuildStep{Program: "python3", Args: []string{filepath.Join(c.integration, "scripts", "apply.py"), source, "--check"}})
+		nativeBuildStep{Program: "python3", Args: []string{filepath.Join(c.integration, "scripts", "apply.py"), source, "--check"}},
+		nativeBuildStep{Program: c.Go, Args: []string{"mod", "download", "github.com/ovn-kubernetes/libovsdb"}, Dir: source})
 	patched := source
 	if c.Target == "v1.16.3" {
 		patched = filepath.Join(build, "production-source")

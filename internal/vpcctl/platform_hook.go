@@ -1,6 +1,7 @@
 package vpcctl
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -9,6 +10,7 @@ import (
 
 	"github.com/spf13/pflag"
 	api "globalvpc.io/controller/api/v1alpha2"
+	"globalvpc.io/controller/internal/platformconfig"
 	"globalvpc.io/controller/internal/platformplan"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -78,6 +80,10 @@ func (a *App) runPlatformHook(ctx context.Context, args []string, opts Options) 
 		}
 		if nativeJSONEqual(before, after) {
 			fmt.Fprintln(a.Out, "Existing allocation configuration is unchanged.")
+			return nil
+		}
+		if role == "authority" && platformAddsLocations(before, after) {
+			fmt.Fprintln(a.Out, "Additive location registration is allowed; existing locations, project grants, reserved pools, network classes and allocation namespace are unchanged.")
 			return nil
 		}
 		bindings := &api.NetworkBindingList{}
@@ -201,6 +207,55 @@ func (a *App) runPlatformHook(ctx context.Context, args []string, opts Options) 
 	}
 	fmt.Fprintln(a.Out, "Controller rollout and available configuration observations verified. This does not establish tenant packet forwarding.")
 	return nil
+}
+
+// Registering another location is independent of existing VPC allocations. The
+// authority only adds a location to a VPC after accepting a Subnet there. Keep
+// the exception narrow: neither old location settings nor any other platform
+// configuration may change in the same operation. Config validation also rejects
+// duplicate names/binding namespaces and malformed new grants or reserved pools.
+func platformAddsLocations(before, after map[string]any) bool {
+	decode := func(raw map[string]any) (platformconfig.Config, bool) {
+		var cfg platformconfig.Config
+		data, err := json.Marshal(raw)
+		if err != nil {
+			return cfg, false
+		}
+		decoder := json.NewDecoder(bytes.NewReader(data))
+		decoder.DisallowUnknownFields()
+		if err := decoder.Decode(&cfg); err != nil || cfg.Validate() != nil {
+			return cfg, false
+		}
+		return cfg, true
+	}
+	oldConfig, oldValid := decode(before)
+	newConfig, newValid := decode(after)
+	if !oldValid || !newValid || len(newConfig.Locations) <= len(oldConfig.Locations) {
+		return false
+	}
+	withoutLocations := func(raw map[string]any) map[string]any {
+		copy := make(map[string]any, len(raw))
+		for key, value := range raw {
+			if key != "locations" {
+				copy[key] = value
+			}
+		}
+		return copy
+	}
+	if !nativeJSONEqual(withoutLocations(before), withoutLocations(after)) {
+		return false
+	}
+	locations := make(map[string]platformconfig.Location, len(newConfig.Locations))
+	for _, location := range newConfig.Locations {
+		locations[location.Name] = location
+	}
+	for _, location := range oldConfig.Locations {
+		candidate, exists := locations[location.Name]
+		if !exists || !nativeJSONEqual(location, candidate) {
+			return false
+		}
+	}
+	return true
 }
 
 // The site syncer deliberately retains terminal snapshots when their authority

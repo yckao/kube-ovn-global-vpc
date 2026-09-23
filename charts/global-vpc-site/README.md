@@ -19,7 +19,7 @@ sites. The chart deliberately does not label nodes or modify namespace security
 policy. Install the pinned native Kube-OVN extension first.
 
 ```sh
-helm upgrade --install global-vpc ./global-vpc-site-0.1.0.tgz \
+helm upgrade --install global-vpc ./global-vpc-site-0.1.1.tgz \
   --kube-context infra-a --namespace global-vpc-system \
   --values site-a-values.yaml --wait --timeout 5m
 

@@ -1,6 +1,7 @@
-# Build and install the native Kube-OVN extension
+# Maintainer reference: Kube-OVN patch, build and recovery
 
-The supported administrator interface is the project's Helm extension chart,
+**Audience: release maintainers and engineers investigating native recovery.**
+Administrators use the project's prebuilt Helm extension chart,
 used directly or through [vpcctl](vpcctl.md). Follow the
 [managed quick start](managed-quickstart.md) for prebuilt image installation,
 upgrades, rollback and removal. This page retains the **maintainer build and
@@ -27,9 +28,10 @@ The earlier Lab deployment mounted a rebuilt executable into the original
 container with a read-only hostPath. That was a temporary experiment and was
 restored to stock. The OCI packaging procedure below is the installation recipe;
 it must be tested against your image/runtime and is not evidence that this exact
-recipe has already been deployed. The release pipeline can publish prebuilt patched images and chart bundles;
-implementation of that pipeline does not establish that a release has been
-published or deployed. A portable real-OVN qualification harness is still absent.
+recipe has already been deployed. Release packages supply prebuilt patched images
+and chart bundles; check the selected release's published artifacts and
+qualification record. Building or publishing a package does not establish live
+deployment or packet results. A portable real-OVN qualification harness is still absent.
 
 Read in order: [baseline](#1-identify-the-installed-baseline-and-its-owner),
 [source](#2-fetch-and-verify-the-exact-source), [build/tests](#3-build-and-run-the-native-tests),
@@ -398,7 +400,7 @@ separate workspace and perform its matching build.
 ## 7. Return to the managed quick start and verify acknowledgement
 
 Continue with the authority and site installation in the
-[managed quick start](managed-quickstart.md#install-native-integration-and-the-authority),
+[managed quick start](managed-quickstart.md#install-the-authority-and-dc-a),
 using prebuilt platform/gateway images. Skip its native-extension chart install
 if you installed that extension manually using this reference: the chart cannot
 invent the original stock-state receipt for an already modified installation.
@@ -407,8 +409,9 @@ as a standalone connectivity test: it assumes existing connected transit ports,
 gateways and suitable native BFD HA chassis. The managed operators create those
 resources from the registered locations and reserved pools.
 
-After creating the managed example, resolve its native VPC through public Subnet
-status. `AUTH_CTX` was defined in the managed quick start:
+After completing the quick start's DC-B expansion, resolve the native VPC through
+public Subnet status. The check below requires nonempty remote intent; a DC-A-only
+VPC intentionally has no remote routes. `AUTH_CTX` was defined in the quick start:
 
 ```sh
 export SITE_CTX=infra-a
