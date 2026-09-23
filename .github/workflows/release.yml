@@ -39,10 +39,25 @@ jobs:
           make test-integration
       - name: Package clean source
         run: make release-artifacts
-      - name: Upload unsigned artifacts for review
+      - name: Select source-only distribution
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          import shutil
+          sources = sorted(Path("dist").glob("v*/kube-ovn-global-vpc_*_source.tar.gz"))
+          assert len(sources) == 1, "Expected exactly one source release archive"
+          out = Path("dist/source-only")
+          out.mkdir()
+          source = sources[0]
+          shutil.copy2(source, out / source.name)
+          (out / "SHA256SUMS").write_text(hashlib.sha256(source.read_bytes()).hexdigest() + "  " + source.name + "\n")
+          PY
+      - name: Upload source artifacts for review
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: release-artifacts-${{ github.sha }}
-          path: dist/
+          name: source-release-${{ github.sha }}
+          path: dist/source-only/
           if-no-files-found: error
           retention-days: 14
