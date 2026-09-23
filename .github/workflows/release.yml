@@ -47,7 +47,7 @@ jobs:
       NATIVE_BASE_V1163: ${{ inputs.native_base_v1163 }}
       NATIVE_BASE_V1164: ${{ inputs.native_base_v1164 }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Validate release identity and inputs
