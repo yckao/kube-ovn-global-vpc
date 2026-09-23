@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+<title id="title">集中管理意圖，各 site 自主執行</title><desc id="desc">Authority 不在封包路徑；每站維持獨立 Kubernetes API、OVN 資料庫與已接受的本地狀態</desc>
+<defs><style>text{font-family:"PingFang TC","Heiti TC","Noto Sans CJK TC",Arial,sans-serif}</style>
+<marker id="a-wire" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#74859D"/></marker>
+<marker id="a-blue" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#2563EB"/></marker>
+<marker id="a-teal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#087F83"/></marker>
+<marker id="a-purple" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#7752C6"/></marker>
+<marker id="a-amber" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#AD6800"/></marker>
+<marker id="a-red" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#B83D58"/></marker>
+</defs>
+<rect x="0" y="0" width="1920" height="1080" rx="0" fill="#F5F7FB" stroke="none" stroke-width="1.5"/>
+<rect x="64" y="32" width="7" height="23" rx="3" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="86" y="51" font-size="18" fill="#087F83" font-weight="700" text-anchor="start">GLOBAL VPC  /  ENGINEERING BRIEFING</text>
+<text xml:space="preserve" x="1856" y="51" font-size="18" fill="#53647C" font-weight="400" text-anchor="end">MANAGED v1alpha2 · v0.1.0</text>
+<text xml:space="preserve" x="64" y="114" font-size="44" fill="#162640" font-weight="700" text-anchor="start" data-max-width="1792">集中管理意圖，各 site 自主執行</text>
+<text xml:space="preserve" x="64" y="158" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1792">Authority 不在封包路徑；每站維持獨立 Kubernetes API、OVN 資料庫與已接受的本地狀態</text>
+<path d="M64 185 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="64" y="934" width="1792" height="64" rx="14" fill="#E8F7F5" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="974" font-size="26" fill="#087F83" font-weight="600" text-anchor="start" data-max-width="1744">Site Operator 不直接呼叫彼此；中央服務中斷時，既有本地狀態與轉送可持續。</text>
+<path d="M64 1017 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text xml:space="preserve" x="64" y="1051" font-size="18" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1500">架構與操作圖解  ·  詳細操作與適用邊界請見同目錄講解</text>
+<text xml:space="preserve" x="1856" y="1051" font-size="19" fill="#53647C" font-weight="700" text-anchor="end">02 / 12</text>
+<rect x="400" y="214" width="1120" height="226" rx="16" fill="#EDF3FF" stroke="#D6E0EC" stroke-width="1.5"/>
+<text xml:space="preserve" x="428" y="255" font-size="29" fill="#2563EB" font-weight="650" text-anchor="start">Management cluster  ·  HA API 為部署前提</text>
+<rect x="428" y="282" width="440" height="130" rx="16" fill="#FFFFFF" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="428" y="300" width="5" height="94" rx="2" fill="#2563EB" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="452" y="324" font-size="26" fill="#2563EB" font-weight="650" text-anchor="start" data-max-width="392">Public API / Authority</text>
+<text xml:space="preserve" x="452" y="362" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="392">VPC + Subnet  ·  leader + standby</text>
+<path d="M868 347 H925" fill="none" stroke="#2563EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-blue)"/>
+<rect x="936" y="282" width="556" height="130" rx="16" fill="#FFFFFF" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="936" y="300" width="5" height="94" rx="2" fill="#2563EB" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="960" y="324" font-size="26" fill="#2563EB" font-weight="650" text-anchor="start" data-max-width="508">每 location 的 NetworkBinding</text>
+<text xml:space="preserve" x="960" y="362" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="508">desired snapshot  +  discovery status</text>
+<path d="M550 440 V495 H466 V541" fill="none" stroke="#2563EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-blue)"/>
+<path d="M1370 440 V495 H1454 V541" fill="none" stroke="#2563EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-blue)"/>
+<path d="M530 541 V478 H620 V447" fill="none" stroke="#087F83" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 7" marker-end="url(#a-teal)"/>
+<path d="M1518 541 V478 H1440 V447" fill="none" stroke="#087F83" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 7" marker-end="url(#a-teal)"/>
+<text xml:space="preserve" x="64" y="478" font-size="21" fill="#2563EB" font-weight="400" text-anchor="start">實線：意圖／協調</text>
+<text xml:space="preserve" x="64" y="513" font-size="21" fill="#087F83" font-weight="400" text-anchor="start">虛線：discovery／狀態</text>
+<rect x="64" y="536" width="800" height="366" rx="16" fill="#FFFFFF" stroke="#D6E0EC" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="580" font-size="28" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="748">DC-A  ·  independent Infra cluster</text>
+<rect x="88" y="601" width="752" height="96" rx="16" fill="#E8F7F5" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="88" y="619" width="5" height="60" rx="2" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="112" y="643" font-size="27" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="704">Site Operator  ·  leader + standby</text>
+<text xml:space="preserve" x="112" y="677" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="700">Syncer → 本地 Binding → local reconciliation</text>
+<path d="M270 697 V733" fill="none" stroke="#7752C6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-purple)"/>
+<path d="M657 697 V733" fill="none" stroke="#AD6800" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-amber)"/>
+<rect x="88" y="740" width="365" height="136" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="88" y="758" width="5" height="100" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="112" y="782" font-size="27" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="317">Kube-OVN</text>
+<text xml:space="preserve" x="112" y="820" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="317">native CR → NB/SB → OVS</text>
+<rect x="475" y="740" width="365" height="136" rx="16" fill="#FFF4DD" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="475" y="758" width="5" height="100" rx="2" fill="#AD6800" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="499" y="782" font-size="27" fill="#AD6800" font-weight="650" text-anchor="start" data-max-width="317">多 Gateway / VPC</text>
+<text xml:space="preserve" x="499" y="820" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="317">FRR + transport runtime</text>
+<rect x="1056" y="536" width="800" height="366" rx="16" fill="#FFFFFF" stroke="#D6E0EC" stroke-width="1.5"/>
+<text xml:space="preserve" x="1080" y="580" font-size="28" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="748">DC-B  ·  independent Infra cluster</text>
+<rect x="1080" y="601" width="752" height="96" rx="16" fill="#E8F7F5" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1080" y="619" width="5" height="60" rx="2" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1104" y="643" font-size="27" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="704">Site Operator  ·  leader + standby</text>
+<text xml:space="preserve" x="1104" y="677" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="700">Syncer → 本地 Binding → local reconciliation</text>
+<path d="M1649 697 V733" fill="none" stroke="#7752C6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-purple)"/>
+<path d="M1262 697 V733" fill="none" stroke="#AD6800" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-amber)"/>
+<rect x="1467" y="740" width="365" height="136" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1467" y="758" width="5" height="100" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1491" y="782" font-size="27" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="317">Kube-OVN</text>
+<text xml:space="preserve" x="1491" y="820" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="317">native CR → NB/SB → OVS</text>
+<rect x="1080" y="740" width="365" height="136" rx="16" fill="#FFF4DD" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1080" y="758" width="5" height="100" rx="2" fill="#AD6800" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1104" y="782" font-size="27" fill="#AD6800" font-weight="650" text-anchor="start" data-max-width="317">多 Gateway / VPC</text>
+<text xml:space="preserve" x="1104" y="820" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="317">FRR + transport runtime</text>
+<path d="M840 840 H1070" fill="none" stroke="#AD6800" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-amber)" marker-start="url(#a-amber)"/>
+<text xml:space="preserve" x="961" y="750" font-size="21" fill="#AD6800" font-weight="400" text-anchor="middle">Gateway</text>
+<text xml:space="preserve" x="961" y="781" font-size="21" fill="#AD6800" font-weight="400" text-anchor="middle">跨站資料流</text>
+</svg>

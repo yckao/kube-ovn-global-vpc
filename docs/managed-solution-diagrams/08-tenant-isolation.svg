@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+<title id="title">CIDR 可以重疊，租戶的路由識別不能混在一起</title><desc id="desc">Project / VPC identity → native VPC → Gateway namespace / VRF → transport context</desc>
+<defs><style>text{font-family:"PingFang TC","Heiti TC","Noto Sans CJK TC",Arial,sans-serif}</style>
+<marker id="a-wire" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#74859D"/></marker>
+<marker id="a-blue" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#2563EB"/></marker>
+<marker id="a-teal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#087F83"/></marker>
+<marker id="a-purple" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#7752C6"/></marker>
+<marker id="a-amber" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#AD6800"/></marker>
+<marker id="a-red" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#B83D58"/></marker>
+</defs>
+<rect x="0" y="0" width="1920" height="1080" rx="0" fill="#F5F7FB" stroke="none" stroke-width="1.5"/>
+<rect x="64" y="32" width="7" height="23" rx="3" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="86" y="51" font-size="18" fill="#087F83" font-weight="700" text-anchor="start">GLOBAL VPC  /  ENGINEERING BRIEFING</text>
+<text xml:space="preserve" x="1856" y="51" font-size="18" fill="#53647C" font-weight="400" text-anchor="end">MANAGED v1alpha2 · v0.1.0</text>
+<text xml:space="preserve" x="64" y="114" font-size="44" fill="#162640" font-weight="700" text-anchor="start" data-max-width="1792">CIDR 可以重疊，租戶的路由識別不能混在一起</text>
+<text xml:space="preserve" x="64" y="158" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1792">Project / VPC identity → native VPC → Gateway namespace / VRF → transport context</text>
+<path d="M64 185 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="64" y="934" width="1792" height="64" rx="14" fill="#E8F7F5" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="974" font-size="26" fill="#087F83" font-weight="600" text-anchor="start" data-max-width="1744">不同 VPC 可使用相同 CIDR；同一 VPC 內各站 Subnet 不能重疊。</text>
+<path d="M64 1017 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text xml:space="preserve" x="64" y="1051" font-size="18" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1500">架構與操作圖解  ·  詳細操作與適用邊界請見同目錄講解</text>
+<text xml:space="preserve" x="1856" y="1051" font-size="19" fill="#53647C" font-weight="700" text-anchor="end">08 / 12</text>
+<rect x="64" y="254" width="1792" height="232" rx="16" fill="#FFF0F3" stroke="#D6E0EC" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="298" font-size="30" fill="#B83D58" font-weight="700" text-anchor="start">VPC Red</text>
+<rect x="290" y="284" width="408" height="169" rx="16" fill="#FFFFFF" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="290" y="302" width="5" height="133" rx="2" fill="#B83D58" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="314" y="326" font-size="26" fill="#B83D58" font-weight="650" text-anchor="start" data-max-width="360">DC-A native VPC</text>
+<text xml:space="preserve" x="314" y="364" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="360">10.60.1.0/24</text>
+<text xml:space="preserve" x="314" y="398" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="360">獨立 native resource identity</text>
+<rect x="776" y="284" width="368" height="169" rx="16" fill="#FFFFFF" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="776" y="302" width="5" height="133" rx="2" fill="#B83D58" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="800" y="326" font-size="26" fill="#B83D58" font-weight="650" text-anchor="start" data-max-width="320">Tenant Gateways</text>
+<text xml:space="preserve" x="800" y="364" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="320">network namespace / VRF</text>
+<text xml:space="preserve" x="800" y="398" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="320">獨立 key / VNI context</text>
+<rect x="1222" y="284" width="606" height="169" rx="16" fill="#FFFFFF" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1222" y="302" width="5" height="133" rx="2" fill="#B83D58" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1246" y="326" font-size="26" fill="#B83D58" font-weight="650" text-anchor="start" data-max-width="558">DC-B native VPC</text>
+<text xml:space="preserve" x="1246" y="364" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="558">10.61.1.0/24</text>
+<text xml:space="preserve" x="1246" y="398" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="558">同 CIDR 不代表同一個 route domain</text>
+<path d="M698 369 H766" fill="none" stroke="#B83D58" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-red)" marker-start="url(#a-red)"/>
+<path d="M1144 369 H1212" fill="none" stroke="#B83D58" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-red)" marker-start="url(#a-red)"/>
+<rect x="64" y="518" width="1792" height="232" rx="16" fill="#EDF3FF" stroke="#D6E0EC" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="562" font-size="30" fill="#2563EB" font-weight="700" text-anchor="start">VPC Blue</text>
+<rect x="290" y="548" width="408" height="169" rx="16" fill="#FFFFFF" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="290" y="566" width="5" height="133" rx="2" fill="#2563EB" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="314" y="590" font-size="26" fill="#2563EB" font-weight="650" text-anchor="start" data-max-width="360">DC-A native VPC</text>
+<text xml:space="preserve" x="314" y="628" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="360">10.60.1.0/24</text>
+<text xml:space="preserve" x="314" y="662" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="360">獨立 native resource identity</text>
+<rect x="776" y="548" width="368" height="169" rx="16" fill="#FFFFFF" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="776" y="566" width="5" height="133" rx="2" fill="#2563EB" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="800" y="590" font-size="26" fill="#2563EB" font-weight="650" text-anchor="start" data-max-width="320">Tenant Gateways</text>
+<text xml:space="preserve" x="800" y="628" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="320">network namespace / VRF</text>
+<text xml:space="preserve" x="800" y="662" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="320">獨立 key / VNI context</text>
+<rect x="1222" y="548" width="606" height="169" rx="16" fill="#FFFFFF" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1222" y="566" width="5" height="133" rx="2" fill="#2563EB" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1246" y="590" font-size="26" fill="#2563EB" font-weight="650" text-anchor="start" data-max-width="558">DC-B native VPC</text>
+<text xml:space="preserve" x="1246" y="628" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="558">10.61.1.0/24</text>
+<text xml:space="preserve" x="1246" y="662" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="558">同 CIDR 不代表同一個 route domain</text>
+<path d="M698 633 H766" fill="none" stroke="#2563EB" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-blue)" marker-start="url(#a-blue)"/>
+<path d="M1144 633 H1212" fill="none" stroke="#2563EB" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-blue)" marker-start="url(#a-blue)"/>
+<rect x="768" y="473" width="386" height="38" rx="19" fill="#F2EDFC" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="961.0" y="499" font-size="21" fill="#7752C6" font-weight="600" text-anchor="middle" data-max-width="366">Red 與 Blue 不匯入彼此路由</text>
+<rect x="64" y="784" width="864" height="108" rx="16" fill="#E8F7F5" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="64" y="802" width="5" height="72" rx="2" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="826" font-size="25" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="816">控制面隔離</text>
+<text xml:space="preserve" x="88" y="864" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="816">租戶只操作 public API；Binding / native resources 由平台管理</text>
+<rect x="960" y="784" width="896" height="108" rx="16" fill="#E8F7F5" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="960" y="802" width="5" height="72" rx="2" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="984" y="826" font-size="25" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="848">配置身分隔離</text>
+<text xml:space="preserve" x="984" y="864" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="848">UID / allocation anchors 防止遺失配置後意外重用舊識別</text>
+</svg>

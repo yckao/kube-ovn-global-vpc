@@ -1,0 +1,24 @@
+# Bind this role to a dedicated per-Infra ServiceAccount. Do not grant the
+# authority ServiceAccount credentials across clusters implicitly.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: global-vpc-infra-adapter
+rules:
+  - apiGroups: [kubeovn.io]
+    resources: [vpcs, subnets]
+    verbs: [get, create, update, delete]
+  - apiGroups: ['']
+    resources: [namespaces]
+    resourceNames: [kube-system]
+    verbs: [get]
+  - apiGroups: [apps]
+    resources: [replicasets]
+    verbs: [list]
+  - apiGroups: ['']
+    resources: [pods]
+    verbs: [list]
+# Dedicated native IC Deployment get/update should be a namespaced Role with
+# resourceNames set to the registered deployment, as shown in docs/controller.md.
+# OVN command access is a separate administrator-owned connection, preferably
+# direct TLS; kubectl exec requires additional narrowly scoped pod permissions.

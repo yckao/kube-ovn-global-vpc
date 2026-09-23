@@ -1,0 +1,22 @@
+# Limit this controller build context to its source and runtime dependencies.
+# In particular, never send .private, artifacts, .git, or local kubeconfigs.
+**
+!go.mod
+!go.sum
+!api/
+!api/**
+!internal/
+!internal/**
+!cmd/
+!cmd/site-vpc-controller/
+!cmd/site-vpc-controller/**
+!scripts/
+!scripts/site_gateway.py
+!scripts/transport_profiles.py
+!gateway/
+!gateway/gateway.py
+!gateway/overlay.py
+!gateway/evpn.py
+!build/
+!build/site-controller.Dockerfile
+!build/site-controller.Dockerfile.dockerignore

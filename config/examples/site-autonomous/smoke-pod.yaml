@@ -1,0 +1,40 @@
+# Render the workload Subnet annotation separately for each site after SiteVpc
+# becomes ready. Never use the protected transit Subnet (st-*).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: global-vpc-smoke
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tenant-red-smoke
+  namespace: global-vpc-smoke
+  annotations:
+    ovn.kubernetes.io/logical_switch: REPLACE-WITH-LOCAL-WORKLOAD-SUBNET
+spec:
+  automountServiceAccountToken: false
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 65532
+    runAsGroup: 65532
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+    - name: http
+      image: busybox:1.37.0
+      command:
+        - sh
+        - -c
+        - mkdir -p /tmp/www; hostname > /tmp/www/index.html; exec httpd -f -p 8080 -h /tmp/www
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: [ALL]
+      resources:
+        requests: {cpu: 10m, memory: 16Mi}
+        limits: {memory: 64Mi}
+      readinessProbe:
+        # Run inside the tenant namespace; do not require a host route to its IP.
+        exec:
+          command: [wget, -T, '2', -q, -O, /dev/null, 'http://127.0.0.1:8080/']

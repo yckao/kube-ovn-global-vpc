@@ -1,0 +1,62 @@
+# Apply to the authority cluster, not to an Infra cluster.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: global-vpc-dc-a
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: global-vpc-dc-b
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: binding-reporter
+  namespace: global-vpc-dc-a
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: binding-reporter
+  namespace: global-vpc-dc-b
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: platform-vpc-binding-reporter
+rules:
+  - apiGroups: [platform.globalvpc.io]
+    resources: [networkbindings]
+    verbs: [get, list, watch]
+  - apiGroups: [platform.globalvpc.io]
+    resources: [networkbindings/status]
+    verbs: [get, update, patch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: binding-reporter
+  namespace: global-vpc-dc-a
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: platform-vpc-binding-reporter
+subjects:
+  - kind: ServiceAccount
+    name: binding-reporter
+    namespace: global-vpc-dc-a
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: binding-reporter
+  namespace: global-vpc-dc-b
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: platform-vpc-binding-reporter
+subjects:
+  - kind: ServiceAccount
+    name: binding-reporter
+    namespace: global-vpc-dc-b

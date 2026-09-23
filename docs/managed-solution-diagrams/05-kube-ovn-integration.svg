@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+<title id="title">Kube-OVN 維持原生網路設定的控制權</title><desc id="desc">Global VPC 透過 native CR 宣告需求；Kube-OVN extension 完成目的路由、ECMP、BFD 與回報</desc>
+<defs><style>text{font-family:"PingFang TC","Heiti TC","Noto Sans CJK TC",Arial,sans-serif}</style>
+<marker id="a-wire" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#74859D"/></marker>
+<marker id="a-blue" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#2563EB"/></marker>
+<marker id="a-teal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#087F83"/></marker>
+<marker id="a-purple" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#7752C6"/></marker>
+<marker id="a-amber" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#AD6800"/></marker>
+<marker id="a-red" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#B83D58"/></marker>
+</defs>
+<rect x="0" y="0" width="1920" height="1080" rx="0" fill="#F5F7FB" stroke="none" stroke-width="1.5"/>
+<rect x="64" y="32" width="7" height="23" rx="3" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="86" y="51" font-size="18" fill="#087F83" font-weight="700" text-anchor="start">GLOBAL VPC  /  ENGINEERING BRIEFING</text>
+<text xml:space="preserve" x="1856" y="51" font-size="18" fill="#53647C" font-weight="400" text-anchor="end">MANAGED v1alpha2 · v0.1.0</text>
+<text xml:space="preserve" x="64" y="114" font-size="44" fill="#162640" font-weight="700" text-anchor="start" data-max-width="1792">Kube-OVN 維持原生網路設定的控制權</text>
+<text xml:space="preserve" x="64" y="158" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1792">Global VPC 透過 native CR 宣告需求；Kube-OVN extension 完成目的路由、ECMP、BFD 與回報</text>
+<path d="M64 185 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="64" y="934" width="1792" height="64" rx="14" fill="#E8F7F5" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="974" font-size="26" fill="#087F83" font-weight="600" text-anchor="start" data-max-width="1744">不讓兩個 Controller 搶寫同一組 OVN 路由：Global VPC 管意圖，Kube-OVN 管 native OVN 設定。</text>
+<path d="M64 1017 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text xml:space="preserve" x="64" y="1051" font-size="18" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1500">架構與操作圖解  ·  詳細操作與適用邊界請見同目錄講解</text>
+<text xml:space="preserve" x="1856" y="1051" font-size="19" fill="#53647C" font-weight="700" text-anchor="end">05 / 12</text>
+<rect x="64" y="265" width="390" height="284" rx="16" fill="#E8F7F5" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="64" y="283" width="5" height="248" rx="2" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="307" font-size="26" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="342">Local Site Operator</text>
+<text xml:space="preserve" x="88" y="345" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="342">讀 local NetworkBinding</text>
+<text xml:space="preserve" x="88" y="379" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="342">建立 native Vpc / Subnet</text>
+<text xml:space="preserve" x="88" y="413" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="342">寫入 bfdPort</text>
+<text xml:space="preserve" x="88" y="447" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="342">寫入 destinationRoutes</text>
+<path d="M454 401 H503" fill="none" stroke="#087F83" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-teal)"/>
+<rect x="516" y="265" width="422" height="284" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="516" y="283" width="5" height="248" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="540" y="307" font-size="27" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="374">Native Kube-OVN</text>
+<text xml:space="preserve" x="540" y="345" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="374">source-matched extension</text>
+<text xml:space="preserve" x="540" y="379" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="374">檢查 ownership / routes</text>
+<text xml:space="preserve" x="540" y="413" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="374">交易式更新路由與 BFD</text>
+<text xml:space="preserve" x="540" y="447" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="374">回報 generation + hash</text>
+<path d="M938 401 H987" fill="none" stroke="#7752C6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-purple)"/>
+<rect x="1000" y="265" width="340" height="284" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1000" y="283" width="5" height="248" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1024" y="307" font-size="27" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="292">OVN pipeline</text>
+<text xml:space="preserve" x="1024" y="345" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="292">NB：目的路由與 BFD</text>
+<text xml:space="preserve" x="1024" y="379" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="292">northd</text>
+<text xml:space="preserve" x="1024" y="413" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="292">SB：logical flows</text>
+<text xml:space="preserve" x="1024" y="447" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="292">ovn-controller</text>
+<path d="M1340 401 H1389" fill="none" stroke="#7752C6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-purple)"/>
+<rect x="1402" y="265" width="454" height="284" rx="16" fill="#FFF4DD" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1402" y="283" width="5" height="248" rx="2" fill="#AD6800" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1426" y="307" font-size="26" fill="#AD6800" font-weight="650" text-anchor="start" data-max-width="406">Host OVS dataplane</text>
+<text xml:space="preserve" x="1426" y="345" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="406">Endpoint → VPC router</text>
+<text xml:space="preserve" x="1426" y="379" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="406">ECMP + BFD next-hops</text>
+<text xml:space="preserve" x="1426" y="413" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="406">指向 local Gateways</text>
+<text xml:space="preserve" x="1426" y="447" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="406">由 Gateways 封裝跨站轉送</text>
+<path d="M727 549 V606 H259 V558" fill="none" stroke="#087F83" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 7" marker-end="url(#a-teal)"/>
+<text xml:space="preserve" x="832" y="615" font-size="23" fill="#087F83" font-weight="400" text-anchor="start" data-max-width="1020">ACK：相應 generation / hash 已被 native controller 接受</text>
+<rect x="64" y="700" width="552" height="179" rx="16" fill="#EDF3FF" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="64" y="718" width="5" height="143" rx="2" fill="#2563EB" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="742" font-size="27" fill="#2563EB" font-weight="650" text-anchor="start" data-max-width="504">平台 IPAM / 管理者</text>
+<text xml:space="preserve" x="88" y="780" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="504">保留 workload / transit / control pools</text>
+<text xml:space="preserve" x="88" y="814" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="504">設定 locations 與 project 授權</text>
+<rect x="648" y="700" width="568" height="179" rx="16" fill="#E8F7F5" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="648" y="718" width="5" height="143" rx="2" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="672" y="742" font-size="27" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="520">Global VPC allocator</text>
+<text xml:space="preserve" x="672" y="780" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">networkID / ASN / VNI / member 位址</text>
+<text xml:space="preserve" x="672" y="814" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">保留 allocation receipts 與 anchors</text>
+<rect x="1248" y="700" width="608" height="179" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1248" y="718" width="5" height="143" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1272" y="742" font-size="27" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="560">Kube-OVN native IPAM</text>
+<text xml:space="preserve" x="1272" y="780" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="560">原生 Subnet 與 endpoint IP 配置</text>
+<text xml:space="preserve" x="1272" y="814" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="560">維持原有 OVN / CNI 協調流程</text>
+</svg>

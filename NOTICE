@@ -1,0 +1,11 @@
+Global VPC Controller
+Copyright 2026 Global VPC Controller contributors
+
+This project includes integration patches and companion code for Kube-OVN.
+Kube-OVN is Copyright The Kube-OVN Authors and is distributed under the
+Apache License, Version 2.0. Source versions and changes are identified under
+integration/kube-ovn/. Preserve upstream notices when building modified sources.
+
+This repository's Apache-2.0 license does not replace the licenses of external
+dependencies, operating-system packages, container images or separately
+distributed programs. See THIRD_PARTY_NOTICES.md.

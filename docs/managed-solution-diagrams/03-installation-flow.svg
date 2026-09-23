@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+<title id="title">安裝分成平台一次性設定與使用者建網</title><desc id="desc">管理端與每個 Infra 分開安裝；先準備 native extension 與基礎網路，再驗證實際封包</desc>
+<defs><style>text{font-family:"PingFang TC","Heiti TC","Noto Sans CJK TC",Arial,sans-serif}</style>
+<marker id="a-wire" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#74859D"/></marker>
+<marker id="a-blue" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#2563EB"/></marker>
+<marker id="a-teal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#087F83"/></marker>
+<marker id="a-purple" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#7752C6"/></marker>
+<marker id="a-amber" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#AD6800"/></marker>
+<marker id="a-red" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#B83D58"/></marker>
+</defs>
+<rect x="0" y="0" width="1920" height="1080" rx="0" fill="#F5F7FB" stroke="none" stroke-width="1.5"/>
+<rect x="64" y="32" width="7" height="23" rx="3" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="86" y="51" font-size="18" fill="#087F83" font-weight="700" text-anchor="start">GLOBAL VPC  /  ENGINEERING BRIEFING</text>
+<text xml:space="preserve" x="1856" y="51" font-size="18" fill="#53647C" font-weight="400" text-anchor="end">MANAGED v1alpha2 · v0.1.0</text>
+<text xml:space="preserve" x="64" y="114" font-size="44" fill="#162640" font-weight="700" text-anchor="start" data-max-width="1792">安裝分成平台一次性設定與使用者建網</text>
+<text xml:space="preserve" x="64" y="158" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1792">管理端與每個 Infra 分開安裝；先準備 native extension 與基礎網路，再驗證實際封包</text>
+<path d="M64 185 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="64" y="934" width="1792" height="64" rx="14" fill="#E8F7F5" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="974" font-size="26" fill="#087F83" font-weight="600" text-anchor="start" data-max-width="1744">部署成功 ≠ 網路可用；最後必須取得 native ACK、Gateway 就緒，以及雙向封包證據。</text>
+<path d="M64 1017 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text xml:space="preserve" x="64" y="1051" font-size="18" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1500">架構與操作圖解  ·  詳細操作與適用邊界請見同目錄講解</text>
+<text xml:space="preserve" x="1856" y="1051" font-size="19" fill="#53647C" font-weight="700" text-anchor="end">03 / 12</text>
+<rect x="64" y="245" width="568" height="240" rx="16" fill="#EDF3FF" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="64" y="263" width="5" height="204" rx="2" fill="#2563EB" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="287" font-size="27" fill="#2563EB" font-weight="650" text-anchor="start" data-max-width="520">1  準備基礎設施</text>
+<text xml:space="preserve" x="88" y="325" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">HA management API + 各 Infra</text>
+<text xml:space="preserve" x="88" y="359" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">每站至少 2 個 Gateway nodes</text>
+<text xml:space="preserve" x="88" y="393" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">IPAM pools / UDP / underlay MTU</text>
+<rect x="676" y="245" width="568" height="240" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="676" y="263" width="5" height="204" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="700" y="287" font-size="27" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="520">2  準備映像與 Native 擴充</text>
+<text xml:space="preserve" x="700" y="325" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">Controller / Gateway image digest</text>
+<text xml:space="preserve" x="700" y="359" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">核對 Kube-OVN source version</text>
+<text xml:space="preserve" x="700" y="393" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">每站安裝 extension binary + schema</text>
+<rect x="1288" y="245" width="568" height="240" rx="16" fill="#EDF3FF" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1288" y="263" width="5" height="204" rx="2" fill="#2563EB" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1312" y="287" font-size="27" fill="#2563EB" font-weight="650" text-anchor="start" data-max-width="520">3  安裝管理服務</text>
+<text xml:space="preserve" x="1312" y="325" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">VPC / Subnet / Binding CRDs</text>
+<text xml:space="preserve" x="1312" y="359" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">RBAC + platform.json</text>
+<text xml:space="preserve" x="1312" y="393" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">Authority：2 replicas / 1 leader</text>
+<rect x="1288" y="570" width="568" height="240" rx="16" fill="#E8F7F5" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1288" y="588" width="5" height="204" rx="2" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1312" y="612" font-size="27" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="520">4  安裝每站 Operator</text>
+<text xml:space="preserve" x="1312" y="650" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">clusterUID + node labels + pools</text>
+<text xml:space="preserve" x="1312" y="684" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">location-scoped access + site.json</text>
+<text xml:space="preserve" x="1312" y="718" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">Binding CRD + Site Operator</text>
+<rect x="676" y="570" width="568" height="240" rx="16" fill="#E8F7F5" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="676" y="588" width="5" height="204" rx="2" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="700" y="612" font-size="27" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="520">5  使用者建立網路</text>
+<text xml:space="preserve" x="700" y="650" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">提交 VPC + 各 location Subnet</text>
+<text xml:space="preserve" x="700" y="684" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">解析 nativeSubnetName 接網</text>
+<text xml:space="preserve" x="700" y="718" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">等待 native / Gateway 狀態</text>
+<rect x="64" y="570" width="568" height="240" rx="16" fill="#FFF4DD" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="64" y="588" width="5" height="204" rx="2" fill="#AD6800" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="612" font-size="27" fill="#AD6800" font-weight="650" text-anchor="start" data-max-width="520">6  封包與權責驗證</text>
+<text xml:space="preserve" x="88" y="650" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">雙向 ICMP / HTTP / TCP</text>
+<text xml:space="preserve" x="88" y="684" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">確認來源位址與租戶隔離</text>
+<text xml:space="preserve" x="88" y="718" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="520">留存 status、route、packet 證據</text>
+<path d="M632 362 H666" fill="none" stroke="#2563EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-blue)"/>
+<path d="M1244 362 H1278" fill="none" stroke="#2563EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-blue)"/>
+<path d="M1572 485 V558" fill="none" stroke="#2563EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-blue)"/>
+<path d="M1288 690 H1254" fill="none" stroke="#087F83" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-teal)"/>
+<path d="M676 690 H642" fill="none" stroke="#087F83" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-teal)"/>
+<text xml:space="preserve" x="64" y="881" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1792">安裝輸入：platform.json / site.json  ·  租戶輸入：network.yaml  ·  完整指令：docs/managed-quickstart.md</text>
+</svg>

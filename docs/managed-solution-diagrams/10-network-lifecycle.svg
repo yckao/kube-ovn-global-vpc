@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+<title id="title">新增站點靠 Subnet，移除依序撤回依賴</title><desc id="desc">使用者操作宣告式資源；平台透過 ownership、ACK 與 finalizer 維持生命週期一致性</desc>
+<defs><style>text{font-family:"PingFang TC","Heiti TC","Noto Sans CJK TC",Arial,sans-serif}</style>
+<marker id="a-wire" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#74859D"/></marker>
+<marker id="a-blue" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#2563EB"/></marker>
+<marker id="a-teal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#087F83"/></marker>
+<marker id="a-purple" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#7752C6"/></marker>
+<marker id="a-amber" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#AD6800"/></marker>
+<marker id="a-red" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#B83D58"/></marker>
+</defs>
+<rect x="0" y="0" width="1920" height="1080" rx="0" fill="#F5F7FB" stroke="none" stroke-width="1.5"/>
+<rect x="64" y="32" width="7" height="23" rx="3" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="86" y="51" font-size="18" fill="#087F83" font-weight="700" text-anchor="start">GLOBAL VPC  /  ENGINEERING BRIEFING</text>
+<text xml:space="preserve" x="1856" y="51" font-size="18" fill="#53647C" font-weight="400" text-anchor="end">MANAGED v1alpha2 · v0.1.0</text>
+<text xml:space="preserve" x="64" y="114" font-size="44" fill="#162640" font-weight="700" text-anchor="start" data-max-width="1792">新增站點靠 Subnet，移除依序撤回依賴</text>
+<text xml:space="preserve" x="64" y="158" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1792">使用者操作宣告式資源；平台透過 ownership、ACK 與 finalizer 維持生命週期一致性</text>
+<path d="M64 185 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="64" y="934" width="1792" height="64" rx="14" fill="#E8F7F5" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="974" font-size="26" fill="#087F83" font-weight="600" text-anchor="start" data-max-width="1744">不以 API 暫時看不到資源作為刪除訊號；也不靠刪除配置紀錄或強制清掉 finalizer 來復原。</text>
+<path d="M64 1017 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text xml:space="preserve" x="64" y="1051" font-size="18" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1500">架構與操作圖解  ·  詳細操作與適用邊界請見同目錄講解</text>
+<text xml:space="preserve" x="1856" y="1051" font-size="19" fill="#53647C" font-weight="700" text-anchor="end">10 / 12</text>
+<rect x="64" y="226" width="240" height="38" rx="19" fill="#E8F7F5" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="184.0" y="252" font-size="23" fill="#087F83" font-weight="600" text-anchor="middle" data-max-width="220">建立 / 加入 site</text>
+<rect x="64" y="292" width="424" height="148" rx="16" fill="#E8F7F5" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="64" y="310" width="5" height="112" rx="2" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="334" font-size="26" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="376">提交 VPC / Subnet</text>
+<text xml:space="preserve" x="88" y="372" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="376">project + location + CIDR</text>
+<path d="M488 366 H509" fill="none" stroke="#087F83" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-teal)"/>
+<rect x="520" y="292" width="424" height="148" rx="16" fill="#E8F7F5" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="520" y="310" width="5" height="112" rx="2" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="544" y="334" font-size="26" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="376">生成 Binding</text>
+<text xml:space="preserve" x="544" y="372" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="376">prefix admission + discovery</text>
+<path d="M944 366 H965" fill="none" stroke="#087F83" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-teal)"/>
+<rect x="976" y="292" width="424" height="148" rx="16" fill="#E8F7F5" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="976" y="310" width="5" height="112" rx="2" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1000" y="334" font-size="26" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="376">套用本地配置</text>
+<text xml:space="preserve" x="1000" y="372" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="376">native ACK + Gateway runtime</text>
+<path d="M1400 366 H1421" fill="none" stroke="#087F83" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-teal)"/>
+<rect x="1432" y="292" width="424" height="148" rx="16" fill="#E8F7F5" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1432" y="310" width="5" height="112" rx="2" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1456" y="334" font-size="26" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="376">Ready + 封包驗證</text>
+<text xml:space="preserve" x="1456" y="372" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="376">再交付 workload attachment</text>
+<rect x="64" y="494" width="240" height="38" rx="19" fill="#F2EDFC" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="184.0" y="520" font-size="23" fill="#7752C6" font-weight="600" text-anchor="middle" data-max-width="220">移除 / 退役</text>
+<rect x="64" y="560" width="424" height="148" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="64" y="578" width="5" height="112" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="602" font-size="26" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="376">移除 workloads</text>
+<text xml:space="preserve" x="88" y="640" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="376">解除 endpoint 使用關係</text>
+<path d="M488 634 H509" fill="none" stroke="#7752C6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-purple)"/>
+<rect x="520" y="560" width="424" height="148" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="520" y="578" width="5" height="112" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="544" y="602" font-size="26" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="376">刪除 Subnet</text>
+<text xml:space="preserve" x="544" y="640" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="376">in-use guard / withdrawal</text>
+<path d="M944 634 H965" fill="none" stroke="#7752C6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-purple)"/>
+<rect x="976" y="560" width="424" height="148" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="976" y="578" width="5" height="112" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1000" y="602" font-size="26" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="376">等待清理與 ACK</text>
+<text xml:space="preserve" x="1000" y="640" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="376">native routes / peer runtime</text>
+<path d="M1400 634 H1421" fill="none" stroke="#7752C6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-purple)"/>
+<rect x="1432" y="560" width="424" height="148" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1432" y="578" width="5" height="112" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1456" y="602" font-size="26" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="376">最後刪除 VPC</text>
+<text xml:space="preserve" x="1456" y="640" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="376">所有子資源先完成退役</text>
+<rect x="64" y="762" width="864" height="132" rx="16" fill="#EDF3FF" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="64" y="780" width="5" height="96" rx="2" fill="#2563EB" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="804" font-size="26" fill="#2563EB" font-weight="650" text-anchor="start" data-max-width="816">一般操作保留的紀錄</text>
+<text xml:space="preserve" x="88" y="842" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="816">allocation receipts / anchors  ·  防止配置身分意外重用</text>
+<rect x="960" y="762" width="896" height="132" rx="16" fill="#FFF4DD" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="960" y="780" width="5" height="96" rx="2" fill="#AD6800" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="984" y="804" font-size="26" fill="#AD6800" font-weight="650" text-anchor="start" data-max-width="848">仍需管理者處理的變更</text>
+<text xml:space="preserve" x="984" y="842" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="848">node UID / endpoint replacement  ·  Gateway 數量  ·  lost registry</text>
+</svg>

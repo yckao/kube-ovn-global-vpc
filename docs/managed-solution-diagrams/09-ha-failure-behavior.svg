@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+<title id="title">HA 保住可用路徑，也明確處理所有路徑失效</title><desc id="desc">控制面與資料面分開看；有存活路徑時收斂，沒有路徑時對遠端前綴 fail closed</desc>
+<defs><style>text{font-family:"PingFang TC","Heiti TC","Noto Sans CJK TC",Arial,sans-serif}</style>
+<marker id="a-wire" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#74859D"/></marker>
+<marker id="a-blue" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#2563EB"/></marker>
+<marker id="a-teal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#087F83"/></marker>
+<marker id="a-purple" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#7752C6"/></marker>
+<marker id="a-amber" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#AD6800"/></marker>
+<marker id="a-red" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#B83D58"/></marker>
+</defs>
+<rect x="0" y="0" width="1920" height="1080" rx="0" fill="#F5F7FB" stroke="none" stroke-width="1.5"/>
+<rect x="64" y="32" width="7" height="23" rx="3" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="86" y="51" font-size="18" fill="#087F83" font-weight="700" text-anchor="start">GLOBAL VPC  /  ENGINEERING BRIEFING</text>
+<text xml:space="preserve" x="1856" y="51" font-size="18" fill="#53647C" font-weight="400" text-anchor="end">MANAGED v1alpha2 · v0.1.0</text>
+<text xml:space="preserve" x="64" y="114" font-size="44" fill="#162640" font-weight="700" text-anchor="start" data-max-width="1792">HA 保住可用路徑，也明確處理所有路徑失效</text>
+<text xml:space="preserve" x="64" y="158" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1792">控制面與資料面分開看；有存活路徑時收斂，沒有路徑時對遠端前綴 fail closed</text>
+<path d="M64 185 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="64" y="934" width="1792" height="64" rx="14" fill="#E8F7F5" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="974" font-size="26" fill="#087F83" font-weight="600" text-anchor="start" data-max-width="1744">HA 不代表零掉包；須分別量測收斂、封包損失、恢復與租戶隔離。</text>
+<path d="M64 1017 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text xml:space="preserve" x="64" y="1051" font-size="18" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1500">架構與操作圖解  ·  詳細操作與適用邊界請見同目錄講解</text>
+<text xml:space="preserve" x="1856" y="1051" font-size="19" fill="#53647C" font-weight="700" text-anchor="end">09 / 12</text>
+<rect x="64" y="248" width="568" height="273" rx="16" fill="#E8F7F5" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="64" y="266" width="5" height="237" rx="2" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="290" font-size="28" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="520">正常：2 個 Gateway</text>
+<text xml:space="preserve" x="348" y="356" font-size="34" fill="#087F83" font-weight="650" text-anchor="middle" data-max-width="500">G1  ✓       G2  ✓</text>
+<text xml:space="preserve" x="88" y="433" font-size="24" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">remote child prefixes → ECMP</text>
+<text xml:space="preserve" x="88" y="476" font-size="24" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">parent prefix → discard</text>
+<rect x="676" y="248" width="568" height="273" rx="16" fill="#FFF4DD" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="676" y="266" width="5" height="237" rx="2" fill="#AD6800" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="700" y="290" font-size="28" fill="#AD6800" font-weight="650" text-anchor="start" data-max-width="520">單一成員故障</text>
+<text xml:space="preserve" x="960" y="356" font-size="34" fill="#AD6800" font-weight="650" text-anchor="middle" data-max-width="500">G1  ×       G2  ✓</text>
+<text xml:space="preserve" x="700" y="433" font-size="24" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">BFD / FRR 收斂至存活路徑</text>
+<text xml:space="preserve" x="700" y="476" font-size="24" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">可能有短暫掉包與 TCP 重傳</text>
+<rect x="1288" y="248" width="568" height="273" rx="16" fill="#FFF0F3" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1288" y="266" width="5" height="237" rx="2" fill="#B83D58" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1312" y="290" font-size="28" fill="#B83D58" font-weight="650" text-anchor="start" data-max-width="520">本地 BFD next-hop 全失效</text>
+<text xml:space="preserve" x="1572" y="356" font-size="34" fill="#B83D58" font-weight="650" text-anchor="middle" data-max-width="500">G1  ×       G2  ×</text>
+<text xml:space="preserve" x="1312" y="433" font-size="24" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">OVN parent prefix → discard</text>
+<text xml:space="preserve" x="1312" y="476" font-size="24" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">不落入 default / NAT 出口</text>
+<path d="M632 371 H666" fill="none" stroke="#AD6800" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-amber)"/>
+<path d="M1244 371 H1278" fill="none" stroke="#B83D58" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-red)"/>
+<rect x="64" y="565" width="1792" height="322" rx="16" fill="#FFFFFF" stroke="#D6E0EC" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="611" font-size="25" fill="#162640" font-weight="650" text-anchor="start">故障範圍</text>
+<text xml:space="preserve" x="590" y="611" font-size="25" fill="#162640" font-weight="650" text-anchor="start">既有資料面</text>
+<text xml:space="preserve" x="1134" y="611" font-size="25" fill="#162640" font-weight="650" text-anchor="start">新變更 / 適用邊界</text>
+<path d="M88 635 H1832" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text xml:space="preserve" x="88" y="666" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="464">Authority / 管理端失聯</text>
+<text xml:space="preserve" x="590" y="666" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="502">本地已接受狀態持續轉送</text>
+<text xml:space="preserve" x="1134" y="666" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="698">新意圖與 peer 更新等待恢復</text>
+<path d="M88 692 H1832" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text xml:space="preserve" x="88" y="723" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="464">Site / native controller 停止</text>
+<text xml:space="preserve" x="590" y="723" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="502">依賴既有 OVN 狀態轉送</text>
+<text xml:space="preserve" x="1134" y="723" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="698">其他 OVN 元件仍在線；新配置受阻</text>
+<path d="M88 749 H1832" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text xml:space="preserve" x="88" y="780" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="464">所有 Gateway / WAN 不可用</text>
+<text xml:space="preserve" x="590" y="780" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="502">遠端不可達；本地流量保留</text>
+<text xml:space="preserve" x="1134" y="780" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="698">恢復可用路徑後再收斂</text>
+<path d="M88 806 H1832" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text xml:space="preserve" x="88" y="837" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="464">實體 NIC / host / site 失效</text>
+<text xml:space="preserve" x="590" y="837" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="502">須依實際部署單獨驗證</text>
+<text xml:space="preserve" x="1134" y="837" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="698">需多實體故障域與後續驗證</text>
+</svg>

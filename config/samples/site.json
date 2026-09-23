@@ -1,0 +1,27 @@
+{
+  "siteID": "site-a",
+  "attachmentID": "infra-a",
+  "cluster": {
+    "name": "infra-a",
+    "uid": "REPLACE-WITH-KUBE-SYSTEM-UID",
+    "kubeconfig": "/etc/global-vpc/local-infra.kubeconfig",
+    "nbCommand": ["ovn-nbctl", "--db=unix:/run/ovn/ovnnb_db.sock"],
+    "sbCommand": ["ovn-sbctl", "--db=unix:/run/ovn/ovnsb_db.sock"]
+  },
+  "gatewayCommand": ["python3", "/opt/global-vpc/scripts/site_gateway.py", "--config", "/etc/global-vpc/gateway.json"],
+  "gatewayRevision": "registration-ha-v2",
+  "bfdTransactionCommand": ["ovsdb-client", "--timeout=15", "transact", "unix:/run/ovn/ovnnb_db.sock"],
+  "grants": [
+    {
+      "globalVpcID": "tenant-red",
+      "delegatedPrefixes": ["10.241.0.0/16"],
+      "transitCIDR": "10.240.255.0/29",
+      "routerIP": "10.240.255.1",
+      "gateways": [
+        {"id": "gw-1", "ip": "10.240.255.2"},
+        {"id": "gw-2", "ip": "10.240.255.3"}
+      ],
+      "bfd": {"sourceIP": "10.254.120.1", "minRX": 300, "minTX": 300, "multiplier": 3}
+    }
+  ]
+}

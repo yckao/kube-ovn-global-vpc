@@ -1,0 +1,18 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    # Kubernetes libraries must be reviewed as a compatible set.
+    groups:
+      kubernetes:
+        patterns:
+          - k8s.io/*
+          - sigs.k8s.io/controller-runtime

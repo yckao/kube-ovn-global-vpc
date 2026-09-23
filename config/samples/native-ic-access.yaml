@@ -1,0 +1,11 @@
+# Apply in each Infra cluster and bind to its dedicated adapter ServiceAccount.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: global-vpc-system
+  name: global-vpc-native-ic-lifecycle
+rules:
+  - apiGroups: [apps]
+    resources: [deployments]
+    resourceNames: [native-ovn-ic]
+    verbs: [get, update]

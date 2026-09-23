@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+<title id="title">跨站封包走 Gateway，控制服務不在路徑上</title><desc id="desc">每個 VPC、每個 site 部署多個 Gateway；底層只需路由 outer endpoint，不交換 tenant routes</desc>
+<defs><style>text{font-family:"PingFang TC","Heiti TC","Noto Sans CJK TC",Arial,sans-serif}</style>
+<marker id="a-wire" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#74859D"/></marker>
+<marker id="a-blue" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#2563EB"/></marker>
+<marker id="a-teal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#087F83"/></marker>
+<marker id="a-purple" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#7752C6"/></marker>
+<marker id="a-amber" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#AD6800"/></marker>
+<marker id="a-red" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#B83D58"/></marker>
+</defs>
+<rect x="0" y="0" width="1920" height="1080" rx="0" fill="#F5F7FB" stroke="none" stroke-width="1.5"/>
+<rect x="64" y="32" width="7" height="23" rx="3" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="86" y="51" font-size="18" fill="#087F83" font-weight="700" text-anchor="start">GLOBAL VPC  /  ENGINEERING BRIEFING</text>
+<text xml:space="preserve" x="1856" y="51" font-size="18" fill="#53647C" font-weight="400" text-anchor="end">MANAGED v1alpha2 · v0.1.0</text>
+<text xml:space="preserve" x="64" y="114" font-size="44" fill="#162640" font-weight="700" text-anchor="start" data-max-width="1792">跨站封包走 Gateway，控制服務不在路徑上</text>
+<text xml:space="preserve" x="64" y="158" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1792">每個 VPC、每個 site 部署多個 Gateway；底層只需路由 outer endpoint，不交換 tenant routes</text>
+<path d="M64 185 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="64" y="934" width="1792" height="64" rx="14" fill="#E8F7F5" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="974" font-size="26" fill="#087F83" font-weight="600" text-anchor="start" data-max-width="1744">正常流量可使用多個 Gateway；ECMP 分流以 flow 為單位，單一連線不等於聚合所有 NIC 頻寬。</text>
+<path d="M64 1017 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text xml:space="preserve" x="64" y="1051" font-size="18" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1500">架構與操作圖解  ·  詳細操作與適用邊界請見同目錄講解</text>
+<text xml:space="preserve" x="1856" y="1051" font-size="19" fill="#53647C" font-weight="700" text-anchor="end">06 / 12</text>
+<rect x="64" y="247" width="656" height="635" rx="16" fill="#FFFFFF" stroke="#D6E0EC" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="290" font-size="30" fill="#087F83" font-weight="700" text-anchor="start">DC-A</text>
+<text xml:space="preserve" x="694" y="290" font-size="23" fill="#7752C6" font-weight="400" text-anchor="end">native VPC</text>
+<rect x="96" y="325" width="592" height="112" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="96" y="343" width="5" height="76" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="120" y="367" font-size="26" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="544">Endpoint / Subnet</text>
+<text xml:space="preserve" x="120" y="405" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="544">10.60.1.0/24</text>
+<path d="M392 437 V485" fill="none" stroke="#AD6800" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-amber)" marker-start="url(#a-amber)"/>
+<rect x="96" y="485" width="592" height="130" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="96" y="503" width="5" height="94" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="120" y="527" font-size="26" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="544">OVN VPC logical router</text>
+<text xml:space="preserve" x="120" y="565" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="544">remote destination → ECMP + local BFD</text>
+<path d="M274 615 V827" fill="none" stroke="#AD6800" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M274 709 H404" fill="none" stroke="#AD6800" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-amber)" marker-start="url(#a-amber)"/>
+<path d="M274 827 H404" fill="none" stroke="#AD6800" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-amber)" marker-start="url(#a-amber)"/>
+<rect x="404" y="660" width="284" height="100" rx="16" fill="#FFF4DD" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="404" y="678" width="5" height="64" rx="2" fill="#AD6800" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="428" y="702" font-size="25" fill="#AD6800" font-weight="650" text-anchor="start" data-max-width="236">Gateway 1</text>
+<text xml:space="preserve" x="428" y="740" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="236">node 1 · FRR</text>
+<rect x="404" y="778" width="284" height="100" rx="16" fill="#FFF4DD" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="404" y="796" width="5" height="64" rx="2" fill="#AD6800" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="428" y="820" font-size="25" fill="#AD6800" font-weight="650" text-anchor="start" data-max-width="236">Gateway 2</text>
+<text xml:space="preserve" x="428" y="858" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="236">node 2 · FRR</text>
+<rect x="1200" y="247" width="656" height="635" rx="16" fill="#FFFFFF" stroke="#D6E0EC" stroke-width="1.5"/>
+<text xml:space="preserve" x="1224" y="290" font-size="30" fill="#087F83" font-weight="700" text-anchor="start">DC-B</text>
+<text xml:space="preserve" x="1830" y="290" font-size="23" fill="#7752C6" font-weight="400" text-anchor="end">native VPC</text>
+<rect x="1232" y="325" width="592" height="112" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1232" y="343" width="5" height="76" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1256" y="367" font-size="26" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="544">Endpoint / Subnet</text>
+<text xml:space="preserve" x="1256" y="405" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="544">10.61.1.0/24</text>
+<path d="M1528 437 V485" fill="none" stroke="#AD6800" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-amber)" marker-start="url(#a-amber)"/>
+<rect x="1232" y="485" width="592" height="130" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1232" y="503" width="5" height="94" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1256" y="527" font-size="26" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="544">OVN VPC logical router</text>
+<text xml:space="preserve" x="1256" y="565" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="544">remote destination → ECMP + local BFD</text>
+<path d="M1646 615 V827" fill="none" stroke="#AD6800" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1646 709 H1516" fill="none" stroke="#AD6800" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-amber)" marker-start="url(#a-amber)"/>
+<path d="M1646 827 H1516" fill="none" stroke="#AD6800" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-amber)" marker-start="url(#a-amber)"/>
+<rect x="1232" y="660" width="284" height="100" rx="16" fill="#FFF4DD" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1232" y="678" width="5" height="64" rx="2" fill="#AD6800" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1256" y="702" font-size="25" fill="#AD6800" font-weight="650" text-anchor="start" data-max-width="236">Gateway 1</text>
+<text xml:space="preserve" x="1256" y="740" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="236">node 1 · FRR</text>
+<rect x="1232" y="778" width="284" height="100" rx="16" fill="#FFF4DD" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1232" y="796" width="5" height="64" rx="2" fill="#AD6800" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1256" y="820" font-size="25" fill="#AD6800" font-weight="650" text-anchor="start" data-max-width="236">Gateway 2</text>
+<text xml:space="preserve" x="1256" y="858" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="236">node 2 · FRR</text>
+<rect x="768" y="290" width="384" height="245" rx="16" fill="#EDF3FF" stroke="#D6E0EC" stroke-width="1.5"/>
+<text xml:space="preserve" x="960" y="335" font-size="28" fill="#2563EB" font-weight="650" text-anchor="middle" data-max-width="340">既有 L3 ToRs / WAN</text>
+<text xml:space="preserve" x="960" y="390" font-size="24" fill="#53647C" font-weight="400" text-anchor="middle" data-max-width="340">只路由 outer endpoints</text>
+<text xml:space="preserve" x="960" y="434" font-size="22" fill="#53647C" font-weight="400" text-anchor="middle" data-max-width="340">不加入 tenant BGP / EVPN</text>
+<text xml:space="preserve" x="960" y="480" font-size="23" fill="#2563EB" font-weight="400" text-anchor="middle" data-max-width="340">Transport 封包穿越此網路</text>
+<path d="M688 709 H1232" fill="none" stroke="#AD6800" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-amber)" marker-start="url(#a-amber)"/>
+<path d="M688 827 H1232" fill="none" stroke="#AD6800" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-amber)" marker-start="url(#a-amber)"/>
+<path d="M768 709 L1152 827" fill="none" stroke="#AD6800" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M768 827 L1152 709" fill="none" stroke="#AD6800" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text xml:space="preserve" x="960" y="607" font-size="24" fill="#AD6800" font-weight="650" text-anchor="middle">2 × 2 member paths</text>
+<text xml:space="preserve" x="960" y="647" font-size="23" fill="#AD6800" font-weight="400" text-anchor="middle">Transport + FRR / BFD</text>
+<path d="M960 535 V569" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 7"/>
+<text xml:space="preserve" x="960" y="880" font-size="22" fill="#53647C" font-weight="400" text-anchor="middle" data-max-width="440">中央 API 不經手資料封包</text>
+</svg>

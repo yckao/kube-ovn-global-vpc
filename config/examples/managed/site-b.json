@@ -1,0 +1,18 @@
+{
+  "locationRef": "dc-b",
+  "clusterUID": "REPLACE_WITH_DC_B_KUBE_SYSTEM_UID",
+  "namespace": "global-vpc-system",
+  "authorityNamespace": "global-vpc-dc-b",
+  "authorityKubeconfig": "/authority/kubeconfig",
+  "gatewayNodeSelector": {"platform.globalvpc.io/gateway": "true"},
+  "transitPool": "172.31.0.0/20",
+  "transitPrefixLength": 27,
+  "bfdSourcePool": "172.31.16.0/24",
+  "controlPool": "172.31.32.0/20",
+  "portStart": 20000,
+  "portEnd": 29999,
+  "gatewayReplicas": 2,
+  "gatewayImage": "REPLACE_WITH_GATEWAY_IMAGE_DIGEST",
+  "runtimeDir": "/opt/global-vpc/gateway",
+  "mtu": 1380
+}

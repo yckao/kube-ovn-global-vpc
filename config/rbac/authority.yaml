@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: global-vpc-system
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: global-vpc-controller
+  namespace: global-vpc-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: global-vpc-controller
+rules:
+  - apiGroups: [networking.globalvpc.io]
+    resources: [globalvpcs]
+    verbs: [get, list, watch, update, patch]
+  - apiGroups: [networking.globalvpc.io]
+    resources: [globalvpcs/status, globalvpcs/finalizers]
+    verbs: [get, update, patch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: global-vpc-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: global-vpc-controller
+subjects:
+  - kind: ServiceAccount
+    name: global-vpc-controller
+    namespace: global-vpc-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: global-vpc-controller
+  namespace: global-vpc-system
+rules:
+  - apiGroups: [coordination.k8s.io]
+    resources: [leases]
+    verbs: [get, list, watch, create, update, patch]
+  - apiGroups: ['']
+    resources: [configmaps]
+    verbs: [get, create, update]
+  - apiGroups: ['']
+    resources: [events]
+    verbs: [create, patch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: global-vpc-controller
+  namespace: global-vpc-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: global-vpc-controller
+subjects:
+  - kind: ServiceAccount
+    name: global-vpc-controller
+    namespace: global-vpc-system

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+<title id="title">三種 Transport，共用同一個平台 API</title><desc id="desc">由管理者以 NetworkClass 提供選項；租戶維持相同 VPC / Subnet 操作模型</desc>
+<defs><style>text{font-family:"PingFang TC","Heiti TC","Noto Sans CJK TC",Arial,sans-serif}</style>
+<marker id="a-wire" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#74859D"/></marker>
+<marker id="a-blue" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#2563EB"/></marker>
+<marker id="a-teal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#087F83"/></marker>
+<marker id="a-purple" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#7752C6"/></marker>
+<marker id="a-amber" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#AD6800"/></marker>
+<marker id="a-red" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#B83D58"/></marker>
+</defs>
+<rect x="0" y="0" width="1920" height="1080" rx="0" fill="#F5F7FB" stroke="none" stroke-width="1.5"/>
+<rect x="64" y="32" width="7" height="23" rx="3" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="86" y="51" font-size="18" fill="#087F83" font-weight="700" text-anchor="start">GLOBAL VPC  /  ENGINEERING BRIEFING</text>
+<text xml:space="preserve" x="1856" y="51" font-size="18" fill="#53647C" font-weight="400" text-anchor="end">MANAGED v1alpha2 · v0.1.0</text>
+<text xml:space="preserve" x="64" y="114" font-size="44" fill="#162640" font-weight="700" text-anchor="start" data-max-width="1792">三種 Transport，共用同一個平台 API</text>
+<text xml:space="preserve" x="64" y="158" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1792">由管理者以 NetworkClass 提供選項；租戶維持相同 VPC / Subnet 操作模型</text>
+<path d="M64 185 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="64" y="934" width="1792" height="64" rx="14" fill="#E8F7F5" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="974" font-size="26" fill="#087F83" font-weight="600" text-anchor="start" data-max-width="1744">EVPN 在軟體 Gateway 間運作；ToR 不必成為 VTEP、Route Reflector 或 tenant BGP peer。</text>
+<path d="M64 1017 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text xml:space="preserve" x="64" y="1051" font-size="18" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1500">架構與操作圖解  ·  詳細操作與適用邊界請見同目錄講解</text>
+<text xml:space="preserve" x="1856" y="1051" font-size="19" fill="#53647C" font-weight="700" text-anchor="end">07 / 12</text>
+<rect x="64" y="250" width="568" height="480" rx="16" fill="#EDF3FF" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="64" y="268" width="5" height="444" rx="2" fill="#2563EB" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="292" font-size="31" fill="#2563EB" font-weight="650" text-anchor="start" data-max-width="520">WireGuard / BGP</text>
+<rect x="88" y="320" width="520" height="38" rx="19" fill="#EDF3FF" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="348.0" y="346" font-size="21" fill="#2563EB" font-weight="600" text-anchor="middle" data-max-width="500">NetworkClass: default</text>
+<text xml:space="preserve" x="88" y="405" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">加密：是</text>
+<text xml:space="preserve" x="88" y="462" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">UDP：保留的 port range</text>
+<text xml:space="preserve" x="88" y="519" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">路由：FRR IPv4 unicast</text>
+<text xml:space="preserve" x="88" y="576" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">適用：需要傳輸加密</text>
+<text xml:space="preserve" x="88" y="633" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">代價：加密 CPU / MTU 預算</text>
+<rect x="676" y="250" width="568" height="480" rx="16" fill="#E8F7F5" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="676" y="268" width="5" height="444" rx="2" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="700" y="292" font-size="31" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="520">Geneve / BGP</text>
+<rect x="700" y="320" width="520" height="38" rx="19" fill="#E8F7F5" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="960.0" y="346" font-size="21" fill="#087F83" font-weight="600" text-anchor="middle" data-max-width="500">NetworkClass: trusted-geneve</text>
+<text xml:space="preserve" x="700" y="405" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">加密：否，需可信 underlay</text>
+<text xml:space="preserve" x="700" y="462" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">UDP：6082</text>
+<text xml:space="preserve" x="700" y="519" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">路由：FRR IPv4 unicast</text>
+<text xml:space="preserve" x="700" y="576" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">適用：私有軟體 overlay</text>
+<text xml:space="preserve" x="700" y="633" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">代價：來源控管 / MTU 驗證</text>
+<rect x="1288" y="250" width="568" height="480" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1288" y="268" width="5" height="444" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1312" y="292" font-size="31" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="520">VXLAN / EVPN</text>
+<rect x="1312" y="320" width="520" height="38" rx="19" fill="#F2EDFC" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1572.0" y="346" font-size="21" fill="#7752C6" font-weight="600" text-anchor="middle" data-max-width="500">NetworkClass: trusted-evpn</text>
+<text xml:space="preserve" x="1312" y="405" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">加密：否，需可信 underlay</text>
+<text xml:space="preserve" x="1312" y="462" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">UDP：control 4788 / data 4789</text>
+<text xml:space="preserve" x="1312" y="519" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">路由：EVPN Type-5 + VRF</text>
+<text xml:space="preserve" x="1312" y="576" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">適用：偏好 EVPN route model</text>
+<text xml:space="preserve" x="1312" y="633" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">代價：控制與排障步驟較多</text>
+<rect x="64" y="768" width="1792" height="126" rx="16" fill="#FFFFFF" stroke="#D6E0EC" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="810" font-size="27" fill="#162640" font-weight="650" text-anchor="start">共同條件</text>
+<text xml:space="preserve" x="288" y="810" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1528">可達的 node endpoints  ·  多 Gateway  ·  FRR / BFD  ·  端到端 MTU 與隔離驗證</text>
+<text xml:space="preserve" x="88" y="861" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1744">Transport 在 VPC 建立後固定；切換需遷移。功能驗證不代表任一 profile 的線速保證。</text>
+</svg>

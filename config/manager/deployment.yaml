@@ -1,0 +1,61 @@
+# LEGACY OVN-IC controller only. For D, use docs/quickstart.md and
+# config/examples/site-autonomous/deployment.yaml (site-vpc-controller).
+# Build an image containing the Go binary and the administrator-selected OVN and
+# provider executables. Supply the referenced ConfigMap/Secrets out of band.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: global-vpc-controller
+  namespace: global-vpc-system
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: global-vpc-controller
+  template:
+    metadata:
+      labels:
+        app: global-vpc-controller
+    spec:
+      serviceAccountName: global-vpc-controller
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: controller
+          image: global-vpc-controller:dev
+          command: [/usr/local/bin/global-vpc-controller]
+          args: [--config=/etc/gvpc/domain/domain.json, --namespace=global-vpc-system]
+          env:
+            - name: GVPC_NETBOX_URL
+              value: https://netbox.example
+            - name: GVPC_NETBOX_TOKEN_FILE
+              value: /etc/gvpc/netbox/token
+          resources:
+            requests: {cpu: 50m, memory: 96Mi}
+            limits: {memory: 256Mi}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+          readinessProbe:
+            httpGet: {path: /readyz, port: 8081}
+          livenessProbe:
+            httpGet: {path: /healthz, port: 8081}
+          volumeMounts:
+            - {name: domain, mountPath: /etc/gvpc/domain, readOnly: true}
+            - {name: access, mountPath: /etc/gvpc/access, readOnly: true}
+            - {name: tls, mountPath: /etc/gvpc/tls, readOnly: true}
+            - {name: netbox, mountPath: /etc/gvpc/netbox, readOnly: true}
+      volumes:
+        - name: domain
+          configMap: {name: global-vpc-domain}
+        - name: access
+          secret: {secretName: global-vpc-infra-access, defaultMode: 292}
+        - name: tls
+          secret: {secretName: global-vpc-ovn-tls, defaultMode: 292}
+        - name: netbox
+          secret: {secretName: global-vpc-netbox, defaultMode: 292}

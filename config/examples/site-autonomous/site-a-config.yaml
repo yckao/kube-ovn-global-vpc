@@ -1,0 +1,193 @@
+# Edit all placeholders and reserve the example addresses before applying.
+# Apply only to Site A; the other site has a different local registration.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: site-vpc-registration
+  namespace: global-vpc-system
+data:
+  site.json: |
+    {
+      "siteID": "site-a",
+      "attachmentID": "infra-a",
+      "cluster": {
+        "name": "infra-a",
+        "uid": "REPLACE-WITH-SITE-A-KUBE-SYSTEM-UID",
+        "kubeconfig": "/etc/global-vpc/local-infra.kubeconfig",
+        "nbCommand": [
+          "kubectl",
+          "--kubeconfig",
+          "/etc/global-vpc/local-infra.kubeconfig",
+          "--request-timeout=20s",
+          "-n",
+          "kube-system",
+          "exec",
+          "deployment/ovn-central",
+          "-c",
+          "ovn-central",
+          "--",
+          "ovn-nbctl",
+          "--db=unix:/run/ovn/ovnnb_db.sock"
+        ],
+        "sbCommand": [
+          "kubectl",
+          "--kubeconfig",
+          "/etc/global-vpc/local-infra.kubeconfig",
+          "--request-timeout=20s",
+          "-n",
+          "kube-system",
+          "exec",
+          "deployment/ovn-central",
+          "-c",
+          "ovn-central",
+          "--",
+          "ovn-sbctl",
+          "--db=unix:/run/ovn/ovnsb_db.sock"
+        ]
+      },
+      "gatewayCommand": [
+        "python3",
+        "/opt/global-vpc/scripts/site_gateway.py",
+        "--config",
+        "/etc/global-vpc/gateway.json"
+      ],
+      "gatewayRevision": "registration-ha-v2",
+      "bfdTransactionCommand": [
+        "kubectl",
+        "--kubeconfig",
+        "/etc/global-vpc/local-infra.kubeconfig",
+        "--request-timeout=20s",
+        "-n",
+        "kube-system",
+        "exec",
+        "deployment/ovn-central",
+        "-c",
+        "ovn-central",
+        "--",
+        "ovsdb-client",
+        "--timeout=15",
+        "transact",
+        "unix:/run/ovn/ovnnb_db.sock"
+      ],
+      "grants": [
+        {
+          "globalVpcID": "tenant-red",
+          "delegatedPrefixes": [
+            "10.241.0.0/16"
+          ],
+          "transitCIDR": "10.240.255.0/29",
+          "routerIP": "10.240.255.1",
+          "gateways": [
+            {
+              "id": "gw-1",
+              "ip": "10.240.255.2"
+            },
+            {
+              "id": "gw-2",
+              "ip": "10.240.255.3"
+            }
+          ],
+          "bfd": {
+            "sourceIP": "10.254.120.1",
+            "minRX": 300,
+            "minTX": 300,
+            "multiplier": 3
+          }
+        }
+      ]
+    }
+  gateway.json: |
+    {
+      "revision": "registration-ha-v2",
+      "siteID": "site-a",
+      "attachmentID": "infra-a",
+      "kubeconfig": "/etc/global-vpc/local-infra.kubeconfig",
+      "clusterUID": "REPLACE-WITH-SITE-A-KUBE-SYSTEM-UID",
+      "namespace": "global-vpc-system",
+      "namespaceUID": "REPLACE-WITH-SITE-A-GATEWAY-NAMESPACE-UID",
+      "image": "registry.example.com/global-vpc/site-gateway:dev",
+      "runtimePath": "/opt/global-vpc/gateway/gateway.py",
+      "grants": [
+        {
+          "globalVpcID": "tenant-red",
+          "gateways": [
+            {
+              "id": "gw-1",
+              "nodeName": "replace-with-site-a-gateway-node-1",
+              "privateKeySecretName": "tenant-red-wireguard-1",
+              "localASN": 64512,
+              "routerID": "10.240.255.2",
+              "mtu": 1380,
+              "links": [
+                {
+                  "id": "a1-b1",
+                  "listenPort": 51820,
+                  "localTunnelIP": "10.254.110.1",
+                  "tunnelIP": "10.254.110.2",
+                  "endpoint": "198.51.100.20:51820",
+                  "publicKey": "REPLACE-WITH-SITE-B-GATEWAY-1-PUBLIC-KEY",
+                  "asn": 64513,
+                  "remoteSiteID": "site-b",
+                  "remoteAttachmentID": "infra-b",
+                  "delegatedPrefixes": [
+                    "10.242.0.0/16"
+                  ]
+                },
+                {
+                  "id": "a1-b2",
+                  "listenPort": 51821,
+                  "localTunnelIP": "10.254.110.3",
+                  "tunnelIP": "10.254.110.4",
+                  "endpoint": "198.51.100.21:51820",
+                  "publicKey": "REPLACE-WITH-SITE-B-GATEWAY-2-PUBLIC-KEY",
+                  "asn": 64513,
+                  "remoteSiteID": "site-b",
+                  "remoteAttachmentID": "infra-b",
+                  "delegatedPrefixes": [
+                    "10.242.0.0/16"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "gw-2",
+              "nodeName": "replace-with-site-a-gateway-node-2",
+              "privateKeySecretName": "tenant-red-wireguard-2",
+              "localASN": 64512,
+              "routerID": "10.240.255.3",
+              "mtu": 1380,
+              "links": [
+                {
+                  "id": "a2-b1",
+                  "listenPort": 51820,
+                  "localTunnelIP": "10.254.110.5",
+                  "tunnelIP": "10.254.110.6",
+                  "endpoint": "198.51.100.20:51821",
+                  "publicKey": "REPLACE-WITH-SITE-B-GATEWAY-1-PUBLIC-KEY",
+                  "asn": 64513,
+                  "remoteSiteID": "site-b",
+                  "remoteAttachmentID": "infra-b",
+                  "delegatedPrefixes": [
+                    "10.242.0.0/16"
+                  ]
+                },
+                {
+                  "id": "a2-b2",
+                  "listenPort": 51821,
+                  "localTunnelIP": "10.254.110.7",
+                  "tunnelIP": "10.254.110.8",
+                  "endpoint": "198.51.100.21:51821",
+                  "publicKey": "REPLACE-WITH-SITE-B-GATEWAY-2-PUBLIC-KEY",
+                  "asn": 64513,
+                  "remoteSiteID": "site-b",
+                  "remoteAttachmentID": "infra-b",
+                  "delegatedPrefixes": [
+                    "10.242.0.0/16"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }

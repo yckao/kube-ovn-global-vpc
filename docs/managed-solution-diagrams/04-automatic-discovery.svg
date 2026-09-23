@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+<title id="title">Gateway discovery 使用既有 Kubernetes API</title><desc id="desc">沒有手動 IP list，也不額外建立 Directory service；成員資訊透過 NetworkBinding 交換</desc>
+<defs><style>text{font-family:"PingFang TC","Heiti TC","Noto Sans CJK TC",Arial,sans-serif}</style>
+<marker id="a-wire" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#74859D"/></marker>
+<marker id="a-blue" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#2563EB"/></marker>
+<marker id="a-teal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#087F83"/></marker>
+<marker id="a-purple" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#7752C6"/></marker>
+<marker id="a-amber" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#AD6800"/></marker>
+<marker id="a-red" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#B83D58"/></marker>
+</defs>
+<rect x="0" y="0" width="1920" height="1080" rx="0" fill="#F5F7FB" stroke="none" stroke-width="1.5"/>
+<rect x="64" y="32" width="7" height="23" rx="3" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="86" y="51" font-size="18" fill="#087F83" font-weight="700" text-anchor="start">GLOBAL VPC  /  ENGINEERING BRIEFING</text>
+<text xml:space="preserve" x="1856" y="51" font-size="18" fill="#53647C" font-weight="400" text-anchor="end">MANAGED v1alpha2 · v0.1.0</text>
+<text xml:space="preserve" x="64" y="114" font-size="44" fill="#162640" font-weight="700" text-anchor="start" data-max-width="1792">Gateway discovery 使用既有 Kubernetes API</text>
+<text xml:space="preserve" x="64" y="158" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1792">沒有手動 IP list，也不額外建立 Directory service；成員資訊透過 NetworkBinding 交換</text>
+<path d="M64 185 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="64" y="934" width="1792" height="64" rx="14" fill="#E8F7F5" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="974" font-size="26" fill="#087F83" font-weight="600" text-anchor="start" data-max-width="1744">中央目錄負責分發更新；各 site 持久保存已接受的 snapshot，中央失聯不等於立即拆線。</text>
+<path d="M64 1017 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text xml:space="preserve" x="64" y="1051" font-size="18" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1500">架構與操作圖解  ·  詳細操作與適用邊界請見同目錄講解</text>
+<text xml:space="preserve" x="1856" y="1051" font-size="19" fill="#53647C" font-weight="700" text-anchor="end">04 / 12</text>
+<rect x="64" y="265" width="510" height="310" rx="16" fill="#E8F7F5" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="64" y="283" width="5" height="274" rx="2" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="307" font-size="27" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="462">① Local discovery</text>
+<text xml:space="preserve" x="88" y="345" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="462">Gateway-labelled Nodes</text>
+<text xml:space="preserve" x="88" y="379" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="462">UID + endpoint + allocations</text>
+<text xml:space="preserve" x="88" y="413" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="462">本地 key / identity receipts</text>
+<text xml:space="preserve" x="88" y="447" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="462">Site Operator 發布 status</text>
+<path d="M574 406 H683" fill="none" stroke="#087F83" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 7" marker-end="url(#a-teal)"/>
+<rect x="696" y="265" width="528" height="310" rx="16" fill="#EDF3FF" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="696" y="283" width="5" height="274" rx="2" fill="#2563EB" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="720" y="307" font-size="27" fill="#2563EB" font-weight="650" text-anchor="start" data-max-width="480">② HA management API</text>
+<text xml:space="preserve" x="720" y="345" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="480">各 location 的 Binding.status</text>
+<text xml:space="preserve" x="720" y="379" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="480">Authority 彙整 VPC participants</text>
+<text xml:space="preserve" x="720" y="413" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="480">產生 peer snapshot / revision</text>
+<text xml:space="preserve" x="720" y="447" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="480">同一 VPC 的授權成員可見</text>
+<path d="M1224 406 H1333" fill="none" stroke="#2563EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-blue)"/>
+<rect x="1346" y="265" width="510" height="310" rx="16" fill="#E8F7F5" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1346" y="283" width="5" height="274" rx="2" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1370" y="307" font-size="27" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="462">③ 各站保存與套用</text>
+<text xml:space="preserve" x="1370" y="345" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="462">Syncer → local NetworkBinding</text>
+<text xml:space="preserve" x="1370" y="379" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="462">generation / UID / revision fence</text>
+<text xml:space="preserve" x="1370" y="413" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="462">Gateway config + native routes</text>
+<text xml:space="preserve" x="1370" y="447" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="462">回報相應 revision 的 ACK</text>
+<path d="M1601 575 V615 H960 V585" fill="none" stroke="#087F83" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 7" marker-end="url(#a-teal)"/>
+<text xml:space="preserve" x="960" y="654" font-size="24" fill="#087F83" font-weight="400" text-anchor="middle" data-max-width="1600">持續回報 discovery 與 runtime 狀態，收斂為下一個 desired snapshot</text>
+<rect x="64" y="712" width="560" height="170" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="64" y="730" width="5" height="134" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="754" font-size="26" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="512">Sparse VPC</text>
+<text xml:space="preserve" x="88" y="792" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="512">只加入 DC-A / DC-B / DC-C</text>
+<text xml:space="preserve" x="88" y="826" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="512">不向未參與 site 建立 tenant peers</text>
+<rect x="652" y="712" width="584" height="170" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="652" y="730" width="5" height="134" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="676" y="754" font-size="26" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="536">Broad VPC</text>
+<text xml:space="preserve" x="676" y="792" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="536">可描述所有已授權 locations</text>
+<text xml:space="preserve" x="676" y="826" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="536">成員 mesh 成本隨站點數成長</text>
+<rect x="1264" y="712" width="592" height="170" rx="16" fill="#FFF4DD" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1264" y="730" width="5" height="134" rx="2" fill="#AD6800" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1288" y="754" font-size="26" fill="#AD6800" font-weight="650" text-anchor="start" data-max-width="544">中央 API 無法存取</text>
+<text xml:space="preserve" x="1288" y="792" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="544">保留本地 snapshot 與既有轉送</text>
+<text xml:space="preserve" x="1288" y="826" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="544">新意圖／成員更新等待恢復</text>
+</svg>

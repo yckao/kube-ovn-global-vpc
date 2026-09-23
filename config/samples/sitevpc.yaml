@@ -1,0 +1,10 @@
+apiVersion: networking.globalvpc.io/v1alpha1
+kind: SiteVpc
+metadata:
+  name: tenant-red-local
+spec:
+  globalVpcID: tenant-red
+  siteID: site-a
+  attachmentID: infra-a
+  cidr: 10.241.0.0/24
+  gateway: 10.241.0.1

@@ -1,0 +1,94 @@
+{
+  "revision": "registration-ha-v2",
+  "siteID": "site-a",
+  "attachmentID": "infra-a",
+  "kubeconfig": "/etc/global-vpc/local-infra.kubeconfig",
+  "clusterUID": "REPLACE-WITH-KUBE-SYSTEM-UID",
+  "namespace": "global-vpc-system",
+  "namespaceUID": "REPLACE-WITH-GATEWAY-NAMESPACE-UID",
+  "image": "registry.example.com/global-vpc/site-gateway:v0.2.0",
+  "runtimePath": "/opt/global-vpc/gateway/gateway.py",
+  "grants": [
+    {
+      "globalVpcID": "tenant-red",
+      "gateways": [
+        {
+          "id": "gw-1",
+          "nodeName": "replace-with-local-gateway-node-1",
+          "privateKeySecretName": "tenant-red-wireguard-1",
+          "localASN": 64512,
+          "routerID": "10.240.255.2",
+          "mtu": 1380,
+          "links": [
+            {
+              "id": "a1-b1",
+              "listenPort": 51820,
+              "localTunnelIP": "10.254.110.1",
+              "tunnelIP": "10.254.110.2",
+              "endpoint": "198.51.100.20:51820",
+              "publicKey": "REPLACE-WITH-REMOTE-GATEWAY-1-PUBLIC-KEY",
+              "asn": 64513,
+              "remoteSiteID": "site-b",
+              "remoteAttachmentID": "infra-b",
+              "delegatedPrefixes": [
+                "10.242.0.0/16"
+              ]
+            },
+            {
+              "id": "a1-b2",
+              "listenPort": 51821,
+              "localTunnelIP": "10.254.110.3",
+              "tunnelIP": "10.254.110.4",
+              "endpoint": "198.51.100.21:51820",
+              "publicKey": "REPLACE-WITH-REMOTE-GATEWAY-2-PUBLIC-KEY",
+              "asn": 64513,
+              "remoteSiteID": "site-b",
+              "remoteAttachmentID": "infra-b",
+              "delegatedPrefixes": [
+                "10.242.0.0/16"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "gw-2",
+          "nodeName": "replace-with-local-gateway-node-2",
+          "privateKeySecretName": "tenant-red-wireguard-2",
+          "localASN": 64512,
+          "routerID": "10.240.255.3",
+          "mtu": 1380,
+          "links": [
+            {
+              "id": "a2-b1",
+              "listenPort": 51820,
+              "localTunnelIP": "10.254.110.5",
+              "tunnelIP": "10.254.110.6",
+              "endpoint": "198.51.100.20:51821",
+              "publicKey": "REPLACE-WITH-REMOTE-GATEWAY-1-PUBLIC-KEY",
+              "asn": 64513,
+              "remoteSiteID": "site-b",
+              "remoteAttachmentID": "infra-b",
+              "delegatedPrefixes": [
+                "10.242.0.0/16"
+              ]
+            },
+            {
+              "id": "a2-b2",
+              "listenPort": 51821,
+              "localTunnelIP": "10.254.110.7",
+              "tunnelIP": "10.254.110.8",
+              "endpoint": "198.51.100.21:51821",
+              "publicKey": "REPLACE-WITH-REMOTE-GATEWAY-2-PUBLIC-KEY",
+              "asn": 64513,
+              "remoteSiteID": "site-b",
+              "remoteAttachmentID": "infra-b",
+              "delegatedPrefixes": [
+                "10.242.0.0/16"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

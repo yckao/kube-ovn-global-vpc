@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: site-vpc-controller
+  namespace: global-vpc-system
+spec:
+  # The current external-command adapter requires one active process.
+  # Recreate avoids normal rollout overlap; it is not a partition fence.
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: site-vpc-controller
+  template:
+    metadata:
+      labels:
+        app: site-vpc-controller
+    spec:
+      serviceAccountName: site-vpc-controller
+      terminationGracePeriodSeconds: 120
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: controller
+          # Build build/site-controller.Dockerfile; this is not a published image.
+          image: registry.example.com/global-vpc/site-vpc-controller:dev
+          imagePullPolicy: IfNotPresent
+          command: [/usr/local/bin/site-vpc-controller]
+          args:
+            - --config=/etc/global-vpc/site.json
+            - --namespace=global-vpc-system
+            - --resync-period=10s
+          env:
+            - name: HOME
+              value: /tmp
+            - name: PYTHONDONTWRITEBYTECODE
+              value: '1'
+          resources:
+            requests: {cpu: 100m, memory: 128Mi}
+            limits: {memory: 512Mi}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          ports:
+            - name: health
+              containerPort: 8081
+          readinessProbe:
+            httpGet: {path: /readyz, port: health}
+          livenessProbe:
+            httpGet: {path: /healthz, port: health}
+          volumeMounts:
+            - name: registration
+              mountPath: /etc/global-vpc
+              readOnly: true
+            - name: temporary
+              mountPath: /tmp
+      volumes:
+        - name: registration
+          projected:
+            sources:
+              - configMap:
+                  name: site-vpc-registration
+              - configMap:
+                  name: site-vpc-local-access
+        - name: temporary
+          emptyDir: {}

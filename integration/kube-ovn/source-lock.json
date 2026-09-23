@@ -1,0 +1,13 @@
+{
+  "repository": "https://github.com/kubeovn/kube-ovn",
+  "commit": "a9296ef2a37c6519bc0ecb798082ce139c72f8eb",
+  "tag": "v1.16.4",
+  "files": {
+    "pkg/apis/kubeovn/v1/vpc.go": "d04014323aea2dc4223482a8f4253d6245aeb25fd0be05a07fdebedbf0fbf6f8",
+    "pkg/apis/kubeovn/v1/zz_generated.deepcopy.go": "2a05166ab55e73a8ce894a215f9886a25775da177e59794b1a96256fd5fc05e0",
+    "pkg/controller/vpc.go": "132ba2d6472bb7482229f79332b3dc1f3e5c240db288a14b932bcb3919f8425f",
+    "pkg/controller/gc.go": "2810403a9b4d07657c67b66443e1b93697c28051d5ce3892d7fc5c34d78ecdce",
+    "pkg/ovs/ovn-nb-bfd.go": "3506bfe71747dd6c979c3ec532c32743007c25a23100114bf2097d20644739ce",
+    "charts/kube-ovn/templates/kube-ovn-crd.yaml": "55f2f4a7b6f3ab9c01328da1d8e4fb2e577525e712ef4d99bc0734c1ff50e202"
+  }
+}

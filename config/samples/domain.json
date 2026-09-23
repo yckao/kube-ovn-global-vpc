@@ -1,0 +1,27 @@
+{
+  "domain": "lab",
+  "icNBCommand": ["ovn-ic-nbctl", "--db=ssl:ic-nb.example:6645", "--private-key=/etc/gvpc/tls/key.pem", "--certificate=/etc/gvpc/tls/cert.pem", "--ca-cert=/etc/gvpc/tls/ca.pem"],
+  "providers": {"netbox": ["python3", "/opt/gvpc/plugins/netbox.py"]},
+  "clusters": [
+    {
+      "name": "dc-a", "uid": "REPLACE-KUBE-SYSTEM-UID-A",
+      "region": "region-a", "site": "site-a", "dc": "dc-a",
+      "kubeconfig": "/etc/gvpc/access/dca-kubeconfig",
+      "azName": "dc-a",
+      "gatewayChassis": ["REPLACE-LOCAL-CHASSIS-A"],
+      "nbCommand": ["ovn-nbctl", "--db=ssl:nb-a.example:6641", "--private-key=/etc/gvpc/tls/key.pem", "--certificate=/etc/gvpc/tls/cert.pem", "--ca-cert=/etc/gvpc/tls/ca.pem"],
+      "sbCommand": ["ovn-sbctl", "--db=ssl:sb-a.example:6642", "--private-key=/etc/gvpc/tls/key.pem", "--certificate=/etc/gvpc/tls/cert.pem", "--ca-cert=/etc/gvpc/tls/ca.pem"],
+      "icDeployment": {"namespace": "global-vpc-system", "name": "native-ovn-ic", "uid": "REPLACE-DEPLOYMENT-UID-A"}
+    },
+    {
+      "name": "dc-b", "uid": "REPLACE-KUBE-SYSTEM-UID-B",
+      "region": "region-a", "site": "site-b", "dc": "dc-b",
+      "kubeconfig": "/etc/gvpc/access/dcb-kubeconfig",
+      "azName": "dc-b",
+      "gatewayChassis": ["REPLACE-LOCAL-CHASSIS-B"],
+      "nbCommand": ["ovn-nbctl", "--db=ssl:nb-b.example:6641", "--private-key=/etc/gvpc/tls/key.pem", "--certificate=/etc/gvpc/tls/cert.pem", "--ca-cert=/etc/gvpc/tls/ca.pem"],
+      "sbCommand": ["ovn-sbctl", "--db=ssl:sb-b.example:6642", "--private-key=/etc/gvpc/tls/key.pem", "--certificate=/etc/gvpc/tls/cert.pem", "--ca-cert=/etc/gvpc/tls/ca.pem"],
+      "icDeployment": {"namespace": "global-vpc-system", "name": "native-ovn-ic", "uid": "REPLACE-DEPLOYMENT-UID-B"}
+    }
+  ]
+}

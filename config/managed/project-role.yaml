@@ -1,0 +1,10 @@
+# Bind this role to a real platform project identity with a namespaced RoleBinding.
+# Do not grant tenants NetworkBinding/status, native Kube-OVN, or operator access.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: platform-vpc-project-editor
+rules:
+  - apiGroups: [platform.globalvpc.io]
+    resources: [vpcs, subnets]
+    verbs: [get, list, watch, create, update, patch, delete]

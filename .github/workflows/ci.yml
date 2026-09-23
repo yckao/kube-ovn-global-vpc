@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Unit, race and build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
+        with:
+          go-version: '1.26.5'
+          cache: true
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: '3.13'
+      - name: Verify formatting
+        shell: bash
+        run: |
+          files=$(gofmt -l api cmd internal integration/kube-ovn/destinationroute)
+          if [ -n "$files" ]; then
+            printf '%s\n' "$files"
+            exit 1
+          fi
+      - name: Verify modules
+        run: go mod verify
+      - name: Check, test and build
+        run: make check test test-race build
+      - name: Verify version command without cluster credentials
+        shell: bash
+        run: |
+          ./bin/platform-vpc-controller --version
+          ./bin/platform-vpc-controller --version | python3 -c 'import pathlib, sys; expected = "platform-vpc-controller v" + pathlib.Path("VERSION").read_text().strip() + " "; assert sys.stdin.read().startswith(expected)'
+
+  api-integration:
+    name: Kubernetes API integration
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
+        with:
+          go-version: '1.26.5'
+          cache: true
+      - name: Install pinned envtest tooling
+        run: go install sigs.k8s.io/controller-runtime/tools/setup-envtest@3be3f1bf2b2fcc6b5c9510d55c6a9972294653d0
+      - name: Start local API test suite
+        shell: bash
+        run: |
+          export KUBEBUILDER_ASSETS="$(setup-envtest use 1.36.2 --bin-dir "$RUNNER_TEMP/envtest" -p path)"
+          make test-integration

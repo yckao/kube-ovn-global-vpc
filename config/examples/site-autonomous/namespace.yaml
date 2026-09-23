@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: global-vpc-system
+  labels:
+    # The adapter creates privileged, host-PID gateway Pods here.
+    # Restrict namespace access to platform administrators.
+    pod-security.kubernetes.io/enforce: privileged
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: site-vpc-local-access
+  namespace: global-vpc-system
+data:
+  # Reuse the controller Pod's rotating ServiceAccount token. No embedded token.
+  # This example puts the authority and Infra API in the same local cluster.
+  local-infra.kubeconfig: |
+    apiVersion: v1
+    kind: Config
+    clusters:
+      - name: local
+        cluster:
+          server: https://kubernetes.default.svc
+          certificate-authority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    users:
+      - name: local
+        user:
+          tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    contexts:
+      - name: local
+        context:
+          cluster: local
+          user: local
+          namespace: global-vpc-system
+    current-context: local

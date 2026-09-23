@@ -1,0 +1,20 @@
+name: Feature request
+description: Propose a capability or improvement.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and desired behavior
+      description: Describe the platform use case without disclosing private environment details.
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints and trade-offs
+      description: Consider resource ownership, Kube-OVN integration, operational complexity, security and failure behavior.
+  - type: textarea
+    id: validation
+    attributes:
+      label: Acceptance and validation
+      description: What observable result would demonstrate that the feature works? Separate configuration, packet forwarding and hardware claims.

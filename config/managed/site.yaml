@@ -1,0 +1,167 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: global-vpc-system
+  labels:
+    # Generated gateways require hostPID and privileged networking operations.
+    # This namespace is administrator-only; workload tenants must not write here.
+    pod-security.kubernetes.io/enforce: privileged
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: platform-vpc-site
+  namespace: global-vpc-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: platform-vpc-site
+rules:
+  - apiGroups: ['']
+    resources: [nodes, pods]
+    verbs: [get, list, watch]
+  - apiGroups: ['']
+    resources: [namespaces]
+    resourceNames: [kube-system]
+    verbs: [get]
+  - apiGroups: [kubeovn.io]
+    resources: [vpcs, subnets]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: [kubeovn.io]
+    resources: [ips]
+    verbs: [get, list]
+  - apiGroups: [apiextensions.k8s.io]
+    resources: [customresourcedefinitions]
+    resourceNames: [vpcs.kubeovn.io]
+    verbs: [get]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: platform-vpc-site
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: platform-vpc-site
+subjects:
+  - kind: ServiceAccount
+    name: platform-vpc-site
+    namespace: global-vpc-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: platform-vpc-site
+  namespace: global-vpc-system
+rules:
+  - apiGroups: [platform.globalvpc.io]
+    resources: [networkbindings]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: [platform.globalvpc.io]
+    resources: [networkbindings/status]
+    verbs: [get, update, patch]
+  - apiGroups: [platform.globalvpc.io]
+    resources: [networkbindings/finalizers]
+    verbs: [update]
+  - apiGroups: ['']
+    resources: [pods, configmaps, secrets]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: ['']
+    resources: [pods/exec]
+    verbs: [get, create]
+  - apiGroups: [coordination.k8s.io]
+    resources: [leases]
+    verbs: [get, list, watch, create, update, patch]
+  - apiGroups: ['']
+    resources: [events]
+    verbs: [create, patch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: platform-vpc-site
+  namespace: global-vpc-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: platform-vpc-site
+subjects:
+  - kind: ServiceAccount
+    name: platform-vpc-site
+    namespace: global-vpc-system
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: platform-vpc-site
+  namespace: global-vpc-system
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: platform-vpc-site
+  template:
+    metadata:
+      labels:
+        app: platform-vpc-site
+    spec:
+      serviceAccountName: platform-vpc-site
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: platform-vpc-site
+                topologyKey: kubernetes.io/hostname
+      containers:
+        - name: controller
+          image: REPLACE_WITH_PLATFORM_CONTROLLER_IMAGE_DIGEST
+          args: [--mode=site, --config=/config/site.json]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              memory: 512Mi
+          ports:
+            - name: health
+              containerPort: 8081
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: health
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: health
+            initialDelaySeconds: 10
+          volumeMounts:
+            - name: config
+              mountPath: /config
+              readOnly: true
+            - name: authority
+              mountPath: /authority
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: platform-vpc-site-config
+        - name: authority
+          secret:
+            secretName: platform-vpc-authority-access
+            defaultMode: 0440

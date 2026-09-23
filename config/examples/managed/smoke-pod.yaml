@@ -1,0 +1,25 @@
+# Administrator smoke test in each Infra; compute should resolve the public Subnet.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: managed-vpc-smoke
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: endpoint
+  namespace: managed-vpc-smoke
+  annotations:
+    ovn.kubernetes.io/logical_switch: REPLACE_WITH_NATIVE_SUBNET_NAME
+spec:
+  automountServiceAccountToken: false
+  containers:
+    - name: endpoint
+      image: alpine:3.21
+      command: [sh, -c, 'mkdir -p /www; echo managed-vpc > /www/index.html; exec httpd -f -p 8080 -h /www']
+      resources:
+        requests:
+          cpu: 5m
+          memory: 8Mi
+        limits:
+          memory: 32Mi

@@ -1,0 +1,22 @@
+# Replace the registered domain, clusters, and external IPAM scope before use.
+# The provider must reserve all three prefixes before any network is created.
+# Consumers explicitly select their local generated Subnet; no namespace is bound.
+apiVersion: networking.globalvpc.io/v1alpha1
+kind: GlobalVpc
+metadata:
+  name: example-tenant
+spec:
+  domainRef: lab
+  ipam:
+    providerRef: netbox
+    scopeRef: preprovisioned-tenant-vrf
+  transitCIDR: 10.240.255.0/29
+  attachments:
+    - clusterRef: dc-a
+      cidr: 10.241.0.0/24
+      gateway: 10.241.0.1
+      transitIP: 10.240.255.1
+    - clusterRef: dc-b
+      cidr: 10.242.0.0/24
+      gateway: 10.242.0.1
+      transitIP: 10.240.255.2

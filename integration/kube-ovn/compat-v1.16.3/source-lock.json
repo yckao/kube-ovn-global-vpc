@@ -1,0 +1,21 @@
+{
+  "repository": "https://github.com/kubeovn/kube-ovn",
+  "commit": "98af25ffae49193a8dc16bbc39bd8ca4110ec367",
+  "tag": "v1.16.3",
+  "files": {
+    "pkg/apis/kubeovn/v1/vpc.go": "d04014323aea2dc4223482a8f4253d6245aeb25fd0be05a07fdebedbf0fbf6f8",
+    "pkg/apis/kubeovn/v1/zz_generated.deepcopy.go": "2a05166ab55e73a8ce894a215f9886a25775da177e59794b1a96256fd5fc05e0",
+    "pkg/controller/vpc.go": "132ba2d6472bb7482229f79332b3dc1f3e5c240db288a14b932bcb3919f8425f",
+    "pkg/controller/gc.go": "ab657ef7d0086661ab4a0dd738b9c62aa1bb359c4047a506319a49bfca7db2cd",
+    "pkg/ovs/ovn-nb-bfd.go": "3506bfe71747dd6c979c3ec532c32743007c25a23100114bf2097d20644739ce",
+    "charts/kube-ovn/templates/kube-ovn-crd.yaml": "55f2f4a7b6f3ab9c01328da1d8e4fb2e577525e712ef4d99bc0734c1ff50e202",
+    "go.mod": "c2d3f00f3c95b152d10b35dd4c35aa6df212e8c9a179f3777af8263733d43967",
+    "go.sum": "c38b46bfbdae512519039cc0d821e0d50bf1ad25baeb255886130faf9b5a6f0d",
+    "pkg/ovsdb/client/client.go": "ca899f59840fec39d968c4a9b6971c189dfd0ca40c9cfba17ace9315c3929207",
+    "pkg/controller/controller.go": "b6ce4b24599a5a992c1f1fa0d7a3b2f53de688651408476d67a6020331ff9235",
+    "pkg/controller/init.go": "0a4b384f1acd2c102f46c628777a39bc328aab1beddb61734a92d8fe8947d5e3",
+    "pkg/controller/inspection.go": "3a689dc26cec42072c81ece2ca4108eb4d6e4daedc02edb8f2a28b0a8df4ccbc",
+    "dist/images/start-controller.sh": "7a49afa4432d4314605e5371fc0932c39eb08bc85c848c55b7c11de2e8a2348b"
+  },
+  "sourceArchiveSHA256": "8d8195b60e39ea3291bc8f8ba3828c9b7f756a1ca863e8d10d8332adfdf0f676"
+}

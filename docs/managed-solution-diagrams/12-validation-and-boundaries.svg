@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+<title id="title">v0.1.0：已有實作，正式採用仍需分層驗收</title><desc id="desc">Experimental release · 通用驗證方法與能力邊界；不代表特定環境、硬體容量或服務保證</desc>
+<defs><style>text{font-family:"PingFang TC","Heiti TC","Noto Sans CJK TC",Arial,sans-serif}</style>
+<marker id="a-wire" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#74859D"/></marker>
+<marker id="a-blue" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#2563EB"/></marker>
+<marker id="a-teal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#087F83"/></marker>
+<marker id="a-purple" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#7752C6"/></marker>
+<marker id="a-amber" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#AD6800"/></marker>
+<marker id="a-red" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#B83D58"/></marker>
+</defs>
+<rect x="0" y="0" width="1920" height="1080" rx="0" fill="#F5F7FB" stroke="none" stroke-width="1.5"/>
+<rect x="64" y="32" width="7" height="23" rx="3" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="86" y="51" font-size="18" fill="#087F83" font-weight="700" text-anchor="start">GLOBAL VPC  /  ENGINEERING BRIEFING</text>
+<text xml:space="preserve" x="1856" y="51" font-size="18" fill="#53647C" font-weight="400" text-anchor="end">MANAGED v1alpha2 · v0.1.0</text>
+<text xml:space="preserve" x="64" y="114" font-size="44" fill="#162640" font-weight="700" text-anchor="start" data-max-width="1792">v0.1.0：已有實作，正式採用仍需分層驗收</text>
+<text xml:space="preserve" x="64" y="158" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1792">Experimental release · 通用驗證方法與能力邊界；不代表特定環境、硬體容量或服務保證</text>
+<path d="M64 185 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="64" y="934" width="1792" height="64" rx="14" fill="#E8F7F5" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="974" font-size="26" fill="#087F83" font-weight="600" text-anchor="start" data-max-width="1744">先完成原生整合與可重現的驗收，再依實際故障域、流量與站點規模決定採用範圍。</text>
+<path d="M64 1017 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text xml:space="preserve" x="64" y="1051" font-size="18" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1500">架構與操作圖解  ·  詳細操作與適用邊界請見同目錄講解</text>
+<text xml:space="preserve" x="1856" y="1051" font-size="19" fill="#53647C" font-weight="700" text-anchor="end">12 / 12</text>
+<rect x="64" y="246" width="568" height="640" rx="16" fill="#E8F7F5" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="64" y="264" width="5" height="604" rx="2" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="288" font-size="31" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="520">實作範圍</text>
+<text xml:space="preserve" x="88" y="339" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">Managed VPC / Subnet API</text>
+<text xml:space="preserve" x="88" y="405" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">各站持久化 snapshot</text>
+<text xml:space="preserve" x="88" y="471" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">多 Gateway / ECMP / BFD</text>
+<text xml:space="preserve" x="88" y="537" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">3 種 transport backends</text>
+<text xml:space="preserve" x="88" y="603" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">Native Kube-OVN route contract</text>
+<text xml:space="preserve" x="88" y="669" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">UID / ownership / allocation fence</text>
+<text xml:space="preserve" x="88" y="735" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">Go / Python / API / native tests</text>
+<rect x="676" y="246" width="568" height="640" rx="16" fill="#FFF4DD" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="676" y="264" width="5" height="604" rx="2" fill="#AD6800" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="700" y="288" font-size="31" fill="#AD6800" font-weight="650" text-anchor="start" data-max-width="520">驗收必須區分</text>
+<text xml:space="preserve" x="700" y="339" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">Unit / API / real dataplane</text>
+<text xml:space="preserve" x="700" y="405" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">Configured / Ready / reachable</text>
+<text xml:space="preserve" x="700" y="471" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">功能完成 / 更新期間零錯誤</text>
+<text xml:space="preserve" x="700" y="537" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">多 flow 分流 / 單一 flow 頻寬</text>
+<text xml:space="preserve" x="700" y="603" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">固定 offered load / 最大吞吐量</text>
+<text xml:space="preserve" x="700" y="669" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">模擬拓樸 / 實體故障域</text>
+<text xml:space="preserve" x="700" y="735" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">API 規模 / 真實 site 規模</text>
+<rect x="1288" y="246" width="568" height="640" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1288" y="264" width="5" height="604" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1312" y="288" font-size="31" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="520">採用前需完成</text>
+<text xml:space="preserve" x="1312" y="339" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">匹配的 native binary + schema</text>
+<text xml:space="preserve" x="1312" y="405" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">平台接網與身分 renewal</text>
+<text xml:space="preserve" x="1312" y="471" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">完整生命週期與回滾驗證</text>
+<text xml:space="preserve" x="1312" y="537" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">NIC / host / site 故障驗證</text>
+<text xml:space="preserve" x="1312" y="603" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">容量與收斂預算量測</text>
+<text xml:space="preserve" x="1312" y="669" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">安全掃描與發布 provenance</text>
+<text xml:space="preserve" x="1312" y="735" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="520">支援範圍與維運責任定義</text>
+</svg>

@@ -1,0 +1,168 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: sitevpcs.networking.globalvpc.io
+spec:
+  group: networking.globalvpc.io
+  scope: Cluster
+  names:
+    kind: SiteVpc
+    listKind: SiteVpcList
+    plural: sitevpcs
+    singular: sitevpc
+    shortNames: [svpc]
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      subresources:
+        status: {}
+      additionalPrinterColumns:
+        - name: Site
+          type: string
+          jsonPath: .spec.siteID
+        - name: Global-ID
+          type: string
+          jsonPath: .spec.globalVpcID
+        - name: Phase
+          type: string
+          jsonPath: .status.phase
+        - name: LocalReady
+          type: string
+          jsonPath: .status.conditions[?(@.type=="LocalReady")].status
+      schema:
+        openAPIV3Schema:
+          type: object
+          required: [spec]
+          properties:
+            apiVersion:
+              type: string
+            kind:
+              type: string
+            metadata:
+              type: object
+            spec:
+              type: object
+              description: Immutable locally owned attachment; contains no remote API, peer Controller or routing credentials.
+              required: [globalVpcID, siteID, attachmentID, cidr, gateway]
+              x-kubernetes-validations:
+                - rule: self == oldSelf
+                  message: SiteVpc spec is immutable; address ownership transfers require an administrator-coordinated lifecycle.
+              properties:
+                globalVpcID:
+                  type: string
+                  minLength: 1
+                  maxLength: 253
+                  description: Stable administrator-issued tenant identity, independent of the local Kubernetes UID.
+                  pattern: '^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$'
+                siteID:
+                  type: string
+                  minLength: 1
+                  maxLength: 63
+                  pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+                attachmentID:
+                  type: string
+                  minLength: 1
+                  maxLength: 63
+                  pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+                cidr:
+                  type: string
+                  minLength: 9
+                  maxLength: 18
+                  description: Local workload prefix contained in an administrator-delegated pool.
+                  pattern: '^([0-9]{1,3}\.){3}[0-9]{1,3}/([89]|[12][0-9]|30)$'
+                gateway:
+                  type: string
+                  minLength: 7
+                  maxLength: 15
+                  pattern: '^([0-9]{1,3}\.){3}[0-9]{1,3}$'
+            status:
+              type: object
+              properties:
+                observedGeneration:
+                  type: integer
+                  format: int64
+                phase:
+                  type: string
+                operation:
+                  type: string
+                planHash:
+                  type: string
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    required: [clusterRef, kind, name, uid]
+                    properties:
+                      clusterRef:
+                        type: string
+                      kind:
+                        type: string
+                      name:
+                        type: string
+                      uid:
+                        type: string
+                gatewayResources:
+                  type: array
+                  items:
+                    type: object
+                    required: [apiVersion, kind, namespace, name, uid]
+                    properties:
+                      apiVersion:
+                        type: string
+                      kind:
+                        type: string
+                      namespace:
+                        type: string
+                      name:
+                        type: string
+                      uid:
+                        type: string
+                bfdResources:
+                  type: array
+                  maxItems: 8
+                  x-kubernetes-list-type: map
+                  x-kubernetes-list-map-keys: [gatewayID]
+                  items:
+                    type: object
+                    required: [gatewayID, uuid]
+                    properties:
+                      gatewayID:
+                        type: string
+                        minLength: 1
+                        maxLength: 63
+                        pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+                      uuid:
+                        type: string
+                        pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+                gatewayReadyCount:
+                  type: integer
+                  minimum: 0
+                  maximum: 8
+                gatewayDesiredCount:
+                  type: integer
+                  minimum: 0
+                  maximum: 8
+                conditions:
+                  type: array
+                  x-kubernetes-list-type: map
+                  x-kubernetes-list-map-keys: [type]
+                  items:
+                    type: object
+                    required: [type, status, reason, message, lastTransitionTime]
+                    properties:
+                      type:
+                        type: string
+                      status:
+                        type: string
+                        enum: ['True', 'False', Unknown]
+                      observedGeneration:
+                        type: integer
+                        format: int64
+                      lastTransitionTime:
+                        type: string
+                        format: date-time
+                      reason:
+                        type: string
+                      message:
+                        type: string

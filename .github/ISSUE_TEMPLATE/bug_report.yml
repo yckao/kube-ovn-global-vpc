@@ -1,0 +1,40 @@
+name: Bug report
+description: Report a reproducible controller or gateway issue.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For vulnerabilities, follow SECURITY.md instead of filing a public issue.
+        Share only sanitized examples: no kubeconfigs, tokens, private keys,
+        private endpoints, production identities or confidential captures.
+  - type: input
+    id: version
+    attributes:
+      label: Project version or source commit
+      description: Include `platform-vpc-controller --version` when available.
+    validations:
+      required: true
+  - type: textarea
+    id: components
+    attributes:
+      label: Component versions and transport
+      description: Kubernetes, Kube-OVN source/extension version, transport class and relevant generic OS/kernel versions. Do not include private environment identifiers.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Minimal reproduction
+      description: Use fictional names and non-sensitive example ranges. Include steps, expected behavior and actual behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Sanitized diagnostics
+      description: Relevant conditions, acknowledgements, errors and packet-test outcomes. State whether this affects configuration, established traffic or new connections.
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and recovery
+      description: Which operations are affected and what restores them? Do not force-delete finalizers or allocation records to collect a reproduction.

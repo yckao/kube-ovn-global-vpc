@@ -1,0 +1,23 @@
+# Rendered by the managed local operator; Kube-OVN is the only OVN writer.
+# Requires native.patch and the patched Vpc CRD/controller from the pinned source.
+apiVersion: kubeovn.io/v1
+kind: Vpc
+metadata:
+  name: tenant-example
+spec:
+  bfdPort:
+    enabled: true
+    ip: 169.254.100.1/32
+    nodeSelector:
+      matchLabels:
+        platform.globalvpc.io/gateway: "true"
+  destinationRoutes:
+    - cidr: 10.70.0.0/24
+      nextHops: [172.20.0.2, 172.20.0.3]
+      bfd:
+        minRX: 100
+        minTX: 100
+        multiplier: 3
+      selectionFields: [ip_src, ip_dst, ip_proto, tp_src, tp_dst]
+# Gateway next hops must exist on an ordinary connected VPC transit LRP.
+# To withdraw, set destinationRoutes: [] and wait for the empty appliedHash.

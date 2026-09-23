@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+<title id="title">操作從 Public API 開始，排障沿權責向下追</title><desc id="desc">先辨識卡在哪一層，再核對該層的 generation / identity / route；避免直接改動 OVN 底層狀態</desc>
+<defs><style>text{font-family:"PingFang TC","Heiti TC","Noto Sans CJK TC",Arial,sans-serif}</style>
+<marker id="a-wire" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#74859D"/></marker>
+<marker id="a-blue" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#2563EB"/></marker>
+<marker id="a-teal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#087F83"/></marker>
+<marker id="a-purple" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#7752C6"/></marker>
+<marker id="a-amber" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#AD6800"/></marker>
+<marker id="a-red" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#B83D58"/></marker>
+</defs>
+<rect x="0" y="0" width="1920" height="1080" rx="0" fill="#F5F7FB" stroke="none" stroke-width="1.5"/>
+<rect x="64" y="32" width="7" height="23" rx="3" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="86" y="51" font-size="18" fill="#087F83" font-weight="700" text-anchor="start">GLOBAL VPC  /  ENGINEERING BRIEFING</text>
+<text xml:space="preserve" x="1856" y="51" font-size="18" fill="#53647C" font-weight="400" text-anchor="end">MANAGED v1alpha2 · v0.1.0</text>
+<text xml:space="preserve" x="64" y="114" font-size="44" fill="#162640" font-weight="700" text-anchor="start" data-max-width="1792">操作從 Public API 開始，排障沿權責向下追</text>
+<text xml:space="preserve" x="64" y="158" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1792">先辨識卡在哪一層，再核對該層的 generation / identity / route；避免直接改動 OVN 底層狀態</text>
+<path d="M64 185 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="64" y="934" width="1792" height="64" rx="14" fill="#E8F7F5" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="974" font-size="26" fill="#087F83" font-weight="600" text-anchor="start" data-max-width="1744">Deployment Ready 是程序健康；VPC Ready 是配置條件；雙向封包測試才證明實際通路。</text>
+<path d="M64 1017 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text xml:space="preserve" x="64" y="1051" font-size="18" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1500">架構與操作圖解  ·  詳細操作與適用邊界請見同目錄講解</text>
+<text xml:space="preserve" x="1856" y="1051" font-size="19" fill="#53647C" font-weight="700" text-anchor="end">11 / 12</text>
+<rect x="64" y="248" width="576" height="238" rx="16" fill="#EDF3FF" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="64" y="266" width="5" height="202" rx="2" fill="#2563EB" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="290" font-size="26" fill="#2563EB" font-weight="650" text-anchor="start" data-max-width="528">① Public intent</text>
+<text xml:space="preserve" x="88" y="331" font-size="23" fill="#2563EB" font-weight="600" text-anchor="start" data-max-width="528">Management cluster</text>
+<text xml:space="preserve" x="88" y="391" font-size="23" fill="#162640" font-weight="400" text-anchor="start" data-max-width="528">VPC / Subnet conditions</text>
+<text xml:space="preserve" x="88" y="433" font-size="23" fill="#162640" font-weight="400" text-anchor="start" data-max-width="528">observedGeneration / nativeSubnetName</text>
+<path d="M640 365 H660" fill="none" stroke="#2563EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-blue)"/>
+<rect x="672" y="248" width="576" height="238" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="672" y="266" width="5" height="202" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="696" y="290" font-size="26" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="528">② Accepted configuration</text>
+<text xml:space="preserve" x="696" y="331" font-size="23" fill="#7752C6" font-weight="600" text-anchor="start" data-max-width="528">Local Infra cluster</text>
+<text xml:space="preserve" x="696" y="391" font-size="23" fill="#162640" font-weight="400" text-anchor="start" data-max-width="528">NetworkBinding → native Vpc</text>
+<text xml:space="preserve" x="696" y="433" font-size="23" fill="#162640" font-weight="400" text-anchor="start" data-max-width="528">capability / generation / hash ACK</text>
+<path d="M1248 365 H1268" fill="none" stroke="#7752C6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-purple)"/>
+<rect x="1280" y="248" width="576" height="238" rx="16" fill="#FFF4DD" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1280" y="266" width="5" height="202" rx="2" fill="#AD6800" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1304" y="290" font-size="26" fill="#AD6800" font-weight="650" text-anchor="start" data-max-width="528">③ Runtime + real traffic</text>
+<text xml:space="preserve" x="1304" y="331" font-size="23" fill="#AD6800" font-weight="600" text-anchor="start" data-max-width="528">Gateways / endpoints</text>
+<text xml:space="preserve" x="1304" y="391" font-size="23" fill="#162640" font-weight="400" text-anchor="start" data-max-width="528">Pods / BFD / BGP / routes</text>
+<text xml:space="preserve" x="1304" y="433" font-size="23" fill="#162640" font-weight="400" text-anchor="start" data-max-width="528">雙向 ICMP / HTTP / TCP / tenant identity</text>
+<rect x="64" y="528" width="1792" height="226" rx="16" fill="#FFFFFF" stroke="#D6E0EC" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="571" font-size="26" fill="#162640" font-weight="650" text-anchor="start">常見條件</text>
+<text xml:space="preserve" x="678" y="571" font-size="26" fill="#162640" font-weight="650" text-anchor="start">下一步</text>
+<text xml:space="preserve" x="88" y="622" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="550">NativeCapabilityRequired</text>
+<text xml:space="preserve" x="678" y="622" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1150">核對 native extension binary、CRD schema 與 capability</text>
+<text xml:space="preserve" x="88" y="668" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="550">NativeRoutesPending</text>
+<text xml:space="preserve" x="678" y="668" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1150">比對 destinationRoutes 的 desired / observed generation + hash</text>
+<text xml:space="preserve" x="88" y="714" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="550">GatewayPending</text>
+<text xml:space="preserve" x="678" y="714" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1150">核對 node / allocation / runtime / local BFD，再查 peer 與封包</text>
+<rect x="64" y="786" width="1792" height="108" rx="16" fill="#EDF3FF" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="827" font-size="22" fill="#2563EB" font-weight="400" text-anchor="start" data-max-width="1744">kubectl --context &quot;$AUTH_CTX&quot; -n project-demo get vpcs.platform.globalvpc.io,subnets.platform.globalvpc.io</text>
+<text xml:space="preserve" x="88" y="867" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1744">部署與測試指令：docs/managed-quickstart.md  ·  配置可見性不取代封包驗證</text>
+</svg>

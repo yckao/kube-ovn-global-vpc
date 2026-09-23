@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+<title id="title">使用者描述網路，平台完成跨站連線</title><desc id="desc">接近 GCP 的操作模型：Project → Global VPC → 各 location 的 Subnet</desc>
+<defs><style>text{font-family:"PingFang TC","Heiti TC","Noto Sans CJK TC",Arial,sans-serif}</style>
+<marker id="a-wire" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#74859D"/></marker>
+<marker id="a-blue" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#2563EB"/></marker>
+<marker id="a-teal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#087F83"/></marker>
+<marker id="a-purple" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#7752C6"/></marker>
+<marker id="a-amber" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#AD6800"/></marker>
+<marker id="a-red" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 Z" fill="#B83D58"/></marker>
+</defs>
+<rect x="0" y="0" width="1920" height="1080" rx="0" fill="#F5F7FB" stroke="none" stroke-width="1.5"/>
+<rect x="64" y="32" width="7" height="23" rx="3" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="86" y="51" font-size="18" fill="#087F83" font-weight="700" text-anchor="start">GLOBAL VPC  /  ENGINEERING BRIEFING</text>
+<text xml:space="preserve" x="1856" y="51" font-size="18" fill="#53647C" font-weight="400" text-anchor="end">MANAGED v1alpha2 · v0.1.0</text>
+<text xml:space="preserve" x="64" y="114" font-size="44" fill="#162640" font-weight="700" text-anchor="start" data-max-width="1792">使用者描述網路，平台完成跨站連線</text>
+<text xml:space="preserve" x="64" y="158" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1792">接近 GCP 的操作模型：Project → Global VPC → 各 location 的 Subnet</text>
+<path d="M64 185 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="64" y="934" width="1792" height="64" rx="14" fill="#E8F7F5" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="974" font-size="26" fill="#087F83" font-weight="600" text-anchor="start" data-max-width="1744">使用者不維護 Gateway IP、金鑰、ASN 或 peer list；這些資訊由平台產生與交換。</text>
+<path d="M64 1017 H1856" fill="none" stroke="#D6E0EC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text xml:space="preserve" x="64" y="1051" font-size="18" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1500">架構與操作圖解  ·  詳細操作與適用邊界請見同目錄講解</text>
+<text xml:space="preserve" x="1856" y="1051" font-size="19" fill="#53647C" font-weight="700" text-anchor="end">01 / 12</text>
+<rect x="64" y="222" width="492" height="624" rx="16" fill="#EDF3FF" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="64" y="240" width="5" height="588" rx="2" fill="#2563EB" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="88" y="264" font-size="27" fill="#2563EB" font-weight="650" text-anchor="start" data-max-width="444">使用者輸入（節錄）</text>
+<text xml:space="preserve" x="88" y="302" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="444">Project  ·  project-demo</text>
+<rect x="88" y="332" width="444" height="200" rx="16" fill="#FFFFFF" stroke="#D6E0EC" stroke-width="1.5"/>
+<text xml:space="preserve" x="112" y="372" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="394">kind: VPC</text>
+<text xml:space="preserve" x="112" y="410" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="394">metadata:</text>
+<text xml:space="preserve" x="112" y="448" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="394">  name: production</text>
+<text xml:space="preserve" x="112" y="486" font-size="25" fill="#162640" font-weight="400" text-anchor="start" data-max-width="394">spec: {}</text>
+<rect x="88" y="552" width="444" height="228" rx="16" fill="#FFFFFF" stroke="#D6E0EC" stroke-width="1.5"/>
+<text xml:space="preserve" x="112" y="592" font-size="23" fill="#162640" font-weight="400" text-anchor="start" data-max-width="394">kind: Subnet</text>
+<text xml:space="preserve" x="112" y="628" font-size="23" fill="#162640" font-weight="400" text-anchor="start" data-max-width="394">spec:</text>
+<text xml:space="preserve" x="112" y="664" font-size="23" fill="#162640" font-weight="400" text-anchor="start" data-max-width="394">  vpcRef: production</text>
+<text xml:space="preserve" x="112" y="700" font-size="23" fill="#162640" font-weight="400" text-anchor="start" data-max-width="394">  locationRef: dc-a</text>
+<text xml:space="preserve" x="112" y="736" font-size="23" fill="#162640" font-weight="400" text-anchor="start" data-max-width="394">  cidr: 10.60.1.0/24</text>
+<path d="M556 505 H627" fill="none" stroke="#2563EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-blue)"/>
+<rect x="636" y="302" width="500" height="390" rx="16" fill="#E8F7F5" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="636" y="320" width="5" height="354" rx="2" fill="#087F83" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="660" y="344" font-size="27" fill="#087F83" font-weight="650" text-anchor="start" data-max-width="452">平台自動完成</text>
+<text xml:space="preserve" x="660" y="382" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="452">驗證專案、位置與 CIDR</text>
+<text xml:space="preserve" x="660" y="416" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="452">建立 Kube-OVN 原生資源</text>
+<text xml:space="preserve" x="660" y="450" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="452">選擇多 Gateway、分配位址</text>
+<text xml:space="preserve" x="660" y="484" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="452">交換成員資訊、建立 peer</text>
+<text xml:space="preserve" x="660" y="518" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="452">設定路由、BFD 與狀態回報</text>
+<path d="M1136 505 H1207" fill="none" stroke="#087F83" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-teal)"/>
+<rect x="1216" y="222" width="640" height="624" rx="16" fill="#FFFFFF" stroke="#D6E0EC" stroke-width="1.5"/>
+<text xml:space="preserve" x="1244" y="268" font-size="29" fill="#7752C6" font-weight="650" text-anchor="start">VPC  ·  production</text>
+<rect x="1244" y="306" width="584" height="160" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1244" y="324" width="5" height="124" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1268" y="348" font-size="27" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="536">DC-A / app-a</text>
+<text xml:space="preserve" x="1268" y="386" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="536">10.60.1.0/24</text>
+<text xml:space="preserve" x="1268" y="420" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="536">本地 native Vpc / Subnet</text>
+<path d="M1536 474 V568" fill="none" stroke="#AD6800" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-amber)" marker-start="url(#a-amber)"/>
+<text xml:space="preserve" x="1568" y="530" font-size="23" fill="#AD6800" font-weight="400" text-anchor="start">跨站 L3 路由</text>
+<rect x="1244" y="580" width="584" height="160" rx="16" fill="#F2EDFC" stroke="#D6E0EC" stroke-width="1.5"/>
+<rect x="1244" y="598" width="5" height="124" rx="2" fill="#7752C6" stroke="none" stroke-width="1.5"/>
+<text xml:space="preserve" x="1268" y="622" font-size="27" fill="#7752C6" font-weight="650" text-anchor="start" data-max-width="536">DC-B / app-b</text>
+<text xml:space="preserve" x="1268" y="660" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="536">10.61.1.0/24</text>
+<text xml:space="preserve" x="1268" y="694" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="536">本地 native Vpc / Subnet</text>
+<text xml:space="preserve" x="1244" y="804" font-size="23" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="584">工作負載透過 nativeSubnetName 接網</text>
+<text xml:space="preserve" x="64" y="894" font-size="24" fill="#53647C" font-weight="400" text-anchor="start" data-max-width="1792">產品邊界：API 已實作；租戶 UI、Compute／KubeVirt 接網 adapter 仍待平台整合。</text>
+</svg>

@@ -1,0 +1,71 @@
+# Install on the local authority/Infra API. If they are separate within one
+# site, split these rules between their service accounts. Replace namespace.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: site-vpc-controller
+  namespace: global-vpc-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: site-vpc-controller
+rules:
+  - apiGroups: [networking.globalvpc.io]
+    resources: [sitevpcs]
+    verbs: [get, list, watch, update, patch]
+  - apiGroups: [networking.globalvpc.io]
+    resources: [sitevpcs/status, sitevpcs/finalizers]
+    verbs: [get, update, patch]
+  - apiGroups: [kubeovn.io]
+    resources: [vpcs, subnets]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: [kubeovn.io]
+    resources: [ips]
+    verbs: [get, list]
+  - apiGroups: ['']
+    resources: [namespaces, pods]
+    verbs: [get, list]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: site-vpc-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: site-vpc-controller
+subjects:
+  - kind: ServiceAccount
+    name: site-vpc-controller
+    namespace: global-vpc-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: site-vpc-gateway
+  namespace: global-vpc-system
+rules:
+  - apiGroups: ['']
+    resources: [pods, configmaps]
+    verbs: [get, list, create, update, patch, delete]
+  - apiGroups: [coordination.k8s.io]
+    resources: [leases]
+    verbs: [get, list, watch, create, update, patch]
+  - apiGroups: ['']
+    resources: [events]
+    verbs: [create, patch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: site-vpc-gateway
+  namespace: global-vpc-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: site-vpc-gateway
+subjects:
+  - kind: ServiceAccount
+    name: site-vpc-controller
+    namespace: global-vpc-system
