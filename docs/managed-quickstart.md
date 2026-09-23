@@ -82,9 +82,42 @@ label does not establish compatibility. A single-location VPC can create native
 Vpc/Subnet resources without the extension; this two-location example requires
 it.
 
+## Install the native Kube-OVN extension first
+
+This is a required administrator step on **both Infra clusters** for the
+two-location example. Building `platform-vpc-controller` and the gateway below
+does **not** build or install the native Kube-OVN extension.
+
+Follow [Build and install the native Kube-OVN extension](kube-ovn-extension-install.md)
+through step 6, then return here. That guide provides the commands to:
+
+1. Inventory the installed controller and CRD, identify their owner and select
+   the exact v1.16.3 or v1.16.4 source target.
+2. Fetch and verify the locked source, apply the patch, build the Linux native
+   controller and run the matching tests.
+3. Package the binary in the matching Kube-OVN distribution image, preserve its
+   file capabilities and record the immutable image digest.
+4. Add only `Vpc.spec.destinationRoutes` and `Vpc.status.destinationRoutes` to
+   the existing CRD with guarded dry-run/apply commands.
+5. Replace all existing native controller replicas and verify the running
+   binaries before enabling managed intent.
+
+The guide also specifies the separate real-OVN qualification gate, post-install
+generation/hash checks and owner-driven rollback. Its direct update commands
+target an administrator-owned evaluation installation; a GitOps-managed cluster
+must carry the same changes through its existing resource owner. There is no
+published prebuilt patched native image or one-command production installer.
+
+Before continuing, both Infras must have the two schema fields, all native
+replicas on the reviewed binary, and working baseline local networking. The
+native intent acknowledgement and cross-site packet checks happen after the
+managed example is created below.
+
 ## Build and prepare
 
-Run from the repository root with Go, Docker/buildx, Python 3, jq and kubectl.
+These commands build the **platform and gateway images**. The separate native
+controller build must already be complete. Run from the repository root with
+Go, Docker/buildx, Python 3, jq and kubectl.
 Replace registry/context placeholders and use immutable image digests.
 
 ```sh
@@ -233,6 +266,9 @@ kubectl --context "$DC_A_CTX" -n managed-vpc-smoke exec endpoint -- wget -qO- "h
 Repeat in the reverse direction. Deployment Ready means process health.
 VPC Ready means configuration acknowledgements and local gateway health.
 Only packet tests establish actual cross-site forwarding for the tested path.
+Also run the native extension guide's
+[generation and expected-hash check](kube-ovn-extension-install.md#7-return-to-the-managed-quick-start-and-verify-acknowledgement)
+for each Infra's native VPC.
 
 ```sh
 kubectl --context "$AUTH_CTX" -n project-demo describe vpc.platform.globalvpc.io production
@@ -266,3 +302,8 @@ be acknowledged before peers withdraw its route. Unavailable locations may
 delay deletion without authorizing address reuse. Allocation receipts remain
 reserved after cleanup. Keep the operators and their records until all managed
 objects have drained.
+
+To remove the native extension itself, continue with its
+[withdrawal and rollback procedure](kube-ovn-extension-install.md#8-withdraw-and-roll-back).
+Restoring a stock image or removing schema fields before route/BFD drainage is
+not a valid rollback.

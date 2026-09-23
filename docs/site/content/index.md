@@ -10,6 +10,7 @@ Create a project-scoped VPC, add a Subnet in each location, and let the platform
 |---|---|
 | Understand the design in ten minutes | [Architecture](architecture.md), then [packet path and transports](transports.md) |
 | Install a two-location evaluation | [Installation quick start](../../managed-quickstart.md) and [configuration reference](configuration.md) |
+| Prepare the required native patch | [Kube-OVN patch installation](../../kube-ovn-extension-install.md) |
 | Integrate with an existing platform | [Kube-OVN integration](integration.md) and [API reference](api.md) |
 | Operate or troubleshoot | [Operations](operations.md) and [HA and recovery](ha.md) |
 | Brief engineers and technical leadership | [12-diagram engineering briefing](diagrams.md), with Traditional Chinese speaker notes |

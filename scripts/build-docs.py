@@ -19,6 +19,7 @@ CONTENT = ROOT / "docs/site/content"
 PAGES = [
     ("Start here", "Overview", "index", CONTENT / "index.md"),
     ("Start here", "Installation", "installation", ROOT / "docs/managed-quickstart.md"),
+    ("Start here", "Kube-OVN patch installation", "native-installation", ROOT / "docs/kube-ovn-extension-install.md"),
     ("Start here", "Configuration", "configuration", CONTENT / "configuration.md"),
     ("Design", "Architecture", "architecture", CONTENT / "architecture.md"),
     ("Design", "Kube-OVN integration", "integration", CONTENT / "integration.md"),

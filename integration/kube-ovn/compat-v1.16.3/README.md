@@ -6,6 +6,11 @@ This compatibility patch targets the pinned build source,
 not an official Kube-OVN release. Runtime qualification and a controlled rollout
 are required before enabling managed bindings.
 
+Follow the [native extension installation guide](../../../docs/kube-ovn-extension-install.md)
+for the complete v1.16.3 fetch/build/test/image/schema/rollout procedure and
+rollback commands. Select its compatibility branch; the parent v1.16.4 test
+wrapper expects a different dependency version.
+
 The source archive SHA256 is
 `8d8195b60e39ea3291bc8f8ba3828c9b7f756a1ca863e8d10d8332adfdf0f676`.
 `native.patch` applies without changes to this source. `source-lock.json` verifies

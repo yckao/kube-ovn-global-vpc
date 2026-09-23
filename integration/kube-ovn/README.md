@@ -10,6 +10,12 @@ dependencies. These are independent project extensions, not official Kube-OVN
 releases. A schema and source artifact do not establish running compatibility;
 validate the controller build, acknowledgement and actual tenant path separately.
 
+For the end-to-end administrator procedure, use
+[Build and install the native Kube-OVN extension](../../docs/kube-ovn-extension-install.md).
+It covers source acquisition, both build targets, image packaging, guarded CRD
+updates, replica replacement, acknowledgement checks and rollback. This README
+defines the implementation contract and test boundaries.
+
 ## Native API contract
 
 See [example-vpc.yaml](example-vpc.yaml). Each destination route specifies a canonical unicast IPv4 `cidr`, 2–64 directly connected local gateway `nextHops`, required BFD timers (`minRX`, `minTX`, `multiplier`), and explicit ECMP `selectionFields`. The initial public product accepts subnet prefixes /8–/30; this native validator supports /1–/31 and rejects default and host routes. It rejects overlapping destinations, repeated next hops, destination-overlapping gateways, invalid fields/timers, and inconsistent BFD timers for shared next hops. The 64-next-hop and 256-prefix limits bound configuration size; they are not measured hardware scale limits.
