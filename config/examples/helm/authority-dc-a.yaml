@@ -1,4 +1,4 @@
-# Add DC-B after DC-A is working. Preserve every existing DC-A setting and project grant.
+# Start with DC-A only. Reserve these pools and replace the example group.
 {
   "platform": {
     "registryNamespace": "global-vpc-system",
@@ -25,19 +25,6 @@
         ],
         "cidrPools": [
           "10.60.0.0/16"
-        ]
-      },
-      {
-        "name": "dc-b",
-        "region": "region-1",
-        "site": "site-b",
-        "dc": "dc-b",
-        "bindingNamespace": "global-vpc-dc-b",
-        "allowedProjects": [
-          "project-demo"
-        ],
-        "cidrPools": [
-          "10.61.0.0/16"
         ]
       }
     ]

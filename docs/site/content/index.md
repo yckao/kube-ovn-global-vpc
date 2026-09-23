@@ -10,12 +10,14 @@ Create a project-scoped VPC, add a Subnet in each location, and let the platform
 |---|---|
 | Operate without a UI | [vpcctl: Helm lifecycle and VPC/Subnet operations](../../vpcctl.md) |
 | Understand the design in ten minutes | [Architecture](architecture.md), then [packet path and transports](transports.md) |
-| Install a two-location evaluation | [Installation quick start](../../managed-quickstart.md) and [configuration reference](configuration.md) |
-| Audit or build the native extension as a maintainer | [Kube-OVN patch reference](../../kube-ovn-extension-install.md) |
+| Start with DC-A, then add DC-B | [Progressive installation quick start](../../managed-quickstart.md) and [configuration reference](configuration.md) |
 | Integrate with an existing platform | [Kube-OVN integration](integration.md) and [API reference](api.md) |
 | Operate or troubleshoot | [Operations](operations.md) and [HA and recovery](ha.md) |
 | Brief engineers and technical leadership | [12-diagram engineering briefing](diagrams.md), with Traditional Chinese speaker notes |
 | Decide whether to adopt | [Evidence and limitations](validation.md) and [release readiness](release-readiness.md) |
+
+The installation path uses prebuilt images and Helm charts. Source patching and
+binary builds belong to the [maintainer patch and recovery reference](../../kube-ovn-extension-install.md).
 
 ## A small tenant API
 

@@ -30,7 +30,7 @@ Do not directly patch managed OVN rows to make status green. Preserve owner UIDs
 
 ## Validate actual packets
 
-The [quick start](../../managed-quickstart.md#create-and-verify) renders smoke Pods with the resolved native subnet names and runs bidirectional packet checks. Include source-address, cross-tenant isolation and DF/MTU checks in your environment's acceptance plan. A passing ping alone does not establish throughput or every protocol path.
+The [quick start](../../managed-quickstart.md#install-dc-b-then-extend-the-existing-vpc) renders smoke Pods with the resolved native subnet names and runs bidirectional packet checks after a local DC-A check. Include source-address, cross-tenant isolation and DF/MTU checks in your environment's acceptance plan. A passing ping alone does not establish throughput or every protocol path.
 
 ## Add or remove a location
 

@@ -2,5 +2,5 @@ apiVersion: v2
 name: global-vpc-site
 description: Global VPC local operator and gateway configuration for one Infra cluster
 type: application
-version: 0.1.0
-appVersion: "0.1.0"
+version: 0.1.1
+appVersion: "0.1.1"

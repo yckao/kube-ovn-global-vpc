@@ -10,8 +10,8 @@ workflow has not yet been produced and verified for this change. Repository
 paths, example versions and workflow definitions are not evidence that registry
 images or GitHub release assets are already available.
 
-The prepared version is **v0.1.0**, an experimental release. `VERSION` contains
-`0.1.0`; Git tags and workflow version inputs use `v0.1.0`. Public APIs remain
+The prepared version is **v0.1.1**, an experimental release. `VERSION` contains
+`0.1.1`; Git tags and workflow version inputs use `v0.1.1`. Public APIs remain
 `platform.globalvpc.io/v1alpha2`. Project versions, chart versions and Kubernetes
 API versions are separate contracts.
 
@@ -28,7 +28,7 @@ and Helm OCI packages:
 
 The OCI path is
 `oci://ghcr.io/<owner>/<repository>/charts/<chart>`. Chart versions use the numeric
-project version, such as `0.1.0`; image and Git release tags use `v0.1.0`. These are
+project version, such as `0.1.1`; image and Git release tags use `v0.1.1`. These are
 naming rules, not a claim that any particular version has been published.
 
 Release chart defaults contain the actual immutable controller, gateway and
@@ -97,6 +97,11 @@ The same workflow publishes when `publish=true`. Supply all of these inputs:
 | `native_base_v1163` | Verified original Kube-OVN v1.16.3 Linux/amd64 distribution image in the same immutable format |
 | `native_base_v1164` | Verified original Kube-OVN v1.16.4 Linux/amd64 distribution image in the same immutable format |
 
+The reviewed v0.1.1 inputs are recorded in
+[build/release-bases.json](../build/release-bases.json), including the source-revision
+comparison for the upstream v1.16.4 release-tag commit. Use its platform-specific
+digests when dispatching this release.
+
 The maintainer must verify that native base images match their stated baselines.
 The workflow validates digest syntax; a correctly formatted digest alone does
 not establish source compatibility. No example or guessed digest is supplied.
@@ -137,18 +142,18 @@ cross-site traffic, hardware behavior or an operational support SLA.
 
 ## Release assets and verification
 
-For version `v0.1.0`, the completed workflow produces:
+For version `v0.1.1`, the completed workflow produces:
 
 | Asset | Contents |
 | --- | --- |
-| `vpcctl_0.1.0_{linux,darwin}_{amd64,arm64}.tar.gz` | Four CLI archives, each including project license/notices |
-| `platform-vpc-controller_0.1.0_linux_{amd64,arm64}.tar.gz` | Controller binaries and project license/notices |
-| `{global-vpc,global-vpc-site,kube-ovn-global-vpc-extension}-0.1.0.tgz` | Primary Helm packages with prebuilt-image defaults |
+| `vpcctl_0.1.1_{linux,darwin}_{amd64,arm64}.tar.gz` | Four CLI archives, each including project license/notices |
+| `platform-vpc-controller_0.1.1_linux_{amd64,arm64}.tar.gz` | Controller binaries and project license/notices |
+| `{global-vpc,global-vpc-site,kube-ovn-global-vpc-extension}-0.1.1.tgz` | Primary Helm packages with prebuilt-image defaults |
 | `release.json` | Immutable images, inline native bundles, chart URLs and source identity |
-| `kube-ovn-global-vpc_0.1.0_source.tar.gz` | Full tracked project source from the release commit |
+| `kube-ovn-global-vpc_0.1.1_source.tar.gz` | Full tracked project source from the release commit |
 | `project-vendored-source.tar.gz` | Project source plus vendored Go dependencies and included license files |
 | `native-v1.16.3-source.tar.gz`, `native-v1.16.4-source.tar.gz` | Exact patched production source, vendored dependencies, patch, lock, modification notice and qualification |
-| `managed-installation_0.1.0.tar.gz` | Reference CRDs, templates, examples and native integration inputs; Helm charts are the primary installer |
+| `managed-installation_0.1.1.tar.gz` | Reference CRDs, templates, examples and native integration inputs; Helm charts are the primary installer |
 | `image-evidence.tar.gz` | Image manifests, retrieved SBOM/provenance, build inputs, tool versions, runtime checks and native qualification |
 | `provenance.json` | Project packaging metadata: source commit, toolchain, build options and hashes of its initial packaged inputs/outputs |
 | `SHA256SUMS` | Final checksums of all adjacent release assets |
@@ -189,7 +194,7 @@ make release-artifacts
 ```
 
 The local packager produces the binary/source/reference-input subset under
-`dist/v0.1.0/`. Chart default injection, OCI publication, vendored source material
+`dist/v0.1.1/`. Chart default injection, OCI publication, vendored source material
 and final descriptor assembly are additional workflow steps. Running
 `make release-artifacts` alone neither publishes images nor creates a complete
 installable release.
