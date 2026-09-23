@@ -53,9 +53,10 @@ users do not need Go, Docker or BuildKit.
 
 Follow the [managed quick start](docs/managed-quickstart.md) for preparation,
 installation, tenant operations, verification, upgrades, rollback and removal.
-The prebuilt release workflow is implemented; availability depends on publishing
-a release with its image and chart assets. Source chart defaults intentionally
-lack published image digests. The [native reference](docs/kube-ovn-extension-install.md)
+[v0.1.1 is published](https://github.com/yckao/kube-ovn-global-vpc/releases/tag/v0.1.1)
+with five OCI images, three Helm charts, four CLI builds and checksums. Use its
+packaged charts; source chart defaults intentionally lack published image
+digests. The [native reference](docs/kube-ovn-extension-install.md)
 retains the underlying patch/build steps for maintainers.
 
 After administrator installation:

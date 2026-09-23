@@ -1,6 +1,6 @@
 # Support
 
-Version 0.1.0 is for engineering evaluation. Maintenance is best-effort with no
+This project is for engineering evaluation. Maintenance is best-effort with no
 paid support commitment or availability SLA.
 
 Use [GitHub issues](https://github.com/yckao/kube-ovn-global-vpc/issues) for

@@ -1,6 +1,6 @@
 # Open-source readiness
 
-Version 0.1.0 is experimental. Repository publication and a documentation website
+This project is experimental. Repository publication and a documentation website
 are distinct from production readiness.
 
 ## Initial publication requirements

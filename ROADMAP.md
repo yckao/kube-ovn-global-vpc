@@ -1,7 +1,7 @@
 # Roadmap
 
 This is a direction, not a delivery schedule or a statement of existing features.
-Version 0.1.0 is an experimental managed API and native integration implementation.
+The managed API and native integration are experimental.
 
 ## Reduce integration work
 

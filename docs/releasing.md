@@ -5,12 +5,15 @@ images and downloadable `vpcctl` binaries; `vpcctl` wraps the Helm lifecycle.
 Administrators do not need Go, Docker or BuildKit on their machines. Those tools
 belong to the project's release build environment.
 
-The release workflow is implemented, but an actual prebuilt release from this
-workflow has not yet been produced and verified for this change. Repository
-paths, example versions and workflow definitions are not evidence that registry
-images or GitHub release assets are already available.
+[v0.1.1](https://github.com/yckao/kube-ovn-global-vpc/releases/tag/v0.1.1) was
+published on September 23, 2026 by the successful
+[release run](https://github.com/yckao/kube-ovn-global-vpc/actions/runs/35817763742)
+from source commit `3015225cf5dad4176a4cd98672872cbe50b72168`. It contains five
+OCI images, three Helm charts, four CLI builds and 18 downloadable assets in
+total, including checksums, source and build evidence. Publication does not
+establish deployment or packet-forwarding qualification.
 
-The prepared version is **v0.1.1**, an experimental release. `VERSION` contains
+The current version is **v0.1.1**, an experimental release. `VERSION` contains
 `0.1.1`; Git tags and workflow version inputs use `v0.1.1`. Public APIs remain
 `platform.globalvpc.io/v1alpha2`. Project versions, chart versions and Kubernetes
 API versions are separate contracts.
@@ -28,8 +31,7 @@ and Helm OCI packages:
 
 The OCI path is
 `oci://ghcr.io/<owner>/<repository>/charts/<chart>`. Chart versions use the numeric
-project version, such as `0.1.1`; image and Git release tags use `v0.1.1`. These are
-naming rules, not a claim that any particular version has been published.
+project version, such as `0.1.1`; image and Git release tags use `v0.1.1`.
 
 Release chart defaults contain the actual immutable controller, gateway and
 hook-helper image references. The native chart also embeds both qualified native
@@ -108,6 +110,16 @@ not establish source compatibility. No example or guessed digest is supplied.
 The repository must permit its workflow token to publish GHCR packages and
 create GitHub releases. Registry visibility and release access must match the
 intended consumers.
+
+New GHCR packages default to private. After the first push, check public pull
+access for these packages and change any private package to **Public** in its
+GitHub settings:
+`platform-vpc-controller`, `gateway`, `vpcctl`, `kube-ovn` (both native tags), and
+the three packages under `charts/`. The repository source label associates an
+image with this repository; it does not make the package public. Confirm that
+an unauthenticated client can pull all five image tags and all three charts
+before advertising the release as ready for installation. A successful workflow
+push using its registry credentials does not establish anonymous access.
 
 After the candidate checks pass, publication proceeds as follows:
 

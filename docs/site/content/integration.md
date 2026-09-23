@@ -27,10 +27,12 @@ For `N` gateway next hops this requires `2 × N + 1` static-route rows per desti
 
 ## Version matching is part of installation
 
-Follow the [native extension installation guide](../../kube-ovn-extension-install.md)
-before the managed quick start. It includes exact source selection, patch/build
-commands, matching image packaging, additive CRD dry-run/apply, all-replica
-replacement, generation/hash verification and drained rollback.
+Follow the [progressive installation quick start](../../managed-quickstart.md)
+and select the prebuilt native extension for the existing Kube-OVN baseline.
+The native Helm chart manages the matched image, additive schema and guarded
+lifecycle hooks. The [patch and recovery reference](../../kube-ovn-extension-install.md)
+documents source selection, compilation and manual recovery for maintainers;
+administrators do not need to build or patch source.
 
 | Build | Source target | Evidence boundary |
 |---|---|---|
@@ -50,7 +52,7 @@ A local-only VPC can create native Vpc/Subnet resources without this cross-locat
 | Gateway transit, health, link address and port receipts | Local operator's retained registry and immutable anchors |
 | Endpoint addresses inside native Subnets | Native Kube-OVN IPAM |
 
-A compute adapter should resolve `Subnet.status.nativeSubnetName` before attaching an endpoint in the correct Infra cluster. That adapter and a tenant UI are not implemented in v0.1.0. The repository's smoke Pod example demonstrates the resolved attachment for evaluation.
+A compute adapter should resolve `Subnet.status.nativeSubnetName` before attaching an endpoint in the correct Infra cluster. That adapter and a tenant UI are not implemented. The repository's smoke Pod example demonstrates the resolved attachment for evaluation.
 
 ## This is not the built-in OVN-IC path
 

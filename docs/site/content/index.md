@@ -2,7 +2,7 @@
 
 Create a project-scoped VPC, add a Subnet in each location, and let the platform manage membership, gateways and native Kube-OVN configuration. Keep your routed ToRs unchanged.
 
-> **v0.1.0 · experimental software.** The public API is `platform.globalvpc.io/v1alpha2`. This release is a reviewable engineering preview with explicit validation boundaries, not production qualification or a stable API promise.
+> **v0.1.1 · experimental software.** The public API is `platform.globalvpc.io/v1alpha2`. This release is a reviewable engineering preview with explicit validation boundaries, not production qualification or a stable API promise.
 
 ## Start with the right guide
 

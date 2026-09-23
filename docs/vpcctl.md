@@ -12,10 +12,11 @@ and their project access. Go, Docker, BuildKit, Python and jq are not client
 requirements. The [quick start](managed-quickstart.md) first installs and tests
 DC-A, then adds DC-B to the same VPC without replacing the first location.
 
-The examples target the v0.1.1 prebuilt distribution. Use them after its GitHub
-Release includes the CLI archives, images and packaged charts. Artifact
-publication is separate from live deployment and packet qualification. A source
-checkout's chart defaults intentionally lack release digests.
+The examples use the published
+[v0.1.1 prebuilt distribution](https://github.com/yckao/kube-ovn-global-vpc/releases/tag/v0.1.1),
+including CLI archives, OCI images and packaged charts. Artifact publication is
+separate from live deployment and packet qualification. A source checkout's
+chart defaults intentionally lack release digests.
 
 ## Install the CLI
 

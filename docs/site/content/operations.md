@@ -42,7 +42,7 @@ For removal, delete workloads/endpoints first, then the Subnet. Wait for in-use 
 
 The bootstrap helper issues short-lived development access. Before expiry, generate a fresh private kubeconfig, update the local access Secret and restart the site operator: inline tokens are loaded at startup. Automated issuer integration and credential renewal are not implemented.
 
-Use immutable controller and gateway image digests. Changes to the source-matched Kube-OVN binary and its schema require separate compatibility review, rollback preparation and packet validation. The v0.1.0 alpha API has no guaranteed upgrade/migration contract.
+Use immutable controller and gateway image digests. Changes to the source-matched Kube-OVN binary and its schema require separate compatibility review, rollback preparation and packet validation. The `v1alpha2` API has no guaranteed upgrade/migration contract.
 
 ## Observability boundary
 

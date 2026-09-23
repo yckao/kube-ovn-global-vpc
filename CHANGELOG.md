@@ -7,9 +7,9 @@ a production support commitment.
 
 ## 0.1.1 — Prebuilt Helm distribution
 
-This is the prepared release version. A Git tag, GitHub Release and published
-container images are separate publication steps; their existence must not be
-inferred from this file.
+Published September 23, 2026:
+[v0.1.1](https://github.com/yckao/kube-ovn-global-vpc/releases/tag/v0.1.1), with five
+OCI images, three Helm charts, four CLI builds, source and checksums.
 
 ### Added
 
@@ -32,7 +32,7 @@ inferred from this file.
   with guarded cleanup, configuration checks and release rollback hooks.
 - Standalone `vpcctl` binaries wrapping Helm lifecycle and public VPC/Subnet
   operations, including scoped access issuance and project drainage.
-- CI preparation of prebuilt controller, gateway, native and hook images,
+- CI publication of prebuilt controller, gateway, native and hook images,
   four CLI platforms, chart packages, checksums, source and image evidence.
 - Credential-free unit/API test automation and repeatable release packaging.
 
@@ -49,9 +49,7 @@ inferred from this file.
   recovery require an explicit administrative procedure.
 - Compute-platform attachment automation, a tenant UI, renewable platform
   identity integration and seamless transport migration are not included.
-- Prebuilt publication requires a successful release workflow with reviewed base
-  image digests. This prepared version does not imply that registry assets exist.
-  Dataplane and hook images currently target Linux/amd64; runtime packet/BFD
+- Dataplane and hook images currently target Linux/amd64; runtime packet/BFD
   qualification remains separate from CI build and API checks.
 
 ## 0.1.0 — Source preview
