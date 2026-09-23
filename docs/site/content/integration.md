@@ -27,6 +27,11 @@ For `N` gateway next hops this requires `2 × N + 1` static-route rows per desti
 
 ## Version matching is part of installation
 
+Follow the [native extension installation guide](../../kube-ovn-extension-install.md)
+before the managed quick start. It includes exact source selection, patch/build
+commands, matching image packaging, additive CRD dry-run/apply, all-replica
+replacement, generation/hash verification and drained rollback.
+
 | Build | Source target | Evidence boundary |
 |---|---|---|
 | Upstream-oriented extension | Pinned Kube-OVN v1.16.4 source | Patch, native tests and build path; deploy and qualify against your exact baseline |

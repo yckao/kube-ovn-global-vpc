@@ -52,8 +52,11 @@ kubectl --context management apply -f config/examples/managed/network.yaml
 kubectl --context management -n project-demo get vpcs.platform.globalvpc.io,subnets.platform.globalvpc.io
 ```
 
-The [quick start](docs/managed-quickstart.md) covers image builds, native extension
-installation, RBAC, location registration, workload attachment and packet checks.
+Start with the [native Kube-OVN extension installation](docs/kube-ovn-extension-install.md)
+on each Infra, then follow the [managed quick start](docs/managed-quickstart.md)
+for platform/gateway image builds, RBAC, location registration, workload attachment
+and packet checks. The native guide includes source matching, patching, tests,
+image packaging, additive CRD updates, rollout and rollback.
 All supplied addresses, names and topology examples are synthetic. Replace them
 with values reserved and authorized for your deployment.
 
