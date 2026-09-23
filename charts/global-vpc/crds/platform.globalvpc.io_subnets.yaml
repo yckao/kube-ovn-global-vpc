@@ -1,0 +1,145 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: subnets.platform.globalvpc.io
+spec:
+  group: platform.globalvpc.io
+  names:
+    kind: Subnet
+    listKind: SubnetList
+    plural: subnets
+    shortNames:
+    - psubnet
+    singular: subnet
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.vpcRef
+      name: VPC
+      type: string
+    - jsonPath: .spec.locationRef
+      name: Location
+      type: string
+    - jsonPath: .spec.cidr
+      name: CIDR
+      type: string
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    name: v1alpha2
+    schema:
+      openAPIV3Schema:
+        description: A managed IPv4 subnet in one concrete Infra/DC location. Location
+          is an allocation and forwarding boundary, not a claim of regional CIDR stretching.
+        properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              cidr:
+                maxLength: 18
+                minLength: 9
+                type: string
+                x-kubernetes-validations:
+                - message: Use a canonical IPv4 network prefix from /8 through /30.
+                  rule: isCIDR(self) && cidr(self).ip().family() == 4 && cidr(self).prefixLength()
+                    >= 8 && cidr(self).prefixLength() <= 30 && cidr(self) == cidr(self).masked()
+              locationRef:
+                description: Administrator-defined concrete Infra/DC location.
+                maxLength: 253
+                minLength: 1
+                pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                type: string
+              vpcRef:
+                description: Name of a VPC in the same project namespace.
+                maxLength: 253
+                minLength: 1
+                pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                type: string
+            required:
+            - vpcRef
+            - locationRef
+            - cidr
+            type: object
+            x-kubernetes-validations:
+            - message: VPC, location, and CIDR are immutable; create a new Subnet
+                for relocation or resizing.
+              rule: self == oldSelf
+          status:
+            properties:
+              bindingName:
+                maxLength: 253
+                minLength: 1
+                pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                type: string
+              conditions:
+                items:
+                  properties:
+                    lastTransitionTime:
+                      format: date-time
+                      type: string
+                    message:
+                      maxLength: 32768
+                      type: string
+                    observedGeneration:
+                      format: int64
+                      minimum: 0
+                      type: integer
+                    reason:
+                      maxLength: 1024
+                      minLength: 1
+                      type: string
+                    status:
+                      enum:
+                      - "True"
+                      - "False"
+                      - Unknown
+                      type: string
+                    type:
+                      maxLength: 316
+                      minLength: 1
+                      type: string
+                  required:
+                  - type
+                  - status
+                  - reason
+                  - message
+                  - lastTransitionTime
+                  type: object
+                maxItems: 32
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              nativeSubnetName:
+                maxLength: 253
+                minLength: 1
+                pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                type: string
+              nativeVpcName:
+                maxLength: 253
+                minLength: 1
+                pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                type: string
+              observedGeneration:
+                format: int64
+                minimum: 0
+                type: integer
+              phase:
+                maxLength: 128
+                type: string
+              vpcUID:
+                maxLength: 253
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

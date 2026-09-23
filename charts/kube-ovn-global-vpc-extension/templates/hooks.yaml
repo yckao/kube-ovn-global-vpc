@@ -1,0 +1,75 @@
+{{- range $action := list "reconcile" "uninstall" "verify" }}
+{{- if ne $action "reconcile" }}
+---
+{{- end }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "native.fullname" $ }}-{{ $action }}
+  labels:
+    {{- include "native.labels" $ | nindent 4 }}
+  annotations:
+    helm.sh/hook: {{ if eq $action "reconcile" }}post-install,post-upgrade,post-rollback{{ else if eq $action "uninstall" }}pre-delete{{ else }}test{{ end }}
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+    helm.sh/hook-weight: "10"
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: {{ $.Values.hook.activeDeadlineSeconds }}
+  template:
+    metadata:
+      labels:
+        {{- include "native.labels" $ | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "native.fullname" $ }}
+      restartPolicy: Never
+      {{- with $.Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $.Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: native-hook
+          image: {{ include "native.image" $ | quote }}
+          imagePullPolicy: {{ $.Values.cliImage.pullPolicy }}
+          command: [/vpcctl]
+          args:
+            - --timeout={{ $.Values.hook.timeout }}
+            - internal
+            - native-hook
+            - --action={{ $action }}
+            - --release={{ $.Release.Name }}
+            - --release-namespace={{ $.Release.Namespace }}
+            - --state-secret={{ include "native.fullname" $ }}-state
+            - --bundle=/bundle/bundle.json
+            - --controller-namespace={{ $.Values.native.namespace }}
+            - --controller-deployment={{ $.Values.native.deployment }}
+            - --controller-container={{ $.Values.native.container }}
+            - --ovn-namespace={{ $.Values.ovn.namespace }}
+            - --ovn-deployment={{ $.Values.ovn.deployment }}
+            - --ovn-container={{ $.Values.ovn.container }}
+            - --ovn-db={{ $.Values.ovn.database }}
+          resources:
+            {{- toYaml $.Values.hook.resources | nindent 12 }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          volumeMounts:
+            - name: bundle
+              mountPath: /bundle
+              readOnly: true
+      volumes:
+        - name: bundle
+          configMap:
+            name: {{ include "native.fullname" $ }}-bundle
+{{- end }}

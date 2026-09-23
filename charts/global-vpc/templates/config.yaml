@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "global-vpc.fullname" . }}-config
+  namespace: {{ .Release.Namespace }}
+data:
+  platform.json: {{ include "global-vpc.platform" . | quote }}

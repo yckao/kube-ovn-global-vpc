@@ -1,0 +1,208 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "image": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repository": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[^ @]+$"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "repository",
+        "digest"
+      ]
+    },
+    "cliImage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repository": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[^ @]+$"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "repository",
+        "digest"
+      ]
+    },
+    "replicaCount": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "imagePullSecrets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$",
+            "maxLength": 63
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "minItems": 0
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "preDeleteCheck": {
+          "type": "boolean"
+        }
+      },
+      "required": []
+    },
+    "resources": {
+      "type": "object"
+    },
+    "gatewayImage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repository": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[^ @]+$"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "repository",
+        "digest"
+      ]
+    },
+    "authorityAccess": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "existingSecret": {
+          "type": "string"
+        },
+        "kubeconfig": {
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "local": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "locationRef": {
+          "type": "string",
+          "minLength": 1
+        },
+        "clusterUID": {
+          "type": "string"
+        },
+        "authorityNamespace": {
+          "type": "string",
+          "minLength": 1
+        },
+        "transitPool": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bfdSourcePool": {
+          "type": "string",
+          "minLength": 1
+        },
+        "controlPool": {
+          "type": "string",
+          "minLength": 1
+        },
+        "runtimeDir": {
+          "type": "string",
+          "minLength": 1
+        },
+        "gatewayNodeSelector": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "endpointAnnotation": {
+          "type": "string"
+        },
+        "transitPrefixLength": {
+          "type": "integer",
+          "minimum": 16,
+          "maximum": 29
+        },
+        "portStart": {
+          "type": "integer",
+          "minimum": 1024,
+          "maximum": 65535
+        },
+        "portEnd": {
+          "type": "integer",
+          "minimum": 1024,
+          "maximum": 65535
+        },
+        "gatewayReplicas": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 64
+        },
+        "mtu": {
+          "type": "integer",
+          "minimum": 1280,
+          "maximum": 1400
+        }
+      },
+      "required": [
+        "authorityNamespace",
+        "bfdSourcePool",
+        "clusterUID",
+        "controlPool",
+        "gatewayNodeSelector",
+        "gatewayReplicas",
+        "locationRef",
+        "mtu",
+        "portEnd",
+        "portStart",
+        "runtimeDir",
+        "transitPool",
+        "transitPrefixLength"
+      ]
+    },
+    "nodeSelector": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "image",
+    "cliImage",
+    "gatewayImage",
+    "local",
+    "authorityAccess"
+  ],
+  "$schema": "https://json-schema.org/draft-07/schema#"
+}

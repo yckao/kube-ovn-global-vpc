@@ -1,0 +1,13 @@
+The management authority is installed in {{ .Release.Namespace }}.
+
+Tenant access is granted only by configured project RoleBindings. The authority
+reserves network IDs and prefixes; retained allocation ConfigMaps are not deleted
+by this chart. Project namespaces and workload identities must already exist.
+
+Before uninstall, delete workloads, drain every public Subnet/VPC, and wait for
+all NetworkBindings to disappear. The pre-delete hook blocks remaining resources.
+CRDs, binding namespaces, and allocation receipts are retained. Helm does not
+upgrade CRDs in crds/; follow the release migration instructions when they change.
+
+Use `helm test {{ .Release.Name }} -n {{ .Release.Namespace }}` for read-only API
+and controller observations. This does not establish packet reachability.

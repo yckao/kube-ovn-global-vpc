@@ -1,10 +1,15 @@
 # Build and install the native Kube-OVN extension
 
-This is the administrator prerequisite for the [managed quick start](managed-quickstart.md).
-Complete it on **each Infra cluster before creating cross-location VPCs**.
-The patch changes Kube-OVN source: you build a replacement native controller,
-package it in a matching image, and add two fields to the installed VPC CRD.
-There is no runtime `kubectl patch` that can add this behavior to a stock binary.
+The supported administrator interface is the project's Helm extension chart,
+used directly or through [vpcctl](vpcctl.md). Follow the
+[managed quick start](managed-quickstart.md) for prebuilt image installation,
+upgrades, rollback and removal. This page retains the **maintainer build and
+low-level recovery reference**; its build tools are not end-user prerequisites.
+
+The patch changes Kube-OVN source. Release CI builds a replacement controller,
+packages it in a matched image, and includes the two schema properties in the
+extension chart's native bundle. There is no runtime configuration switch that
+adds this behavior to an unmodified stock binary.
 
 | Artifact | What it runs | Where it is installed |
 |---|---|---|
@@ -22,8 +27,9 @@ The earlier Lab deployment mounted a rebuilt executable into the original
 container with a read-only hostPath. That was a temporary experiment and was
 restored to stock. The OCI packaging procedure below is the installation recipe;
 it must be tested against your image/runtime and is not evidence that this exact
-recipe has already been deployed. The repository does not publish a prebuilt
-patched Kube-OVN image or a portable real-OVN qualification harness.
+recipe has already been deployed. The release pipeline can publish prebuilt patched images and chart bundles;
+implementation of that pipeline does not establish that a release has been
+published or deployed. A portable real-OVN qualification harness is still absent.
 
 Read in order: [baseline](#1-identify-the-installed-baseline-and-its-owner),
 [source](#2-fetch-and-verify-the-exact-source), [build/tests](#3-build-and-run-the-native-tests),
@@ -391,9 +397,12 @@ separate workspace and perform its matching build.
 
 ## 7. Return to the managed quick start and verify acknowledgement
 
-Continue at [Build and prepare](managed-quickstart.md#build-and-prepare) to build
-the platform/gateway images, install authority/local operators and create the
-example. Do not apply [example-vpc.yaml](../integration/kube-ovn/example-vpc.yaml)
+Continue with the authority and site installation in the
+[managed quick start](managed-quickstart.md#install-native-integration-and-the-authority),
+using prebuilt platform/gateway images. Skip its native-extension chart install
+if you installed that extension manually using this reference: the chart cannot
+invent the original stock-state receipt for an already modified installation.
+Do not apply [example-vpc.yaml](../integration/kube-ovn/example-vpc.yaml)
 as a standalone connectivity test: it assumes existing connected transit ports,
 gateways and suitable native BFD HA chassis. The managed operators create those
 resources from the registered locations and reserved pools.
@@ -450,7 +459,7 @@ all-gateways-down discard, restoration, MTU, tenant isolation and lifecycle test
 
 Rollback removes cross-location connectivity. Keep the patched native controller
 and managed operators running while draining. For **every** managed VPC using
-this extension, follow the quick start's [deletion sequence](managed-quickstart.md#delete-the-example):
+this extension, follow the quick start's [deletion sequence](managed-quickstart.md#drain-and-remove):
 workloads, public Subnets, then public VPC. Do not delete internal bindings or
 remove finalizers. The owner waits for native empty-intent acknowledgement before
 tearing down its remaining resources. Unavailable locations can block this step.

@@ -4,7 +4,7 @@
   "namespace": "global-vpc-system",
   "authorityNamespace": "global-vpc-dc-a",
   "authorityKubeconfig": "/authority/kubeconfig",
-  "gatewayNodeSelector": {"platform.globalvpc.io/gateway": "true"},
+  "gatewayNodeSelector": {"platform.globalvpc.io/gateway": "true", "kubernetes.io/os": "linux", "kubernetes.io/arch": "amd64"},
   "transitPool": "172.30.0.0/20",
   "transitPrefixLength": 27,
   "bfdSourcePool": "172.30.16.0/24",

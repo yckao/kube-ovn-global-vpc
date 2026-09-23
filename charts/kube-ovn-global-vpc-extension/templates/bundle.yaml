@@ -1,0 +1,22 @@
+{{- $bundle := .Values.bundle -}}
+{{- if not $bundle -}}
+{{- if not (has .Values.native.target (list "v1.16.3" "v1.16.4")) -}}
+{{- fail "native.target must name a packaged supported Kube-OVN baseline" -}}
+{{- end -}}
+{{- $raw := .Files.Get (printf "files/native-%s.json" .Values.native.target) -}}
+{{- if not $raw -}}
+{{- fail "qualified native bundle is absent; use a packaged release chart (maintainers may supply bundle for render tests)" -}}
+{{- end -}}
+{{- $bundle = $raw | fromJson -}}
+{{- end -}}
+{{- if ne $bundle.target .Values.native.target -}}
+{{- fail "native bundle target differs from native.target" -}}
+{{- end -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "native.fullname" . }}-bundle
+  labels:
+    {{- include "native.labels" . | nindent 4 }}
+data:
+  bundle.json: {{ $bundle | toJson | quote }}

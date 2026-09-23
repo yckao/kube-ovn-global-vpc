@@ -1,0 +1,30 @@
+# Release tooling embeds immutable image references in the packaged chart.
+image:
+  repository: ""
+  digest: ""
+cliImage:
+  repository: ""
+  digest: ""
+replicaCount: 2
+imagePullSecrets: []
+nodeSelector:
+  kubernetes.io/os: linux
+  kubernetes.io/arch: amd64
+platform:
+  registryNamespace: "" # Defaults to the Helm release namespace.
+  networkClasses:
+    default:
+      transportProfile: wireguard-bgp
+  locations: [] # name, region, site, dc, bindingNamespace, allowedProjects, cidrPools
+projects: [] # namespace and RBAC subjects; these identities must already exist.
+locationAccess:
+  serviceAccountName: binding-reporter
+  createNamespaces: true
+lifecycle:
+  preDeleteCheck: true
+resources:
+  requests:
+    cpu: 50m
+    memory: 96Mi
+  limits:
+    memory: 384Mi

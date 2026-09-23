@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build versioned controller binaries and an explicit managed-installation bundle."""
+"""Build versioned CLI/controller binaries, source and installation inputs."""
 
 import argparse
 import gzip
@@ -19,6 +19,7 @@ EXACT_INPUTS = (
     "VERSION", "LICENSE", "NOTICE", "THIRD_PARTY_NOTICES.md", "CHANGELOG.md",
     "docs/managed-quickstart.md",
     "docs/kube-ovn-extension-install.md",
+    "docs/vpcctl.md",
     "config/crd/platform.globalvpc.io_vpcs.yaml",
     "config/crd/platform.globalvpc.io_subnets.yaml",
     "config/crd/platform.globalvpc.io_networkbindings.yaml",
@@ -27,6 +28,8 @@ EXACT_INPUTS = (
     "config/examples/managed/smoke-pod.yaml", "config/examples/managed/network.yaml",
     "config/examples/managed/site-a.json", "config/examples/managed/site-b.json",
     "config/examples/managed/platform.json",
+    "config/examples/helm/authority.yaml", "config/examples/helm/native.yaml",
+    "config/examples/helm/site-a.yaml", "config/examples/helm/site-b.yaml",
     "gateway/Dockerfile", "gateway/gateway.py", "gateway/managed.py",
     "gateway/overlay.py", "gateway/evpn.py",
     "integration/kube-ovn/source-lock.json",
@@ -54,14 +57,20 @@ This archive contains templates and runtime/extension inputs for this release.
 It is not an installer, a container image or the complete source distribution.
 The adjacent source archive contains the full reviewed source and documentation.
 Use docs/managed-quickstart.md and the full documentation in that source archive
-at the commit recorded in provenance.json. Reserve pools, configure identities and replace image digest
-placeholders before applying resources. Do not apply every YAML file blindly.
+at the commit recorded in provenance.json. The config/examples/helm files are
+values for the published charts: reserve pools and configure scoped identities
+before installation. Published chart packages already contain image digests.
+The older config/managed YAML files are manual references; do not apply every
+YAML file blindly.
 
 The Kube-OVN patch requires exactly the source in its source-lock.json. The
 controller binary from the adjacent archive does not replace native Kube-OVN.
-Build and validate the patched native controller separately. Gateway runtime
-files are delivered by the controller; gateway/Dockerfile provides its Linux
-runtime dependencies and is not independently a fully configured appliance.
+Published releases additionally contain release.json with verified immutable
+controller, gateway and native-image references. Install those prebuilt images
+with vpcctl; end users do not need Go, Docker or BuildKit. Candidate source-only
+packaging without a release descriptor does not assert that images exist.
+Gateway runtime files are delivered by the controller; the image alone is not a
+fully configured appliance.
 
 This release is experimental. See CHANGELOG.md for its capability boundaries.
 Review LICENSE and NOTICE before redistribution, including container images.
@@ -152,12 +161,14 @@ def main():
                        f"-X main.version=v{version} -X main.commit={commit} -X main.sourceDate={source_date}"],
         "environment": fixed_environment,
         "architectures": ["amd64", "arm64"],
+        "cliPlatforms": ["linux", "darwin"],
         "installationInputSHA256": {name: digest(data) for name, data in contents.items()},
         "dependencyManifestSHA256": {name: digest((ROOT / name).read_bytes())
                                      for name in ("go.mod", "go.sum")},
         "goModules": json.loads(run(["go", "list", "-m", "-json"], env=build_environment)),
         "sourceLocks": {
             "kubeOVN": json.loads(contents["integration/kube-ovn/source-lock.json"]),
+            "kubeOVNCompat": json.loads(contents["integration/kube-ovn/compat-v1.16.3/source-lock.json"]),
         },
         "scope": "Unsigned build metadata. Compilation is not runtime or compatibility qualification.",
     }
@@ -187,6 +198,18 @@ def main():
                 "THIRD_PARTY_NOTICES.md": contents["THIRD_PARTY_NOTICES.md"],
             }, executable=("platform-vpc-controller",))
             binary.unlink()
+        for platform in metadata["cliPlatforms"]:
+            for arch in metadata["architectures"]:
+                binary = stage / f"vpcctl-{platform}-{arch}"
+                env = dict(build_environment, GOOS=platform, GOARCH=arch)
+                subprocess.run(["go", "build", *metadata["buildFlags"], "-o", str(binary),
+                                "./cmd/vpcctl"], cwd=ROOT, env=env, check=True)
+                write_archive(stage / f"vpcctl_{version}_{platform}_{arch}.tar.gz", {
+                    "vpcctl": binary.read_bytes(), "VERSION": contents["VERSION"],
+                    "LICENSE": contents["LICENSE"], "NOTICE": contents["NOTICE"],
+                    "THIRD_PARTY_NOTICES.md": contents["THIRD_PARTY_NOTICES.md"],
+                }, executable=("vpcctl",))
+                binary.unlink()
         write_archive(stage / f"managed-installation_{version}.tar.gz", contents,
                       executable=("integration/kube-ovn/scripts/test.sh",))
         # Check again after build so recorded provenance cannot silently describe

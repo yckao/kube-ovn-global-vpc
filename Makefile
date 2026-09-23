@@ -1,8 +1,12 @@
-.PHONY: build test test-race test-integration check docs release-artifacts
+.PHONY: build vpcctl test test-race test-integration check docs release-artifacts
 build:
 	go build -trimpath -o bin/global-vpc-controller ./cmd/global-vpc-controller
 	go build -trimpath -o bin/site-vpc-controller ./cmd/site-vpc-controller
 	go build -trimpath -o bin/platform-vpc-controller ./cmd/platform-vpc-controller
+	go build -trimpath -o bin/vpcctl ./cmd/vpcctl
+
+vpcctl:
+	go build -trimpath -o bin/vpcctl ./cmd/vpcctl
 
 test:
 	go test ./...
@@ -17,6 +21,7 @@ test-integration:
 	go test -tags=integration -v ./internal/sitecontroller -count=1
 	go test -tags=integration -v ./api/v1alpha2 ./internal/platformcontroller ./internal/localcontroller -count=1
 	go test -tags=integration -v ./internal/managedgateway -count=1
+	go test -tags=integration -v ./internal/vpcctl -count=1
 
 check:
 	go vet ./...

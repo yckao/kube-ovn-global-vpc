@@ -1,0 +1,110 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "native.fullname" . }}
+  labels:
+    {{- include "native.labels" . | nindent 4 }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "native.fullname" . }}-receipt
+rules:
+  - apiGroups: [""]
+    resources: [secrets]
+    resourceNames: [{{ printf "%s-state" (include "native.fullname" .) | quote }}]
+    verbs: [get, update, delete]
+  - apiGroups: [""]
+    resources: [secrets]
+    verbs: [create]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "native.fullname" . }}-receipt
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "native.fullname" . }}-receipt
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "native.fullname" . }}
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "native.targetIdentity" . }}
+  labels:
+    {{- include "native.labels" . | nindent 4 }}
+rules:
+  - apiGroups: [""]
+    resources: [namespaces]
+    resourceNames: [kube-system]
+    verbs: [get]
+  - apiGroups: [apiextensions.k8s.io]
+    resources: [customresourcedefinitions]
+    resourceNames: [vpcs.kubeovn.io]
+    verbs: [get, patch]
+  - apiGroups: [kubeovn.io]
+    resources: [vpcs]
+    verbs: [get, list]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "native.targetIdentity" . }}
+  labels:
+    {{- include "native.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "native.targetIdentity" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "native.fullname" . }}
+    namespace: {{ .Release.Namespace }}
+{{- range $namespace := list .Values.native.namespace .Values.ovn.namespace | uniq }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ printf "%s-%s-client" $.Release.Namespace (include "native.fullname" $) }}
+  namespace: {{ $namespace }}
+rules:
+  - apiGroups: [apps]
+    resources: [deployments]
+    resourceNames: [{{ $.Values.native.deployment | quote }}, {{ $.Values.ovn.deployment | quote }}]
+    verbs: [get]
+  {{- if eq $namespace $.Values.native.namespace }}
+  - apiGroups: [apps]
+    resources: [deployments]
+    resourceNames: [{{ $.Values.native.deployment | quote }}]
+    verbs: [patch]
+  {{- end }}
+  - apiGroups: [apps]
+    resources: [replicasets]
+    verbs: [list]
+  - apiGroups: [""]
+    resources: [pods]
+    verbs: [get, list]
+  {{- if eq $namespace $.Values.ovn.namespace }}
+  - apiGroups: [""]
+    resources: [pods/exec]
+    verbs: [create]
+  {{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ printf "%s-%s-client" $.Release.Namespace (include "native.fullname" $) }}
+  namespace: {{ $namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ printf "%s-%s-client" $.Release.Namespace (include "native.fullname" $) }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "native.fullname" $ }}
+    namespace: {{ $.Release.Namespace }}
+{{- end }}
