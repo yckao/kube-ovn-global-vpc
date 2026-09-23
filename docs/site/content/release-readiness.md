@@ -1,6 +1,6 @@
 # Adoption and release readiness
 
-The v0.1.0 release establishes a reviewable managed implementation, documentation and contribution surface. Evaluate it in an isolated environment with explicit acceptance criteria before considering production use.
+The project provides an experimental managed implementation, documentation and contribution process. Evaluate it in an isolated environment with explicit acceptance criteria before considering production use.
 
 ## Before an evaluation
 
@@ -26,7 +26,7 @@ The v0.1.0 release establishes a reviewable managed implementation, documentatio
 
 ## Compatibility expectations
 
-The public API is still `v1alpha2` despite the project release number being v0.1.0. These version axes serve different purposes. Do not infer backward-compatible storage upgrades or rolling migrations from the version label. The native integration is source pinned and must be reviewed alongside the deployed Kube-OVN version.
+The public API version, `v1alpha2`, and the project release version serve different purposes. Do not infer backward-compatible storage upgrades or rolling migrations from the version label. The native integration is source pinned and must be reviewed alongside the deployed Kube-OVN version.
 
 ## Contribution and disclosure
 

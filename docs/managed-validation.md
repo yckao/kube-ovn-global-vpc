@@ -1,7 +1,6 @@
 # Validation and maturity
 
-The managed `platform.globalvpc.io/v1alpha2` implementation is experimental in
-version 0.1.0. This page describes test categories and acceptance boundaries,
+The managed `platform.globalvpc.io/v1alpha2` implementation is experimental. This page describes test categories and acceptance boundaries,
 not any maintainer's private infrastructure.
 
 ## Automated checks

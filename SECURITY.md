@@ -2,7 +2,7 @@
 
 ## Supported scope
 
-Version 0.1.0 is experimental. Security fixes target the latest `main`; there is
+This project is experimental. Security fixes target the latest `main`; there is
 no long-term-support branch, security SLA or production certification.
 
 ## Report privately

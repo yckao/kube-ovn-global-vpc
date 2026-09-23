@@ -7,9 +7,10 @@ The installation interface is the project's Helm charts, used directly or throug
 Docker, BuildKit, Python or jq is required.
 
 Use [CLI installation](vpcctl.md#install-the-cli) to obtain `vpcctl`. The commands
-below target the v0.1.1 prebuilt distribution; use them after that release's image
-and chart publication has completed. Publishing those artifacts does not by
-itself establish a live installation or a packet-forwarding result.
+below use the published
+[v0.1.1 images and charts](https://github.com/yckao/kube-ovn-global-vpc/releases/tag/v0.1.1).
+Publishing those artifacts does not by itself establish a live installation or
+a packet-forwarding result.
 
 ## What is needed for the first location
 
@@ -31,8 +32,29 @@ extension image/schema fields and keeps the upstream Kube-OVN installation.
 
 ## Prepare the DC-A values
 
-The release's managed-installation archive contains these files. Keep its
-`config/` directory in your working directory, or download the linked examples:
+Download the release's installation inputs into a clean working directory.
+This example verifies the archive against
+that release's checksums before extraction:
+
+```sh
+VERSION=0.1.1
+BASE="https://github.com/yckao/kube-ovn-global-vpc/releases/download/v${VERSION}"
+ASSET="managed-installation_${VERSION}.tar.gz"
+mkdir -p global-vpc-installation
+cd global-vpc-installation || exit 1
+curl -fLO "$BASE/$ASSET" || exit 1
+curl -fLO "$BASE/SHA256SUMS" || exit 1
+awk -v name="$ASSET" '$2 == name { print }' SHA256SUMS > INSTALL-SHA256SUMS
+test "$(wc -l < INSTALL-SHA256SUMS | tr -d ' ')" = 1 || exit 1
+shasum -a 256 -c INSTALL-SHA256SUMS || exit 1
+tar -xzf "$ASSET" || exit 1
+test -f config/examples/helm/authority-dc-a.yaml || exit 1
+test -f config/examples/managed/smoke-pod.yaml || exit 1
+```
+
+Linux can use `sha256sum -c INSTALL-SHA256SUMS` for the checksum step. The archive
+extracts `config/` directly, with no enclosing version directory. Run the remaining
+commands from this working directory. The files used by this guide are:
 
 | File | When to use it |
 |---|---|

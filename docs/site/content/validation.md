@@ -1,6 +1,6 @@
 # Validation and known limitations
 
-v0.1.0 is an experimental engineering release. Validation must be matched to the claim: API acceptance, native acknowledgement, actual forwarding, physical availability and throughput are different properties.
+This project is experimental. Validation must be matched to the claim: API acceptance, native acknowledgement, actual forwarding, physical availability and throughput are different properties.
 
 ## Test layers
 
@@ -29,7 +29,7 @@ For a deployment, start with the [quick start](../../managed-quickstart.md), the
 
 ## Qualification boundaries
 
-| Area | v0.1.0 boundary |
+| Area | Current boundary |
 |---|---|
 | Transport | WireGuard/BGP, Geneve/BGP and VXLAN/EVPN implementations are available; validate each chosen profile on its actual path |
 | Lifecycle | Do not assume packet-loss-free updates or deletion/rejoin under every outage |

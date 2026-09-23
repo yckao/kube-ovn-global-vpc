@@ -1,7 +1,7 @@
 # Documentation website
 
 This directory owns a curated, dependency-free documentation website for the
-managed `platform-vpc-controller` v0.1.0 line. Content is English; the existing
+managed `platform-vpc-controller`. Content is English; the existing
 Traditional Chinese engineering diagrams and speaker notes are first-class
 pages. Historical D / OVN-IC installation guides are not mixed into this site.
 

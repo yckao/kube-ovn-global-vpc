@@ -1,6 +1,6 @@
 # API reference
 
-The managed API group is `platform.globalvpc.io/v1alpha2`. All three resource kinds are namespaced. VPC and Subnet are public; NetworkBinding is internal platform state. v0.1.0 is an alpha contract and does not promise schema or storage compatibility across later releases.
+The managed API group is `platform.globalvpc.io/v1alpha2`. All three resource kinds are namespaced. VPC and Subnet are public; NetworkBinding is internal platform state. The `v1alpha2` API is an alpha contract and does not promise schema or storage compatibility across later releases.
 
 ## VPC
 
